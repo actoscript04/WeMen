@@ -1,0 +1,934 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "wm_hero_section_Ez7rFM": {
+      "type": "wm-Hero-section",
+      "blocks": {
+        "slide_3V3cKM": {
+          "type": "slide",
+          "settings": {
+            "video": "shopify://files/videos/QzAnLGY2JxkrmccHLgIIY9vx_9.mp4",
+            "title": "",
+            "subheading": "",
+            "btn_label": "",
+            "btn_link": ""
+          }
+        },
+        "slide_KErbJf": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "video": "shopify://files/videos/2026_Icons_NP_Film_15_v1_16x9_CS.mp4",
+            "title": "",
+            "subheading": "",
+            "btn_label": "",
+            "btn_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_3V3cKM",
+        "slide_KErbJf"
+      ],
+      "name": "Hero Dynamic Swiper",
+      "settings": {
+        "height_desktop": 90,
+        "height_mobile": 65,
+        "show_arrows": true,
+        "show_pagination": true,
+        "color_heading": "#ffffff",
+        "color_text": "#f3f3f3",
+        "color_btn_bg": "#ffffff",
+        "color_btn_text": "#000000",
+        "overlay_opacity": 25,
+        "font_size_heading_desktop": 3.5,
+        "font_size_heading_mobile": 2.2,
+        "font_size_text_desktop": 1.2,
+        "font_size_text_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "dynamic_asymmetric_slider_j8faFG": {
+      "type": "dynamic-asymmetric-slider",
+      "blocks": {
+        "single_slide_LWjmDP": {
+          "type": "single_slide",
+          "settings": {
+            "image": "shopify://shop_images/TrendingCollection_PUFT.avif",
+            "subheading": "NEW ARRIVAL",
+            "title": "Modern Leather Wallet",
+            "button_text": "Shop Collection",
+            "link": "",
+            "v_alignment": "top",
+            "h_shift": "normal",
+            "card_size": "normal"
+          }
+        },
+        "double_slide_TGKfdn": {
+          "type": "double_slide",
+          "settings": {
+            "v_alignment": "center",
+            "h_shift": "normal",
+            "gap_between": 40,
+            "image_b": "shopify://shop_images/platform_collection_banner_desktop.avif",
+            "title_b": "Classic Combo",
+            "button_text_b": "View Product",
+            "link_b": "",
+            "b_left_offset": 0,
+            "image_c": "shopify://shop_images/mobile-desktop-2nd-section-banner.avif",
+            "title_c": "Luxury Sets",
+            "button_text_c": "View Product",
+            "link_c": "",
+            "c_right_offset": 0
+          }
+        },
+        "single_slide_9VgRJq": {
+          "type": "single_slide",
+          "settings": {
+            "image": "shopify://shop_images/TrendingCollection_canvas.avif",
+            "subheading": "NEW ARRIVAL",
+            "title": "Modern Leather Wallet",
+            "button_text": "Shop Collection",
+            "link": "",
+            "v_alignment": "top",
+            "h_shift": "normal",
+            "card_size": "normal"
+          }
+        },
+        "double_slide_xeRMXq": {
+          "type": "double_slide",
+          "settings": {
+            "v_alignment": "top",
+            "h_shift": "normal",
+            "gap_between": 40,
+            "image_b": "shopify://shop_images/TrendingCollection_stack.avif",
+            "title_b": "Classic Combo",
+            "button_text_b": "View Product",
+            "link_b": "",
+            "b_left_offset": 0,
+            "image_c": "shopify://shop_images/Light-Grey-Pulse-Card-Wallet-2n.avif",
+            "title_c": "Luxury Sets",
+            "button_text_c": "View Product",
+            "link_c": "",
+            "c_right_offset": 0
+          }
+        },
+        "single_slide_btE8t3": {
+          "type": "single_slide",
+          "settings": {
+            "image": "shopify://shop_images/desktop-pvt_1_Briefpack.avif",
+            "subheading": "NEW ARRIVAL",
+            "title": "Modern Leather Wallet",
+            "button_text": "Shop Collection",
+            "link": "",
+            "v_alignment": "center",
+            "h_shift": "normal",
+            "card_size": "slim"
+          }
+        },
+        "single_slide_rX3xWH": {
+          "type": "single_slide",
+          "settings": {
+            "image": "shopify://shop_images/TrendingCollection_stack.avif",
+            "subheading": "NEW ARRIVAL",
+            "title": "Modern Leather Wallet",
+            "button_text": "Shop Collection",
+            "link": "",
+            "v_alignment": "top",
+            "h_shift": "normal",
+            "card_size": "wide"
+          }
+        }
+      },
+      "block_order": [
+        "single_slide_LWjmDP",
+        "double_slide_TGKfdn",
+        "single_slide_9VgRJq",
+        "double_slide_xeRMXq",
+        "single_slide_btE8t3",
+        "single_slide_rX3xWH"
+      ],
+      "name": "Dynamic Asymmetric Slider",
+      "settings": {
+        "heading": "The Line-Up ",
+        "description": "Discover thoughtfully crafted men's accessories designed to be worn often and worn well.",
+        "show_icon": true,
+        "icon_svg": "",
+        "autoplay_speed": 4
+      }
+    },
+    "poster_hero_MXTNx8": {
+      "type": "poster-hero",
+      "disabled": true,
+      "name": "Poster Hero Section",
+      "settings": {
+        "meta_left": "CONCEPT POSTER SERIES",
+        "meta_right": "2025 // DESIGN NO. 45",
+        "title": "Because You Shouldn’t Have <br> To Settle",
+        "subtext": "<p>We Men are very selective about cars, phones, and watches, yet some essentials are often left as afterthoughts.<br/><br/>We’re here to change that.<br/>WeMen brings you well-made everyday pieces that feel good to own and even better to use.</p>",
+        "watermark_image": "shopify://shop_images/BRAND_MARK.png",
+        "watermark_opacity": 0.1,
+        "bg_color_top": "#481118",
+        "bg_color_bottom": "#f5ead0",
+        "text_color_top": "#ffffff",
+        "text_color_bottom": "#000000",
+        "subtext_color": "#000000"
+      }
+    },
+    "animated_gift_card_bEHNyn": {
+      "type": "animated-gift-card",
+      "custom_css": [
+        ".intro-line-wrap {font-family: \"League Spartan\", sans-serif !important;}"
+      ],
+      "name": "Animated Gift Card",
+      "settings": {
+        "heading_line1": "Because You Shouldn’t",
+        "heading_line2": "HaveTo Settle",
+        "title_font_size": 7,
+        "description": "We Men are very selective about cars, phones, and watches, yet some essentials are often left as afterthoughts.\n\nWe’re here to change that.\nWeMen brings you well-made everyday pieces that feel good to own and even better to use.",
+        "bg_color": "#481118",
+        "text_color": "#fffcf6"
+      }
+    },
+    "section_aQkdJh": {
+      "type": "section",
+      "blocks": {
+        "image_UERQdG": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/BRAND_MARK_copy.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "custom",
+            "custom_width": 3,
+            "width_mobile": "custom",
+            "custom_width_mobile": 18,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_GCGg8K": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h3><strong>Because You Shouldn’t Have To Settle</strong></h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-accent--family)",
+            "font_size": "2.5rem",
+            "line_height": "tight",
+            "letter_spacing": "tight",
+            "case": "none",
+            "wrap": "balance",
+            "text_color": "#f5ead0",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_bCdHnh": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>We Men are very selective about cars, phones, and watches, yet some essentials are often left as afterthoughts. <br/><br/>We’re here to change that.</p><p>WeMen brings you well-made everyday pieces that feel good to own and even better to use.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "tight",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#f5ead0",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "image_UERQdG",
+        "text_GCGg8K",
+        "text_bCdHnh"
+      ],
+      "disabled": true,
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "#481118",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "rich_text_custom_NQndPn": {
+      "type": "rich-text-custom",
+      "custom_css": [
+        "@media screen and (min-width: 750px) {.rich-text-title-template--22510704787503__rich_text_custom_NQndPn {font-size: 45px; font-weight: 500; }}",
+        ".rich-text-body-template--22510704787503__rich_text_custom_NQndPn {margin-bottom: 50px;}"
+      ],
+      "name": "Custom Rich Text",
+      "settings": {
+        "text_alignment": "center",
+        "content_width": 800,
+        "subtitle": "",
+        "subtitle_color": "#666666",
+        "subtitle_size_desktop": 14,
+        "subtitle_size_mobile": 12,
+        "title": "Gifting section",
+        "title_color": "#121212",
+        "title_size_desktop": 46,
+        "title_size_mobile": 25,
+        "body_text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+        "body_color": "#333333",
+        "body_size_desktop": 15,
+        "body_size_mobile": 14,
+        "btn_label": "",
+        "btn_link": "",
+        "btn_bg_color": "#000000",
+        "btn_text_color": "#ffffff",
+        "btn_border_color": "#000000",
+        "btn_hover_bg_color": "#333333",
+        "btn_hover_text_color": "#ffffff",
+        "btn_border_radius": 4,
+        "bg_color": "#ffffff",
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "premium_product_grid_slider_73c9VC": {
+      "type": "premium-product-grid-slider",
+      "custom_css": [
+        ".section-template--22510704787503__premium_product_grid_slider_73c9VC {padding-top: 0px; padding-bottom: 100px; background-color: #fff;}"
+      ],
+      "name": "Premium Grid & Slider",
+      "settings": {
+        "section_title": "",
+        "collection": "men",
+        "layout_type": "slider",
+        "products_to_show": 10,
+        "columns_desktop": 4,
+        "show_view_all": true,
+        "view_all_text": "View All",
+        "bg_color": "#ffffff",
+        "padding_top": 12,
+        "padding_bottom": 100
+      }
+    },
+    "custom_creativity_banner_7XzHet": {
+      "type": "custom-creativity-banner",
+      "name": "Creativity Banner",
+      "settings": {
+        "bg_color": "#481118",
+        "text_color": "#f5ead0",
+        "paragraph_1": "Innovation doesn't follow rules — it rewrites them. Creativity lives in contrast: logic meets spontaneity, design meets disruption.",
+        "paragraph_2": "We craft digital experiences that challenge norms, stir curiosity, and spark movement. This is where structure dances with spontaneity.",
+        "main_image": "shopify://shop_images/continuous-line-drawing-business-team_e277de32-207a-4900-ae00-af6bd64b2994.png",
+        "heading_text": "Built By Brothers",
+        "heading_color": "#f5ead0",
+        "subheading_text": "FOR THE BROTHERHOOD",
+        "subheading_color": "#f4ebd9"
+      }
+    },
+    "custom_split_section_qyp8jp": {
+      "type": "custom-split-section",
+      "disabled": true,
+      "name": "About section",
+      "settings": {
+        "left_image": "shopify://shop_images/01.png",
+        "left_title": "Left Content",
+        "left_text": "",
+        "right_Abouttag": "",
+        "right_heading": "Built By Brothers, For The Brotherhood",
+        "right_subtext": "<p>Most men don't need more choices. They need someone to point them toward the good stuff and save them from wasting time on the rest. That's where we come in. <br/><br/>Founded by 5 brothers, built in India, and made for the modern gentleman, we create pieces that help men feel a little more put together every day. Because we know you have better things to do than overthink the details.<br/><br/></p>",
+        "social_link_1": "",
+        "social_link_2": "",
+        "social_link_3": "",
+        "social_link_4": "",
+        "bg_color": "#481118",
+        "text_color": "#f5ead0",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "rich_text_custom_j4hfdR": {
+      "type": "rich-text-custom",
+      "custom_css": [
+        "@media screen and (min-width: 750px) {.rich-text-title-template--22510704787503__rich_text_custom_j4hfdR {font-size: 45px; font-weight: 500; }}"
+      ],
+      "name": "Custom Rich Text",
+      "settings": {
+        "text_alignment": "center",
+        "content_width": 800,
+        "subtitle": "",
+        "subtitle_color": "#666666",
+        "subtitle_size_desktop": 14,
+        "subtitle_size_mobile": 12,
+        "title": "Our Signature Best sellers",
+        "title_color": "#121212",
+        "title_size_desktop": 46,
+        "title_size_mobile": 25,
+        "body_text": "<p>Our signature collection is built around the pieces you’ll carry, wear, and rely on every single day.<br/><br/></p>",
+        "body_color": "#333333",
+        "body_size_desktop": 15,
+        "body_size_mobile": 14,
+        "btn_label": "",
+        "btn_link": "",
+        "btn_bg_color": "#000000",
+        "btn_text_color": "#ffffff",
+        "btn_border_color": "#000000",
+        "btn_hover_bg_color": "#333333",
+        "btn_hover_text_color": "#ffffff",
+        "btn_border_radius": 4,
+        "bg_color": "#ffffff",
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "premium_product_grid_slider_byz7pr": {
+      "type": "premium-product-grid-slider",
+      "custom_css": [
+        ".section-template--22510704787503__premium_product_grid_slider_73c9VC {padding-top: 0px; padding-bottom: 100px; background-color: #fff;}"
+      ],
+      "name": "Premium Grid & Slider",
+      "settings": {
+        "section_title": "",
+        "collection": "men",
+        "layout_type": "slider",
+        "products_to_show": 10,
+        "columns_desktop": 4,
+        "show_view_all": true,
+        "view_all_text": "View All",
+        "bg_color": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 100
+      }
+    },
+    "curved_reels_YL4Pfh": {
+      "type": "curved-reels",
+      "blocks": {
+        "reel_H9C7tz": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/2026_Icons_NP_Film_15_v1_16x9_CS.mp4",
+            "author_name": "@creator",
+            "product": "beaded-stone-bracelet"
+          }
+        },
+        "reel_EiXxwJ": {
+          "type": "reel",
+          "settings": {
+            "image": "shopify://shop_images/d406d467799c316e2c4009119525c283.jpg",
+            "author_name": "@creator",
+            "product": "beaded-stone-bracelet"
+          }
+        },
+        "reel_dLVzRe": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-41279.mp4",
+            "author_name": "@creator",
+            "product": "bifold-leather-wallet"
+          }
+        },
+        "reel_fze9k6": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-91616.mp4",
+            "author_name": "@creator",
+            "product": "cotton-formal-socks-pack-of-3"
+          }
+        },
+        "reel_pFJJpb": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-19163.mp4",
+            "author_name": "@creator",
+            "product": ""
+          }
+        },
+        "reel_JFkCgx": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-62184.mp4",
+            "author_name": "@creator",
+            "product": ""
+          }
+        },
+        "reel_8xeKzi": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/luxurious-packaging-experience-video-luxury-curate-hd-auto-.mp4",
+            "author_name": "@creator",
+            "product": ""
+          }
+        },
+        "reel_TCBgGt": {
+          "type": "reel",
+          "settings": {
+            "image": "shopify://shop_images/4ef502878fcaca656deef18010e75497.jpg",
+            "author_name": "@creator",
+            "product": ""
+          }
+        },
+        "reel_LE8PTk": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-19163.mp4",
+            "author_name": "@creator",
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "reel_H9C7tz",
+        "reel_EiXxwJ",
+        "reel_dLVzRe",
+        "reel_fze9k6",
+        "reel_pFJJpb",
+        "reel_JFkCgx",
+        "reel_8xeKzi",
+        "reel_TCBgGt",
+        "reel_LE8PTk"
+      ],
+      "name": "Curved Reels Section",
+      "settings": {
+        "bg_color": "#fbf8f3",
+        "text_color": "#111111",
+        "bottom_curve_color": "#ffffff",
+        "badge_text": "Join over 10,000 happy creators",
+        "heading": "FEATURED IN REAL LIFE",
+        "subtext": "Boost Your Brand with High-Impact Short Videos from our expert content creators. Our team is ready to propel your business forward!",
+        "btn_link": "",
+        "btn_label": "Get Started",
+        "accent_right": "Elevate your brand",
+        "accent_bottom": "It's free",
+        "scroll_speed": 80
+      }
+    },
+    "custom_luxury_products_DFekXb": {
+      "type": "custom-luxury-products",
+      "blocks": {
+        "card_gGE8FB": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Light-Grey-Pulse-Card-Wallet-2n.avif",
+            "title": "Category Name",
+            "button_label": "Discover",
+            "button_link": ""
+          }
+        },
+        "card_f9Yxck": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Dark-Grey-Pulse-Card-Wallet-3rd.avif",
+            "title": "Accessories",
+            "button_label": "Discover",
+            "button_link": ""
+          }
+        },
+        "card_xYnDwx": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/TrendingCollection_stack.avif",
+            "title": "Accessories",
+            "button_label": "Discover",
+            "button_link": ""
+          }
+        },
+        "card_VbnzYJ": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Light-Grey-Pulse-Card-Wallet.avif",
+            "title": "Perfumes",
+            "button_label": "Discover",
+            "button_link": ""
+          }
+        },
+        "card_rYz4zy": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/EMOTIONAL_MOMENT_2025_COLLECTION_IMG55_LVCOM_1600x2000_DII_SLG_MEN.webp",
+            "title": "Accessories",
+            "button_label": "Discover",
+            "button_link": ""
+          }
+        },
+        "card_Nht6G8": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/EMOTIONAL_MOMENT_2025_COLLECTION_IMG56_LVCOM_1600x2000_DII_MLG.webp",
+            "title": "Perfumes",
+            "button_label": "Discover",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_gGE8FB",
+        "card_f9Yxck",
+        "card_xYnDwx",
+        "card_VbnzYJ",
+        "card_rYz4zy",
+        "card_Nht6G8"
+      ],
+      "name": "Luxury Products Slider",
+      "settings": {
+        "heading": "LUXURY PRODUCTS",
+        "subheading": "Continue exploring the Maison's collections",
+        "bg_color": "#ffffff",
+        "text_color": "#ffffff",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "as_split_grid_hero_xfhczn": {
+      "type": "as-SplitGridHero",
+      "blocks": {
+        "grid_image_PcVTTU": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/wdacxwda.webp",
+            "link": ""
+          }
+        },
+        "grid_image_d6kMnK": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/04772035506-a1.jpg",
+            "link": ""
+          }
+        },
+        "grid_image_xH3P8V": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/t4bv5tgrvtr.webp",
+            "link": ""
+          }
+        },
+        "grid_image_jmBkBK": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/04772035506-a1.jpg",
+            "link": ""
+          }
+        },
+        "grid_image_p4q7dN": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/05252202500-a2.jpg",
+            "link": ""
+          }
+        },
+        "grid_image_JKeqma": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/04772035506-a1.jpg",
+            "link": ""
+          }
+        },
+        "grid_image_7rEYGB": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/05252202500-a2.jpg",
+            "link": ""
+          }
+        },
+        "grid_image_LYMfhx": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/t4bv5tgrvtr.webp",
+            "link": ""
+          }
+        },
+        "grid_image_kiE3bt": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/05252083400-p.jpg",
+            "link": ""
+          }
+        },
+        "grid_image_W76agn": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/t4bv5tgrvtr.webp",
+            "link": ""
+          }
+        },
+        "grid_image_PdRQW9": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/05252202500-a2.jpg",
+            "link": ""
+          }
+        },
+        "grid_image_R87iep": {
+          "type": "grid_image",
+          "settings": {
+            "grid_image": "shopify://shop_images/05252202500-a2.jpg",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "grid_image_PcVTTU",
+        "grid_image_d6kMnK",
+        "grid_image_xH3P8V",
+        "grid_image_jmBkBK",
+        "grid_image_p4q7dN",
+        "grid_image_JKeqma",
+        "grid_image_7rEYGB",
+        "grid_image_LYMfhx",
+        "grid_image_kiE3bt",
+        "grid_image_W76agn",
+        "grid_image_PdRQW9",
+        "grid_image_R87iep"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "name": "Tommy Split Grid Hero",
+      "settings": {
+        "left_image": "shopify://shop_images/SUMMER26LAUNCH_MW_HERO.jpg",
+        "sub_title": "Tommy",
+        "title": "ICONS",
+        "description": "The cornerstone classics of American prep.",
+        "text_color": "#ffffff",
+        "btn1_text": "Shop Men",
+        "btn1_link": "",
+        "btn2_text": "Shop Women",
+        "btn2_link": "",
+        "bg_color": "#fffcf6",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "as_testimonial_focus_slider_zepy9V": {
+      "type": "as-Testimonial-Focus-Slider",
+      "blocks": {
+        "testimonial_qFj78U": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_WyrBwj": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_WQcVTg": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_PqMgTW": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_tU3Wjx": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_88dKci": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_8PCaLP": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_y3tJzL": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!",
+            "author_name": "John Doe",
+            "author_title": "Verified Buyer"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_qFj78U",
+        "testimonial_WyrBwj",
+        "testimonial_WQcVTg",
+        "testimonial_PqMgTW",
+        "testimonial_tU3Wjx",
+        "testimonial_88dKci",
+        "testimonial_8PCaLP",
+        "testimonial_y3tJzL"
+      ],
+      "custom_css": [
+        ".swiper-button-next:after,.swiper-button-prev:after {font-size: 25px !important; color: black !important;}"
+      ],
+      "name": "Testimonial Focus Slider",
+      "settings": {
+        "title": "WHAT OUR CLIENTS SAY",
+        "subtitle": "Real feedback from happy customers",
+        "autoplay_speed": 3,
+        "show_dots": true,
+        "show_arrows": true,
+        "bg_color": "#ffffff",
+        "text_color": "#111111",
+        "card_bg": "#ffffff",
+        "card_text_color": "#333333",
+        "padding_top": 88,
+        "padding_bottom": 88
+      }
+    },
+    "luxury_values_qgEEAJ": {
+      "type": "luxury-values",
+      "blocks": {
+        "feature_item_htmQEp": {
+          "type": "feature_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/eco.png",
+            "icon_svg": "",
+            "title": "Vegan Materials"
+          }
+        },
+        "feature_item_7DFnRP": {
+          "type": "feature_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/free.png",
+            "icon_svg": "",
+            "title": " Cruelty-Free"
+          }
+        },
+        "feature_item_Li9gWj": {
+          "type": "feature_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/touchpad.png",
+            "icon_svg": "",
+            "title": "Built To Last"
+          }
+        },
+        "feature_item_FxtCRe": {
+          "type": "feature_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/brain-storming.png",
+            "icon_svg": "",
+            "title": "Thoughtfully Designed"
+          }
+        }
+      },
+      "block_order": [
+        "feature_item_htmQEp",
+        "feature_item_7DFnRP",
+        "feature_item_Li9gWj",
+        "feature_item_FxtCRe"
+      ],
+      "custom_css": [
+        ".swiper-slide {display: flex;}"
+      ],
+      "name": "Luxury Values",
+      "settings": {
+        "title": "",
+        "bg_color": "#ffffff",
+        "text_color": "#1a1a1a"
+      }
+    }
+  },
+  "order": [
+    "wm_hero_section_Ez7rFM",
+    "dynamic_asymmetric_slider_j8faFG",
+    "poster_hero_MXTNx8",
+    "animated_gift_card_bEHNyn",
+    "section_aQkdJh",
+    "rich_text_custom_NQndPn",
+    "premium_product_grid_slider_73c9VC",
+    "custom_creativity_banner_7XzHet",
+    "custom_split_section_qyp8jp",
+    "rich_text_custom_j4hfdR",
+    "premium_product_grid_slider_byz7pr",
+    "curved_reels_YL4Pfh",
+    "custom_luxury_products_DFekXb",
+    "as_split_grid_hero_xfhczn",
+    "as_testimonial_focus_slider_zepy9V",
+    "luxury_values_qgEEAJ"
+  ]
+}

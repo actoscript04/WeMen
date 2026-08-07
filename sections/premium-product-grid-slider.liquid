@@ -1,0 +1,511 @@
+{% comment %}
+  Premium Product Grid & Slider Section
+  100% Dynamic & Fully Responsive (Fixed Liquid Syntax)
+{% endcomment %}
+
+{{ 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' | stylesheet_tag }}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+<div class="premium-products-section section-{{ section.id }}">
+  <div class="premium-section-header">
+    {% if section.settings.section_title != blank %}
+      <h2 class="section-title">{{ section.settings.section_title }}</h2>
+    {% endif %}
+  </div>
+
+  {% assign collection = collections[section.settings.collection] %}
+  {% assign products_to_show = section.settings.products_to_show %}
+
+  <div class="premium-layout-container">
+    {% if section.settings.layout_type == 'slider' %}
+      <!-- SLIDER LAYOUT -->
+      <div class="swiper premium-swiper-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {% for product in collection.products limit: products_to_show %}
+            <div class="swiper-slide">
+              
+              <!-- PRODUCT CARD START -->
+              <div class="premium-product-card">
+                <div class="premium-card-media">
+                  {% assign downcased_tags = product.tags | join: ',' | downcase %}
+                  {% if downcased_tags contains 'new arrival' %}
+                    <span class="badge-new-in">New In</span>
+                  {% elsif downcased_tags contains 'best selling' %}
+                    <span class="badge-new-in">Best Selling</span>
+                  {% endif %}
+                  
+                  <a href="/pages/wishlist" class="wishlist-btn-trigger" aria-label="Add to wishlist">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  </a>
+
+                  <a href="{{ product.url }}">
+                    {% if product.featured_media != blank %}
+                      <img src="{{ product.featured_media | image_url: width: 600 }}" alt="{{ product.featured_media.alt | escape }}" loading="lazy">
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </a>
+
+                  {% assign has_sizes = false %}
+                  {% for option in product.options_with_values %}
+                    {% assign option_name = option.name | downcase %}
+                    {% if option_name == 'size' %}
+                      {% assign has_sizes = true %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if has_sizes %}
+                    <div class="sizes-hover-overlay">
+                      {% for option in product.options_with_values %}
+                        {% assign option_name = option.name | downcase %}
+                        {% if option_name == 'size' %}
+                          {% for value in option.values limit: 5 %}
+                            <span class="size-option-item">{{ value }}</span>
+                          {% endfor %}
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="premium-card-info">
+                  <a href="{{ product.url }}" class="p-title">{{ product.title }}</a>
+                  <p class="p-price">{{ product.price | money }}</p>
+
+                  {% assign has_colors = false %}
+                  {% for option in product.options_with_values %}
+                    {% assign option_name = option.name | downcase %}
+                    {% if option_name == 'color' or option_name == 'colour' %}
+                      {% assign has_colors = true %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if has_colors %}
+                    <div class="p-swatches">
+                      {% assign color_count = 0 %}
+                      {% for option in product.options_with_values %}
+                        {% assign option_name = option.name | downcase %}
+                        {% if option_name == 'color' or option_name == 'colour' %}
+                          {% for value in option.values %}
+                            {% if color_count < 3 %}
+                              <span class="swatch-circle" style="background-color: {{ value | split: ' ' | last | handle }};" title="{{ value }}"></span>
+                              {% assign color_count = color_count | plus: 1 %}
+                            {% endif %}
+                          {% endfor %}
+                          {% if option.values.size > 3 %}
+                            <span class="swatch-more-count">+{{ option.values.size | minus: 3 }}</span>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              <!-- PRODUCT CARD END -->
+
+            </div>
+          {% else %}
+            {% for i in (1..4) %}
+              <div class="swiper-slide">
+                <div class="premium-product-card">
+                  <div class="premium-card-media">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                  <div class="premium-card-info">
+                    <p class="p-title">Sample Product Title</p>
+                    <p class="p-price">Rs. 5,300</p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+        <div class="swiper-button-next swiper-nav-btn"></div>
+        <div class="swiper-button-prev swiper-nav-btn"></div>
+      </div>
+    {% else %}
+      <!-- GRID LAYOUT -->
+      <div class="premium-product-grid columns-{{ section.settings.columns_desktop }}">
+        {% for product in collection.products limit: products_to_show %}
+          
+          <!-- PRODUCT CARD START -->
+          <div class="premium-product-card">
+            <div class="premium-card-media">
+              {% assign downcased_tags = product.tags | join: ',' | downcase %}
+              {% if downcased_tags contains 'new arrival' %}
+                <span class="badge-new-in">New In</span>
+              {% elsif downcased_tags contains 'best selling' %}
+                <span class="badge-new-in">Best Selling</span>
+              {% endif %}
+              
+              <a href="/pages/wishlist" class="wishlist-btn-trigger" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              </a>
+
+              <a href="{{ product.url }}">
+                {% if product.featured_media != blank %}
+                  <img src="{{ product.featured_media | image_url: width: 600 }}" alt="{{ product.featured_media.alt | escape }}" loading="lazy">
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </a>
+
+              {% assign has_sizes = false %}
+              {% for option in product.options_with_values %}
+                {% assign option_name = option.name | downcase %}
+                {% if option_name == 'size' %}
+                  {% assign has_sizes = true %}
+                {% endif %}
+              {% endfor %}
+              {% if has_sizes %}
+                <div class="sizes-hover-overlay">
+                  {% for option in product.options_with_values %}
+                    {% assign option_name = option.name | downcase %}
+                    {% if option_name == 'size' %}
+                      {% for value in option.values limit: 5 %}
+                        <span class="size-option-item">{{ value }}</span>
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="premium-card-info">
+              <a href="{{ product.url }}" class="p-title">{{ product.title }}</a>
+              <p class="p-price">{{ product.price | money }}</p>
+
+              {% assign has_colors = false %}
+              {% for option in product.options_with_values %}
+                {% assign option_name = option.name | downcase %}
+                {% if option_name == 'color' or option_name == 'colour' %}
+                  {% assign has_colors = true %}
+                {% endif %}
+              {% endfor %}
+              {% if has_colors %}
+                <div class="p-swatches">
+                  {% assign color_count = 0 %}
+                  {% for option in product.options_with_values %}
+                    {% assign option_name = option.name | downcase %}
+                    {% if option_name == 'color' or option_name == 'colour' %}
+                      {% for value in option.values %}
+                        {% if color_count < 3 %}
+                          <span class="swatch-circle" style="background-color: {{ value | split: ' ' | last | handle }};" title="{{ value }}"></span>
+                          {% assign color_count = color_count | plus: 1 %}
+                        {% endif %}
+                      {% endfor %}
+                      {% if option.values.size > 3 %}
+                        <span class="swatch-more-count">+{{ option.values.size | minus: 3 }}</span>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <!-- PRODUCT CARD END -->
+
+        {% else %}
+          {% for i in (1..4) %}
+            <div class="premium-product-card">
+              <div class="premium-card-media">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}</div>
+              <div class="premium-card-info">
+                <p class="p-title">Sample Product Title</p>
+                <p class="p-price">Rs. 5,300</p>
+              </div>
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_view_all and collection.all_products_count > products_to_show %}
+    <div class="view-all-wrapper">
+      <a href="{{ collection.url }}" class="view-all-link">{{ section.settings.view_all_text }}</a>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (document.querySelector('.premium-swiper-{{ section.id }}')) {
+      new Swiper('.premium-swiper-{{ section.id }}', {
+        slidesPerView: 1.2,
+        spaceBetween: 15,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+          480: { slidesPerView: 2, spaceBetween: 15 },
+          768: { slidesPerView: 3, spaceBetween: 20 },
+          1024: { slidesPerView: {{ section.settings.columns_desktop }}, spaceBetween: 20 }
+        }
+      });
+    }
+  });
+</script>
+
+{% style %}
+.section-{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  background-color: {{ section.settings.bg_color }};
+}
+.premium-products-section {
+  width: 100%;
+  max-width: 1900px;
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+.premium-layout-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.premium-section-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.premium-section-header .section-title {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0;
+}
+.premium-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+@media (min-width: 768px) {
+  .premium-product-grid.columns-3 { grid-template-columns: repeat(3, 1fr); }
+  .premium-product-grid.columns-4 { grid-template-columns: repeat(4, 1fr); }
+  .premium-product-grid { gap: 20px; }
+}
+.premium-product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #fffff;
+}
+.premium-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background-color: #f7f7f7;
+}
+.premium-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.premium-product-card:hover .premium-card-media img {
+  transform: scale(1.02);
+}
+.badge-new-in {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000000;
+  padding: 4px 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 12px;
+  z-index: 3;
+}
+.wishlist-btn-trigger {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+}
+.wishlist-btn-trigger svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: #000000;
+  stroke-width: 1.5px;
+}
+.wishlist-btn-trigger:hover svg {
+  fill: #000000;
+}
+.sizes-hover-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: transparent;
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  transform: translateY(101%);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 4;
+}
+.premium-product-card:hover .sizes-hover-overlay {
+  transform: translateY(0);
+}
+.size-option-item {
+  font-size: 11px;
+  color: #000000;
+  text-transform: uppercase;
+}
+.premium-card-info {
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #f7f7f7;
+}
+.p-title {
+  font-size: 13px;
+  font-weight: 400;
+  color: #000000;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.p-price {
+  font-size: 13px;
+  margin: 0;
+}
+.p-swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.swatch-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.swatch-more-count {
+  font-size: 11px;
+  color: #777777;
+}
+.view-all-wrapper {
+  text-align: center;
+  margin-top: 40px;
+}
+.view-all-link {
+  font-size: 12px;
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.swiper-nav-btn {
+  color: #000000 !important;
+}
+.swiper-nav-btn::after {
+  font-size: 18px !important;
+}
+.placeholder-svg {
+  width: 100%;
+  height: 100%;
+  background: #f3f3f3;
+}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Premium Grid & Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title (Optional)"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "Layout Display Style",
+      "options": [
+        { "value": "grid", "label": "Static Grid" },
+        { "value": "slider", "label": "Smooth Slider / Carousel" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum Products to Show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Number of Columns on Desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Enable 'View All' Button"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Link Text",
+      "default": "View All"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Grid & Slider",
+      "settings": {
+        "layout_type": "grid"
+      }
+    }
+  ]
+}
+{% endschema %}

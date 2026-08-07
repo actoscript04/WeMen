@@ -1,0 +1,513 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+{% style %}
+  /* Section Padding Settings */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* Dynamic Heights */
+  .hero-swiper-{{ section.id }} {
+    width: 100%;
+    height: {{ section.settings.height_mobile }}vh;
+  }
+  @media screen and (min-width: 768px) {
+    .hero-swiper-{{ section.id }} {
+      height: {{ section.settings.height_desktop }}vh;
+    }
+  }
+
+  /* Font Sizes & Colors dynamically loaded from schema */
+  .hero-swiper-{{ section.id }} .hero-title {
+    color: {{ section.settings.color_heading }};
+    font-size: {{ section.settings.font_size_heading_mobile }}rem;
+  }
+  .hero-swiper-{{ section.id }} .hero-text {
+    color: {{ section.settings.color_text }};
+    font-size: {{ section.settings.font_size_text_mobile }}rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .hero-swiper-{{ section.id }} .hero-title {
+      font-size: {{ section.settings.font_size_heading_desktop }}rem;
+    }
+    .hero-swiper-{{ section.id }} .hero-text {
+      font-size: {{ section.settings.font_size_text_desktop }}rem;
+    }
+  }
+
+  /* Button Custom Styling */
+  .hero-swiper-{{ section.id }} .hero-btn {
+    background-color: {{ section.settings.color_btn_bg }};
+    color: {{ section.settings.color_btn_text }};
+  }
+  .hero-swiper-{{ section.id }} .hero-btn:hover {
+    opacity: 0.9;
+  }
+
+  /* Slider Base Layout */
+  .hero-swiper-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  .hero-swiper-section .swiper-slide {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Media & Overlay Wrapper */
+  .hero-media-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+ .hero-media-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    z-index: 2;
+  }
+  .hero-media-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-media-wrapper video,
+  .hero-media-wrapper iframe,
+  .hero-media-wrapper .shopify-video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #000;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Zoom Animation Effect for Images */
+  .hero-swiper-section .swiper-slide img {
+    transform: scale(1.15);
+    transition: transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .hero-swiper-section .swiper-slide-active img {
+    transform: scale(1);
+  }
+
+  /* Content Overlay Layout */
+  .hero-content-overlay {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 20px;
+    max-width: 800px;
+  }
+  .hero-title {
+    margin: 0 0 15px 0;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .hero-text {
+    margin: 0 0 25px 0;
+    line-height: 1.5;
+  }
+  .hero-btn {
+    display: inline-block;
+    padding: 14px 35px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  /* Arrows Baseline Styling (Default: Hidden) */
+  .hero-swiper-section .swiper-button-next,
+  .hero-swiper-section .swiper-button-prev {
+    color: {{ section.settings.color_heading }};
+    /* width: 30px;
+    height: 30px; */
+    /* background: rgba(0, 0, 0, 0.1); Thoda dark background taaki arrows clear dikhein */
+    border-radius: 50%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.3s ease;
+    z-index: 10;
+  }
+
+  /* Left arrow default position (thoda left me push kiya) */
+  .hero-swiper-section .swiper-button-prev {
+    transform: translateX(-10px);
+  }
+
+  /* Right arrow default position (thoda right me push kiya) */
+  .hero-swiper-section .swiper-button-next {
+    transform: translateX(10px);
+  }
+
+  /* Hero Section Hover karne par Arrows Show honge aur apni jagah par aayenge */
+  .hero-swiper-section:hover .swiper-button-next,
+  .hero-swiper-section:hover .swiper-button-prev {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  /* Arrow icons size */
+  .hero-swiper-section .swiper-button-next::after,
+  .hero-swiper-section .swiper-button-prev::after {
+    font-size: 1.2rem;
+  }
+
+  /* Mobile screen par hover nahi hota, isliye wahan hamesha visible rakhne ke liye safe side check */
+  @media screen and (max-width: 767px) {
+    .hero-swiper-section .swiper-button-next,
+    .hero-swiper-section .swiper-button-prev {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+      width: 35px; /* Mobile par thode chhote arrows */
+      height: 35px;
+    }
+    .hero-swiper-section .swiper-button-next::after,
+    .hero-swiper-section .swiper-button-prev::after {
+      font-size: 1rem;
+    }
+  }
+
+  /* Custom SVG Pagination Layout */
+  .hero-swiper-section .swiper-pagination {
+    bottom: 25px !important;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .hero-swiper-section .swiper-pagination-bullet {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 1; /* Pure SVG fill handles opacity */
+  }
+  .hero-swiper-section .swiper-pagination-bullet svg {
+    width: 100%;
+    height: 100%;
+    fill: #d3d3d3; /* Light Grey for inactive bullets */
+    transition: fill 0.4s ease, transform 0.4s ease;
+  }
+  .hero-swiper-section .swiper-pagination-bullet-active svg {
+    fill: #481118; /* Active bullet gets Heading Color / Dark color */
+    transform: scale(1.15);
+  }
+{% endstyle %}
+
+<div class="hero-swiper-section section-{{ section.id }}-padding">
+  <div class="swiper hero-swiper-{{ section.id }}">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide" {{ block.shopify_attributes }}>
+          
+          <div class="hero-media-wrapper">
+            {% if block.settings.video != blank %}
+              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false }}
+            {% elsif block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: '1800x' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            
+            <div class="hero-media-overlay"></div>
+          </div>
+
+          {% if block.settings.title != blank or block.settings.subheading != blank %}
+            <div class="hero-content-overlay">
+              {% if block.settings.title != blank %}
+                <h2 class="hero-title">{{ block.settings.title }}</h2>
+              {% endif %}
+              {% if block.settings.subheading != blank %}
+                <p class="hero-text">{{ block.settings.subheading }}</p>
+              {% endif %}
+              {% if block.settings.btn_label != blank and block.settings.btn_link != blank %}
+                <a href="{{ block.settings.btn_link }}" class="hero-btn">{{ block.settings.btn_label }}</a>
+              {% endif %}
+            </div>
+          {% endif %}
+
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.show_arrows %}
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    {% endif %}
+
+    {% if section.settings.show_pagination %}
+      <div class="swiper-pagination"></div>
+    {% endif %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Aapka provided Custom SVG Code inside the Pagination Renderer
+    const customPaginationIcon = `
+      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 216.139 216.14" xml:space="preserve">
+        <g><path d="M108.082,8.414C48.48,8.414,0,63.952,0,132.222c0,26.905,7.451,52.546,21.56,74.133c0.919,1.383,2.796,1.785,4.188,0.88 l30.396-19.854c1.398-0.91,1.791-2.789,0.883-4.185c-9.593-14.694-14.67-32.313-14.67-50.962c0-44.904,29.483-81.439,65.713-81.439 c36.229,0,65.713,36.535,65.713,81.439c0,18.648-5.078,36.268-14.671,50.962c-0.904,1.396-0.521,3.274,0.881,4.185l30.399,19.854 c0.514,0.337,1.087,0.491,1.648,0.491c0.993,0,1.951-0.484,2.542-1.371c14.103-21.587,21.557-47.228,21.557-74.133 C216.163,63.952,167.682,8.414,108.082,8.414z M191.166,200.49l-25.345-16.544c9.191-15.144,14.026-32.952,14.026-51.713 c0-48.253-32.196-87.491-71.766-87.491c-39.573,0-71.766,39.238-71.766,87.485c0,18.76,4.847,36.569,14.029,51.713l-25.349,16.55 c-12.413-20.049-18.956-43.586-18.956-68.263c0-64.933,45.776-117.755,102.029-117.755c56.249,0,102.028,52.828,102.028,117.755 C210.11,156.893,203.567,180.436,191.166,200.49z M178.304,62.602c3.96,5.399,4.918,11.659,2.128,13.964 c-2.79,2.317-8.275-0.187-12.235-5.592c-3.954-5.405-4.906-11.659-2.116-13.964C168.859,54.698,174.326,57.205,178.304,62.602z M198.874,114.134c0.319,6.839-2.306,12.531-5.84,12.709c-3.534,0.183-6.667-5.208-6.963-12.059 c-0.319-6.832,2.3-12.519,5.834-12.714C195.445,101.89,198.554,107.29,198.874,114.134z M50.097,57.01 c2.79,2.305,1.847,8.559-2.119,13.964c-3.963,5.405-9.454,7.909-12.232,5.592c-2.79-2.305-1.844-8.564,2.125-13.964 C41.836,57.205,47.307,54.698,50.097,57.01z M30.095,114.772c-0.311,6.851-3.428,12.241-6.969,12.07 c-3.535-0.178-6.156-5.876-5.834-12.715c0.313-6.844,3.425-12.238,6.966-12.063C27.792,102.254,30.408,107.939,30.095,114.772z M116.277,31.608c0,5.222-3.979,9.454-8.905,9.454c-4.915,0-8.901-4.232-8.901-9.454c0-5.231,3.975-9.455,8.901-9.455 C112.287,22.154,116.277,26.383,116.277,31.608z"></path></g>
+      </svg>
+    `;
+
+    const initializedSwiper = new Swiper('.hero-swiper-{{ section.id }}', {
+      loop: true,
+      effect: 'fade',
+      fadeEffect: {
+        crossFade: true
+      },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        renderBullet: function (index, className) {
+          return '<span class="' + className + '">' + customPaginationIcon + '</span>';
+        },
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hero Full Dynamic Swiper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Controls"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Slider Desktop Height",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Slider Mobile Height",
+      "default": 65
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show SVG Pagination",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Global Global Styling & Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading & Active Icon Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Subheading Text Color",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "color_btn_bg",
+      "label": "Button Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_btn_text",
+      "label": "Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Dark Overlay Opacity",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Responsive Typography Sizes (rem)"
+    },
+    {
+      "type": "range",
+      "id": "font_size_heading_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Heading Font Size (Desktop)",
+      "default": 3.5
+    },
+    {
+      "type": "range",
+      "id": "font_size_heading_mobile",
+      "min": 1,
+      "max": 4,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Heading Font Size (Mobile)",
+      "default": 2.2
+    },
+    {
+      "type": "range",
+      "id": "font_size_text_desktop",
+      "min": 1,
+      "max": 3,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Subheading Font Size (Desktop)",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "font_size_text_mobile",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Subheading Font Size (Mobile)",
+      "default": 1.0
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing (Padding)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Media Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Slide Background Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Slide Native Video Upload"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading Text",
+          "default": "Premium Experience"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading Description",
+          "default": "Fully responsive and animated boutique slider."
+        },
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Action Button Label",
+          "default": "Explore More"
+        },
+        {
+          "type": "url",
+          "id": "btn_link",
+          "label": "Action Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Full Dynamic Swiper",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

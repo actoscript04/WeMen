@@ -1,0 +1,388 @@
+{% comment %}
+  Custom Reels/Stories Slider Section with Native Video Picker
+{% endcomment %}
+
+<style>
+  .stories-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  .stories-container-{{ section.id }} {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .stories-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .stories-title {
+    font-size: {{ section.settings.title_font_size }}px;
+    color: {{ section.settings.title_color }};
+    margin: 0;
+  }
+
+  .stories-wrapper {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    position: relative;
+  }
+
+  .stories-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .story-card {
+    flex: 0 0 calc(25% - 15px);
+    aspect-ratio: 9 / 16;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+  }
+
+  .story-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .story-volume-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  .story-volume-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .story-product-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 12px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #333;
+    max-width: 85%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 10;
+    transition: transform 0.2s ease;
+  }
+
+  .story-product-badge:hover {
+    transform: translateX(-50%) scale(1.03);
+  }
+
+  .badge-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .badge-title {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .story-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11;
+  }
+
+  .story-nav-prev { left: 5px; }
+  .story-nav-next { right: 5px; }
+
+  @media (max-width: 1240px) {
+    .story-card { flex: 0 0 calc(33.33% - 14px); }
+  }
+
+  @media (max-width: 768px) {
+    .stories-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+    .story-card { flex: 0 0 calc(50% - 10px); }
+  }
+
+  @media (max-width: 480px) {
+    .story-card { flex: 0 0 85%; }
+    .stories-container-{{ section.id }} { padding: 0 15px; }
+    .story-nav-btn { display: none; }
+  }
+</style>
+
+<div class="stories-section-{{ section.id }}">
+  <div class="stories-container-{{ section.id }}">
+    
+    {% if section.settings.title != blank %}
+      <div class="stories-header">
+        <h2 class="stories-title">{{ section.settings.title }}</h2>
+      </div>
+    {% endif %}
+
+    <button class="story-nav-btn story-nav-prev" onclick="scrollStories(-1)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button class="story-nav-btn story-nav-next" onclick="scrollStories(1)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+
+    <div class="stories-wrapper" id="StoriesWrapper-{{ section.id }}">
+      {% for block in section.blocks %}
+        <div class="story-card" {{ block.shopify_attributes }}>
+          
+          <!-- Checkbox Toggle Logic for Picker -->
+          {% if block.settings.show_video and block.settings.video != blank %}
+            
+            {%- assign video_url = block.settings.video.sources | where: 'format', 'mp4' | first -%}
+            
+            <video 
+              class="story-media story-video" 
+              src="{{ video_url.url }}" 
+              loop 
+              muted 
+              playsinline
+              preload="metadata">
+            </video>
+            
+            <button class="story-volume-btn" aria-label="Toggle Mute">
+              <svg class="icon-muted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+            </button>
+
+          {% else %}
+            {% if block.settings.image != blank %}
+              <img class="story-media" src="{{ block.settings.image | img_url: '600x1067', crop: 'center' }}" alt="{{ block.settings.image.alt | escape }}" loading="lazy">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'story-media' }}
+            {% endif %}
+          {% endif %}
+
+          {% if block.settings.product != blank %}
+            {% assign prod = all_products[block.settings.product] %}
+            <a href="{{ prod.url }}" class="story-product-badge">
+              <img class="badge-img" src="{{ prod.featured_image | img_url: '60x60', crop: 'center' }}" alt="{{ prod.title }}">
+              <span class="badge-title">{{ prod.title }}</span>
+            </a>
+          {% endif %}
+
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function scrollStories(direction) {
+    const wrapper = document.getElementById('StoriesWrapper-{{ section.id }}');
+    const scrollAmount = wrapper.clientWidth * 0.75;
+    wrapper.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const videos = document.querySelectorAll('.stories-section-{{ section.id }} .story-video');
+
+    videos.forEach(video => {
+      const card = video.closest('.story-card');
+      const volumeBtn = card.querySelector('.story-volume-btn');
+
+      card.addEventListener('click', function(e) {
+        if(e.target.closest('.story-product-badge') || e.target.closest('.story-volume-btn')) return;
+
+        if (video.paused) {
+          // Rule: Dusra media active karne par pehla close ho jaye
+          videos.forEach(v => { if (v !== video) v.pause(); });
+          video.play();
+        } else {
+          video.pause();
+        }
+      });
+
+      if(volumeBtn) {
+        volumeBtn.addEventListener('click', function() {
+          video.muted = !video.muted;
+          if(video.muted) {
+            volumeBtn.innerHTML = `<svg class="icon-muted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>`;
+          } else {
+            volumeBtn.innerHTML = `<svg class="icon-unmuted" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom Reels Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Trending Reels"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fdf8f5"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 16,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Font Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max Container Width",
+      "default": 1400
+    },
+    {
+      "type": "header",
+      "content": "Paddings (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Paddings (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "label": "Padding Top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "label": "Padding Bottom",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story_item",
+      "name": "Story / Reel",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_video",
+          "label": "Enable Video Layout",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Select Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Select Video (Shopify Native Media)"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Tagged Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Reels Slider",
+      "blocks": [
+        { "type": "story_item" },
+        { "type": "story_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

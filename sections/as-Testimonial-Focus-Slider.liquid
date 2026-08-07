@@ -1,0 +1,465 @@
+{% comment %}
+  Custom Dynamic Testimonial Slider with Center Zoom & Blur Effect
+  Dependencies: Swiper.js
+{% endcomment %}
+
+<style>
+  .as-ts-bg-wrapper {
+    background-color: {{ section.settings.bg_color }};
+  }
+  .as-ts-section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+
+  .as-ts-header {
+    margin-bottom: 15px;
+  }
+
+  .as-ts-title {
+    font-size: 45px;
+    margin: 0 0 0px 0;
+    color: {{ section.settings.text_color }};
+    font-weight: 500;
+  }
+
+  .as-ts-subtitle {
+    font-size: 15px;
+    color: {{ section.settings.text_color }};
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  .as-ts-swiper-{{ section.id }} {
+    padding: 30px 10px 60px 10px !important;
+  }
+
+  /* Slide Basic Styling */
+  .as-ts-card {
+    transition: all 0.4s ease-in-out;
+    height: auto;
+  }
+
+  .as-ts-inner {
+    background: {{ section.settings.card_bg }};
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  /* CENTER ZOOM & CLEAR EFFECT */
+  .as-ts-swiper-{{ section.id }} .swiper-slide-active {
+    filter: blur(0) !important;
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+    z-index: 2;
+  }
+
+  .as-ts-stars {
+    color: #ffb800;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .as-ts-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: {{ section.settings.card_text_color }};
+    margin-bottom: 20px;
+  }
+
+  .as-ts-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .as-ts-author-image img {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .as-ts-author-name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: {{ section.settings.card_text_color }};
+  }
+
+  .as-ts-author-title {
+    font-size: 13px;
+    opacity: 0.7;
+    color: {{ section.settings.card_text_color }};
+  }
+
+  /* Navigation & Pagination Styling */
+  .as-ts-swiper-{{ section.id }} .swiper-pagination-bullet-active {
+    background: transparent !important;
+  }
+
+  .as-ts-next-{{ section.id }}, 
+  .as-ts-prev-{{ section.id }} {
+    background-color: #ffffff !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    color: #000000 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .as-ts-next-{{ section.id }}::after,
+  .as-ts-prev-{{ section.id }}::after {
+    content: none !important;
+  }
+
+  .as-ts-next-{{ section.id }} svg, 
+  .as-ts-prev-{{ section.id }} svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .as-ts-section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+    .as-ts-title {
+      font-size: 24px !important;
+      margin-bottom: 5px !important;
+    }
+    .as-ts-subtitle {
+      font-size: 14px !important;
+    }
+    .as-ts-swiper-{{ section.id }} {
+      padding: 10px 0 25px 0 !important;
+    }
+    .as-ts-inner {
+      padding: 20px 15px !important;
+      border-radius: 12px !important;
+    }
+    .as-ts-text {
+      font-size: 14px !important;
+      line-height: 1.4 !important;
+      margin-bottom: 15px !important;
+    }
+    .as-ts-stars {
+      font-size: 15px !important;
+      margin-bottom: 10px !important;
+    }
+    .as-ts-author-image img {
+      width: 45px !important;
+      height: 45px !important;
+    }
+    .as-ts-author-name {
+      font-size: 14px !important;
+    }
+    .as-ts-author-title {
+      font-size: 12px !important;
+    }
+    .as-ts-card {
+      filter: blur(0) !important;
+      transform: scale(0.95) !important;
+      opacity: 0.6 !important;
+    }
+    .as-ts-swiper-{{ section.id }} .swiper-slide-active {
+      transform: scale(1) !important;
+      opacity: 1 !important;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .as-ts-title {
+      font-size: 42px !important;
+    }
+    .as-ts-subtitle {
+      font-size: 17px !important;
+    }
+    .as-ts-swiper-{{ section.id }} {
+      padding: 40px 10px 80px 10px !important;
+    }
+    .as-ts-inner {
+      padding: 40px !important;
+    }
+    .as-ts-text {
+      font-size: 15px !important;
+    }
+    .as-ts-author-image img {
+      width: 65px !important;
+      height: 65px !important;
+    }
+  }
+</style>
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<div class="as-ts-bg-wrapper">
+  <div class="as-ts-wrapper as-ts-section-{{ section.id }}-padding">
+    <div class="page-width">
+      {% if section.settings.title != blank %}
+        <div class="as-ts-header text-center">
+          <h2 class="as-ts-title">{{ section.settings.title | escape }}</h2>
+          {% if section.settings.subtitle != blank %}
+            <p class="as-ts-subtitle">{{ section.settings.subtitle | escape }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="swiper as-ts-swiper-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide as-ts-card" {{ block.shopify_attributes }}>
+              <div class="as-ts-inner">
+                
+                <!-- Rating Stars -->
+                {% if block.settings.rating > 0 %}
+                  <div class="as-ts-stars">
+                    {% for i in (1..block.settings.rating) %}
+                      <span class="as-ts-star">★</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <!-- Testimonial Text -->
+                {% if block.settings.text != blank %}
+                  <div class="as-ts-text">
+                    <p>"{{ block.settings.text }}"</p>
+                  </div>
+                {% endif %}
+
+                <!-- Author Info -->
+                <div class="as-ts-author">
+                  {% if block.settings.image != blank %}
+                    <div class="as-ts-author-image">
+                      <img src="{{ block.settings.image | image_url: width: 120 }}" 
+                           alt="{{ block.settings.author_name | escape }}" 
+                           loading="lazy"
+                           width="60"
+                           height="60">
+                    </div>
+                  {% endif %}
+                  <div class="as-ts-author-details">
+                    <h4 class="as-ts-author-name">{{ block.settings.author_name | default: 'Customer Name' }}</h4>
+                    {% if block.settings.author_title != blank %}
+                      <span class="as-ts-author-title">{{ block.settings.author_title }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Navigation & Pagination -->
+        {% if section.settings.show_dots %}
+          <div class="swiper-pagination as-ts-pagination-{{ section.id }}"></div>
+        {% endif %}
+        
+        {% if section.settings.show_arrows %}
+          <button type="button" class="lx-prod-sec-nav-btn lx-prod-sec-prev" aria-label="Previous slide">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+          <button type="button" class="lx-prod-sec-nav-btn lx-prod-sec-next" aria-label="Next slide">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const testimonialSwiper = new Swiper('.as-ts-swiper-{{ section.id }}', {
+      slidesPerView: 1.2,
+      centeredSlides: true,
+      loop: true,
+      speed: 600,
+      autoplay: {
+        delay: {{ section.settings.autoplay_speed | times: 1000 }},
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+      pagination: {
+        el: '.as-ts-pagination-{{ section.id }}',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.as-ts-next-{{ section.id }}',
+        prevEl: '.as-ts-prev-{{ section.id }}',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+        },
+        1440: {
+          slidesPerView: 3.5,
+          spaceBetween: 40,
+        },
+        1600: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+        }
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Testimonial Focus Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "What Our Clients Say"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real feedback from happy customers"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed (Seconds)",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show Pagination Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading Color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testimonial Text",
+          "default": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Author Image"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "John Doe"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author Designation / Location",
+          "default": "Verified Buyer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Focus Slider",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}
