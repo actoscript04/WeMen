@@ -1,0 +1,222 @@
+{%- style -%}
+  .custom-section-{{ section.id }} {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  .custom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .custom-header {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .custom-heading {
+    font-size: 38px;
+    font-weight: 700;
+    color: #2c4a3e;
+    margin: 0 0 10px 0;
+  }
+
+  .custom-subheading {
+    font-size: 18px;
+    color: #555555;
+    margin: 0;
+  }
+
+  /* --- CENTERED EMBEDDED SVG LINE --- */
+  .custom-line-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .custom-line-svg {
+    max-width: 550px;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .custom-line-svg path {
+    stroke: #556b59;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* --- GRID STYLES --- */
+  .custom-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .custom-grid-item {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    text-align: center;
+  }
+
+  .image-card img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .item-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c4a3e;
+    margin-top: 15px;
+  }
+
+  /* --- RESPONSIVE STYLES (MOBILE) --- */
+  @media screen and (max-width: 768px) {
+    .custom-section-{{ section.id }} {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+    .custom-heading {
+      font-size: 28px;
+    }
+    .custom-subheading {
+      font-size: 16px;
+    }
+    .custom-line-container {
+      margin-bottom: 30px;
+    }
+    .custom-line-svg {
+      max-width: 320px;
+    }
+    .custom-grid {
+      gap: 20px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="custom-section-wrapper custom-section-{{ section.id }}">
+  <div class="custom-container">
+    
+    <!-- Section Header -->
+    <div class="custom-header">
+      {% if section.settings.heading != blank %}
+        <h2 class="custom-heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+      
+      {% if section.settings.subheading != blank %}
+        <p class="custom-subheading">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <!-- EMBEDDED LINE GRAPHIC (CENTERED) -->
+    <div class="custom-line-container">
+      <svg class="custom-line-svg" viewBox="0 0 664 225" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M362.791 76.4322L362.791 97.6963C362.791 101.163 359.984 103.97 356.518 103.97L307.838 103.97C304.371 103.97 301.565 106.777 301.565 110.243L301.565 124.926C301.565 128.392 298.758 131.199 295.292 131.199L96.5227 131.199C93.0564 131.199 90.2496 128.392 90.2496 124.926L90.2496 61.3723C90.2496 57.906 93.0564 55.0992 96.5227 55.0992L573.836 55.0992C577.302 55.0992 580.109 57.906 580.109 61.3723L580.109 127.714C580.109 131.18 577.302 133.987 573.836 133.987L369.718 133.987C366.252 133.987 363.445 131.18 363.445 127.714L363.445 76.4322C363.445 72.9659 360.638 70.1591 357.172 70.1591L357.172 70.1591C353.706 70.1591 350.899 72.9659 350.899 76.4322L350.899 116.744C350.899 120.21 348.092 123.017 344.626 123.017L106.708 123.017C103.242 123.017 100.435 120.21 100.435 116.744L100.435 69.1552C100.435 65.6889 103.242 62.8821 106.708 62.8821L563.651 62.8821C567.118 62.8821 569.924 65.6889 569.924 69.1552L569.924 126.201C569.924 129.667 567.118 132.474 563.651 132.474L379.904 132.474C376.437 132.474 373.631 129.667 373.631 126.201L373.631 76.4322C373.631 72.9659 370.824 70.1591 367.358 70.1591L367.358 70.1591C363.892 70.1591 361.085 72.9659 361.085 76.4322L361.085 108.935C361.085 112.401 358.278 115.208 354.812 115.208L116.893 115.208C113.427 115.208 110.62 112.401 110.62 108.935L110.62 76.9357C110.62 73.4694 113.427 70.6626 116.893 70.6626L553.467 70.6626C556.933 70.6626 559.74 73.4694 559.74 76.9357L559.74 117.427C559.74 120.893 556.933 123.7 553.467 123.7L383.767 123.7C380.3 123.7 377.494 120.893 377.494 117.427L377.494 97.3632C377.494 93.8969 380.3 91.0901 383.767 91.0901L543.282 91.0901C546.749 91.0901 549.555 93.8969 549.555 97.3632L549.555 110.525C549.555 113.991 546.749 116.798 543.282 116.798L432.792 116.798C429.325 116.798 426.519 119.605 426.519 123.071L426.519 177.451C426.519 180.917 429.325 113.991 432.792 113.991L492.072 113.991C495.539 113.991 498.345 116.798 498.345 120.264L498.345 177.451C498.345 180.917 501.152 113.991 497.685 113.991L453.67 113.991C450.204 113.991 447.397 116.798 447.397 120.264L447.397 169.834C447.397 173.3 450.204 176.107 453.67 176.107L471.198 176.107C474.664 176.107 477.471 178.914 477.471 182.38L477.471 192.662C477.471 196.129 474.664 198.935 471.198 198.935L234.201 198.935C230.735 198.935 227.928 196.129 227.928 192.662L227.928 177.451C227.928 173.3 230.735 170.493 234.201 170.493L416.934 170.493C420.4 170.493 423.206 167.686 423.206 164.22L423.206 110.648C423.206 107.182 420.4 104.375 416.934 104.375L362.791 104.375L362.791 76.4322Z" transform="translate(0 -40)"/>
+      </svg>
+    </div>
+
+    <!-- Image & Content Blocks -->
+    <div class="custom-grid">
+      {%- for block in section.blocks -%}
+        <div class="custom-grid-item" {{ block.shopify_attributes }}>
+          <div class="image-card">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+            
+            {%- if block.settings.title != blank -%}
+              <h3 class="item-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Dynamic Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Own Better."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Text",
+      "default": "The essentials you carry every day deserve more thought."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f4f6f0"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Grid Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Select Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Item Title",
+          "default": "Strawberry Matcha"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Dynamic Grid",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "Strawberry Matcha"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Matcha Latte"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Maple Matcha"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,217 @@
+{% comment %}
+  Luxury Features Section with Swiper Slider for Mobile & Grid for Desktop
+{% endcomment %}
+
+{{ 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' | stylesheet_tag }}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+<style>
+  .luxury-features-section {
+    padding: 20px 20px;
+    background-color: {{ section.settings.bg_color }};
+    text-align: center;
+    font-family: inherit;
+  }
+  .luxury-features-section .section-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: {{ section.settings.text_color }};
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+  }
+  .luxury-features-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .luxury-feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+  .luxury-feature-icon-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -5px;
+    background: #fff;
+    overflow: hidden;
+    padding: 15px;
+  }
+  .luxury-feature-icon-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .luxury-feature-icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .luxury-feature-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+  }
+
+  /* Desktop View: Grid Layout */
+  @media screen and (min-width: 769px) {
+    .luxury-features-container .swiper-wrapper {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 20px;
+      transform: none !important;
+    }
+    .luxury-features-container .swiper-pagination {
+      display: none !important;
+    }
+  }
+
+  /* Mobile View Styling */
+  @media screen and (max-width: 768px) {
+    .luxury-features-section {
+      padding: 40px 15px;
+    }
+    .luxury-features-section .section-title {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+    .luxury-features-container {
+      overflow: hidden;
+      padding-bottom: 30px;
+    }
+    .luxury-feature-icon-wrapper {
+      width: 80px;
+      height: 80px;
+    }
+  }
+</style>
+
+<div class="luxury-features-section">
+  {% if section.settings.title != blank %}
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  <div class="luxury-features-container swiper myLuxurySwiper">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide luxury-feature-item" {{ block.shopify_attributes }}>
+          <div class="luxury-feature-icon-wrapper">
+            {% if block.settings.icon_svg != blank %}
+              {{ block.settings.icon_svg }}
+            {% elsif block.settings.icon_image != blank %}
+              <img src="{{ block.settings.icon_image | img_url: '200x200' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          {% if block.settings.title != blank %}
+            <p class="luxury-feature-title">{{ block.settings.title }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <!-- Pagination dots for mobile -->
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let luxurySwiper;
+    
+    function initLuxurySlider() {
+      if (window.innerWidth <= 768) {
+        if (!luxurySwiper) {
+          luxurySwiper = new Swiper('.myLuxurySwiper', {
+            slidesPerView: 2,
+            spaceBetween: 15,
+            pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+            },
+          });
+        }
+      } else {
+        if (luxurySwiper) {
+          luxurySwiper.destroy(true, true);
+          luxurySwiper = undefined;
+        }
+      }
+    }
+
+    initLuxurySlider();
+    window.addEventListener('resize', initLuxurySlider);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Features Grid",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Luxury That Doesn’t Come At The Expense Of Others"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image (Optional)"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code (Alternative)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title",
+          "default": "Feature Name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Features Grid",
+      "blocks": [
+        { "type": "feature_item", "settings": { "title": "Vegan Materials" } },
+        { "type": "feature_item", "settings": { "title": "Cruelty-Free" } },
+        { "type": "feature_item", "settings": { "title": "Built To Last" } },
+        { "type": "feature_item", "settings": { "title": "Thoughtfully Designed" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
