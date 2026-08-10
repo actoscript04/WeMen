@@ -88,4 +88,80 @@
   .product-media-container--zoomable.product-media-container--image {
     cursor: zoom-in;
   }
+
+  /* =============================================
+     Split Sticky Gallery (Bluorng-style layout)
+     Left image = sticky, Right images = scroll
+     ============================================= */
+
+  /* Hide the old grid on desktop when split-sticky is used */
+  @media screen and (min-width: 750px) {
+    media-gallery:is(.media-gallery--grid) .media-gallery__grid {
+      display: none;
+    }
+  }
+
+  /* Split Sticky Container */
+  .media-gallery__split-sticky {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .media-gallery__split-sticky {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--image-gap, 4px);
+      align-items: start;
+    }
+
+    /* Override parent sticky-content so child sticky works */
+    media-gallery.sticky-content:has(.media-gallery__split-sticky) {
+      position: relative;
+    }
+  }
+
+  /* Left Column - Sticky */
+  .media-gallery__split-sticky-left {
+    position: sticky;
+    top: calc(var(--header-height, 0px) + 10px);
+    align-self: start;
+  }
+
+  .media-gallery__split-sticky-left .product-media-container {
+    width: 100%;
+    border-radius: var(--media-radius, 0px);
+    overflow: hidden;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Right Column - Scrollable images stacked vertically */
+  .media-gallery__split-sticky-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--image-gap, 20px);
+  }
+
+  .media-gallery__split-sticky-right .product-media-container {
+    width: 100%;
+    border-radius: var(--media-radius, 0px);
+    overflow: hidden;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Ensure images fill their container properly */
+  .media-gallery__split-sticky .product-media-container img,
+  .media-gallery__split-sticky .product-media-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Mobile: hide split-sticky, show carousel/slideshow instead */
+  @media screen and (max-width: 749px) {
+    .media-gallery__split-sticky {
+      display: none !important;
+    }
+  }
 {% endstylesheet %}

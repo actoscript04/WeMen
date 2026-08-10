@@ -917,43 +917,6 @@
         "bg_color": "#ffffff",
         "text_color": "#1a1a1a"
       }
-    },
-    "custom_banner_bar_rLDbej": {
-      "type": "custom-banner-bar",
-      "blocks": {
-        "item_cMpcfw": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Sap-Green-Vegan-Leather-Zip-Wallet-2.avif",
-            "title": "Strawberry Matcha"
-          }
-        },
-        "item_KJ3fyi": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Tan-UrbanGentleman-Leather-Mens-Wallet-Vw.avif",
-            "title": "Matcha Latte"
-          }
-        },
-        "item_7BM38L": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Black-Green-Even-Wrap-Card-Wallet-2.avif",
-            "title": "Maple Matcha"
-          }
-        }
-      },
-      "block_order": [
-        "item_cMpcfw",
-        "item_KJ3fyi",
-        "item_7BM38L"
-      ],
-      "name": "Custom Dynamic Grid",
-      "settings": {
-        "heading": "Own Better.",
-        "subheading": "The essentials you carry every day deserve more thought.",
-        "bg_color": "#f4f6f0"
-      }
     }
   },
   "order": [
@@ -972,7 +935,6 @@
     "custom_luxury_products_DFekXb",
     "as_split_grid_hero_xfhczn",
     "as_testimonial_focus_slider_zepy9V",
-    "luxury_values_qgEEAJ",
-    "custom_banner_bar_rLDbej"
+    "luxury_values_qgEEAJ"
   ]
 }
