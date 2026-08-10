@@ -120,19 +120,55 @@
     }
   }
 
-  /* Left Column - Sticky */
-  .media-gallery__split-sticky-left {
-    position: sticky;
-    top: calc(var(--header-height, 0px) + 10px);
-    align-self: start;
-  }
+  /* Left Column - Sticky FULL SCREEN (no top/bottom spacing) */
+  @media screen and (min-width: 750px) {
+    .media-gallery__split-sticky-left {
+      position: sticky;
+      /* Stick to the very top of the viewport - no top gap */
+      top: 0;
+      /* Fill the entire viewport height - no bottom gap */
+      height: 100vh;
+      align-self: start;
+    }
 
-  .media-gallery__split-sticky-left .product-media-container {
-    width: 100%;
-    border-radius: var(--media-radius, 0px);
-    overflow: hidden;
-    margin: 0 !important;
-    background: transparent !important;
+    .media-gallery__split-sticky-left .product-media-container {
+      width: 100%;
+      /* Container fills the full-screen sticky column */
+      height: 100%;
+      max-height: none;
+      aspect-ratio: auto;
+      border-radius: var(--media-radius, 0px);
+      overflow: hidden;
+      margin: 0 !important;
+      background: transparent !important;
+    }
+
+    /* Inner wrappers must also fill the full screen height */
+    .media-gallery__split-sticky-left .product-media,
+    .media-gallery__split-sticky-left .product-media-constraint-wrapper,
+    .media-gallery__split-sticky-left .product-media__drag-zoom-wrapper {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    /* Image covers the full screen area edge-to-edge */
+    /* (object-position nahi diya - image ka focal point setting kaam karti rahegi) */
+    .media-gallery__split-sticky-left .product-media-container :is(img, video) {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      object-fit: cover;
+    }
+
+    /* Videos / 3D models bhi full height fill karein */
+    .media-gallery__split-sticky-left .product-media :is(deferred-media, product-model) {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
   }
 
   /* Right Column - Scrollable images stacked vertically */
