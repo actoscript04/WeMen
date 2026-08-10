@@ -1,205 +1,262 @@
 {% comment %}
-  Custom Dynamic Testimonial Slider with Center Zoom & Blur Effect
+  Testimonial Focus Slider – Clean Minimal Design
+  Matches reference: Large quote, author bottom-left, arrows bottom-right
   Dependencies: Swiper.js
 {% endcomment %}
 
 <style>
+  /* ─── Section Wrapper ─── */
   .as-ts-bg-wrapper {
     background-color: {{ section.settings.bg_color }};
   }
+
   .as-ts-section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
     overflow: hidden;
-    max-width: 1800px;
+    max-width: 1440px;
     margin: 0 auto;
   }
 
-  .as-ts-header {
-    margin-bottom: 15px;
+  /* ─── Top Label ─── */
+  .as-ts-top-label-{{ section.id }} {
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: {{ section.settings.label_color }};
+    margin: 0 0 0 0;
+    padding: 0 0 30px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    text-transform: none;
+    line-height: 1;
   }
 
-  .as-ts-title {
-    font-size: 45px;
-    margin: 0 0 0px 0;
-    color: {{ section.settings.text_color }};
-    font-weight: 500;
-  }
-
-  .as-ts-subtitle {
-    font-size: 15px;
-    color: {{ section.settings.text_color }};
-    opacity: 0.8;
-    margin: 0;
-  }
-
+  /* ─── Swiper Container ─── */
   .as-ts-swiper-{{ section.id }} {
-    padding: 30px 10px 60px 10px !important;
+    padding: 0 !important;
+    overflow: hidden;
   }
 
-  /* Slide Basic Styling */
+  .as-ts-swiper-{{ section.id }} .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  /* ─── Slide ─── */
   .as-ts-card {
-    transition: all 0.4s ease-in-out;
     height: auto;
   }
 
-  .as-ts-inner {
-    background: {{ section.settings.card_bg }};
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    height: 100%;
+  .as-ts-inner-{{ section.id }} {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    min-height: 320px;
+    padding: 50px 0 0 0;
   }
 
-  /* CENTER ZOOM & CLEAR EFFECT */
-  .as-ts-swiper-{{ section.id }} .swiper-slide-active {
-    filter: blur(0) !important;
-    opacity: 1 !important;
-    transform: scale(1.1) !important;
-    z-index: 2;
+  /* ─── Quote Text ─── */
+  .as-ts-quote-{{ section.id }} {
+    font-size: clamp(22px, 2.6vw, 36px);
+    font-weight: 500;
+    line-height: 1.45;
+    color: {{ section.settings.text_color }};
+    text-align: right;
+    margin: 0;
+    max-width: 780px;
+    margin-left: auto;
+    font-style: normal;
+    letter-spacing: -0.01em;
   }
 
-  .as-ts-stars {
-    color: #ffb800;
-    font-size: 18px;
-    margin-bottom: 15px;
+  /* ─── Star Rating ─── */
+  .as-ts-stars-{{ section.id }} {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 16px;
+    max-width: 780px;
+    margin-left: auto;
   }
 
-  .as-ts-text {
-    font-size: 15px;
-    line-height: 1.6;
-    color: {{ section.settings.card_text_color }};
-    margin-bottom: 20px;
+  .as-ts-stars-{{ section.id }} svg {
+    width: 20px;
+    height: 20px;
+    fill: {{ section.settings.star_color }};
   }
 
-  .as-ts-author {
+  /* ─── Bottom Row: Author + Navigation ─── */
+  .as-ts-bottom-row-{{ section.id }} {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding-top: 0;
+  }
+
+  /* ─── Author Info ─── */
+  .as-ts-author-{{ section.id }} {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 14px;
   }
 
-  .as-ts-author-image img {
+  .as-ts-author-{{ section.id }} .as-ts-author-img {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
   }
 
-  .as-ts-author-name {
+  .as-ts-author-{{ section.id }} .as-ts-author-name {
     margin: 0;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
-    color: {{ section.settings.card_text_color }};
+    color: {{ section.settings.text_color }};
+    line-height: 1.3;
   }
 
-  .as-ts-author-title {
-    font-size: 13px;
-    opacity: 0.7;
-    color: {{ section.settings.card_text_color }};
+  .as-ts-author-{{ section.id }} .as-ts-author-role {
+    font-size: 15px;
+    font-weight: 400;
+    color: {{ section.settings.text_color }};
+    opacity: 0.55;
+    margin: 2px 0 0 0;
+    line-height: 1.3;
   }
 
-  /* Navigation & Pagination Styling */
-  .as-ts-swiper-{{ section.id }} .swiper-pagination-bullet-active {
-    background: transparent !important;
+  /* ─── Navigation Arrows ─── */
+  .as-ts-nav-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .as-ts-next-{{ section.id }}, 
-  .as-ts-prev-{{ section.id }} {
-    background-color: #ffffff !important;
-    width: 48px !important;
-    height: 48px !important;
+  .as-ts-nav-btn-{{ section.id }} {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-    color: #000000 !important;
+    border: none;
+    background-color: {{ section.settings.arrow_bg }};
+    color: {{ section.settings.arrow_color }};
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+    padding: 0;
+    flex-shrink: 0;
   }
 
-  .as-ts-next-{{ section.id }}::after,
-  .as-ts-prev-{{ section.id }}::after {
-    content: none !important;
+  .as-ts-nav-btn-{{ section.id }}:hover {
+    background-color: {{ section.settings.arrow_hover_bg }};
+    transform: scale(1.06);
   }
 
-  .as-ts-next-{{ section.id }} svg, 
-  .as-ts-prev-{{ section.id }} svg {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2.5;
+  .as-ts-nav-btn-{{ section.id }} svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
   }
 
-  /* Responsive Adjustments */
+  /* ─── Swiper Overrides (hide default nav/pagination) ─── */
+  .as-ts-swiper-{{ section.id }} .swiper-pagination {
+    display: none !important;
+  }
+
+  /* ─── Slide Transition ─── */
+  .as-ts-inner-{{ section.id }} {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .as-ts-swiper-{{ section.id }} .swiper-slide-active .as-ts-inner-{{ section.id }} {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Responsive ─── */
   @media (max-width: 768px) {
     .as-ts-section-{{ section.id }}-padding {
       padding-top: calc({{ section.settings.padding_top }}px * 0.6);
       padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
     }
-    .as-ts-title {
-      font-size: 24px !important;
-      margin-bottom: 5px !important;
+
+    .as-ts-top-label-{{ section.id }} {
+      font-size: 12px;
+      padding-bottom: 20px;
     }
-    .as-ts-subtitle {
-      font-size: 14px !important;
+
+    .as-ts-inner-{{ section.id }} {
+      padding: 30px 0 0 0;
+      min-height: 240px;
     }
-    .as-ts-swiper-{{ section.id }} {
-      padding: 10px 0 25px 0 !important;
+
+    .as-ts-quote-{{ section.id }} {
+      font-size: 18px;
+      text-align: left;
+      max-width: 100%;
     }
-    .as-ts-inner {
-      padding: 20px 15px !important;
-      border-radius: 12px !important;
+
+    .as-ts-stars-{{ section.id }} {
+      justify-content: flex-start;
+      max-width: 100%;
+      margin-top: 12px;
     }
-    .as-ts-text {
-      font-size: 14px !important;
-      line-height: 1.4 !important;
-      margin-bottom: 15px !important;
+
+    .as-ts-stars-{{ section.id }} svg {
+      width: 17px;
+      height: 17px;
     }
-    .as-ts-stars {
-      font-size: 15px !important;
-      margin-bottom: 10px !important;
+
+    .as-ts-bottom-row-{{ section.id }} {
+      margin-top: 30px;
+      flex-direction: row;
+      align-items: center;
     }
-    .as-ts-author-image img {
-      width: 45px !important;
-      height: 45px !important;
+
+    .as-ts-author-{{ section.id }} .as-ts-author-img {
+      width: 40px;
+      height: 40px;
     }
-    .as-ts-author-name {
-      font-size: 14px !important;
+
+    .as-ts-author-{{ section.id }} .as-ts-author-name {
+      font-size: 13px;
     }
-    .as-ts-author-title {
-      font-size: 12px !important;
+
+    .as-ts-author-{{ section.id }} .as-ts-author-role {
+      font-size: 11px;
     }
-    .as-ts-card {
-      filter: blur(0) !important;
-      transform: scale(0.95) !important;
-      opacity: 0.6 !important;
+
+    .as-ts-nav-btn-{{ section.id }} {
+      width: 38px;
+      height: 38px;
     }
-    .as-ts-swiper-{{ section.id }} .swiper-slide-active {
-      transform: scale(1) !important;
-      opacity: 1 !important;
+
+    .as-ts-nav-btn-{{ section.id }} svg {
+      width: 14px;
+      height: 14px;
     }
   }
 
   @media (min-width: 1440px) {
-    .as-ts-title {
-      font-size: 42px !important;
+    .as-ts-inner-{{ section.id }} {
+      padding: 60px 0 0 0;
+      min-height: 360px;
     }
-    .as-ts-subtitle {
-      font-size: 17px !important;
+
+    .as-ts-quote-{{ section.id }} {
+      font-size: 30px;
     }
-    .as-ts-swiper-{{ section.id }} {
-      padding: 40px 10px 80px 10px !important;
+
+    .as-ts-bottom-row-{{ section.id }} {
+      margin-top: 60px;
     }
-    .as-ts-inner {
-      padding: 40px !important;
-    }
-    .as-ts-text {
-      font-size: 15px !important;
-    }
-    .as-ts-author-image img {
-      width: 65px !important;
-      height: 65px !important;
+
+    .as-ts-nav-btn-{{ section.id }} {
+      width: 48px;
+      height: 48px;
     }
   }
 </style>
@@ -210,75 +267,89 @@
 <div class="as-ts-bg-wrapper">
   <div class="as-ts-wrapper as-ts-section-{{ section.id }}-padding">
     <div class="page-width">
-      {% if section.settings.title != blank %}
-        <div class="as-ts-header text-center">
-          <h2 class="as-ts-title">{{ section.settings.title | escape }}</h2>
-          {% if section.settings.subtitle != blank %}
-            <p class="as-ts-subtitle">{{ section.settings.subtitle | escape }}</p>
-          {% endif %}
-        </div>
+
+      <!-- Top Label -->
+      {% if section.settings.top_label != blank %}
+        <p class="as-ts-top-label-{{ section.id }}">{{ section.settings.top_label | escape }}</p>
       {% endif %}
 
+      <!-- Swiper -->
       <div class="swiper as-ts-swiper-{{ section.id }}">
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
             <div class="swiper-slide as-ts-card" {{ block.shopify_attributes }}>
-              <div class="as-ts-inner">
-                
-                <!-- Rating Stars -->
+              <div class="as-ts-inner-{{ section.id }}">
+
+                <!-- Quote -->
+                {% if block.settings.text != blank %}
+                  <p class="as-ts-quote-{{ section.id }}">
+                    &laquo;{{ block.settings.text }}&raquo;
+                  </p>
+                {% endif %}
+
+                <!-- Stars -->
                 {% if block.settings.rating > 0 %}
-                  <div class="as-ts-stars">
+                  <div class="as-ts-stars-{{ section.id }}">
                     {% for i in (1..block.settings.rating) %}
-                      <span class="as-ts-star">★</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     {% endfor %}
                   </div>
                 {% endif %}
 
-                <!-- Testimonial Text -->
-                {% if block.settings.text != blank %}
-                  <div class="as-ts-text">
-                    <p>"{{ block.settings.text }}"</p>
-                  </div>
-                {% endif %}
+                <!-- Bottom Row -->
+                <div class="as-ts-bottom-row-{{ section.id }}">
 
-                <!-- Author Info -->
-                <div class="as-ts-author">
-                  {% if block.settings.image != blank %}
-                    <div class="as-ts-author-image">
-                      <img src="{{ block.settings.image | image_url: width: 120 }}" 
-                           alt="{{ block.settings.author_name | escape }}" 
-                           loading="lazy"
-                           width="60"
-                           height="60">
+                  <!-- Author -->
+                  <div class="as-ts-author-{{ section.id }}">
+                    {% if block.settings.image != blank %}
+                      <img
+                        class="as-ts-author-img"
+                        src="{{ block.settings.image | image_url: width: 120 }}"
+                        alt="{{ block.settings.author_name | escape }}"
+                        loading="lazy"
+                        width="48"
+                        height="48"
+                      >
+                    {% endif %}
+                    <div>
+                      <p class="as-ts-author-name">{{ block.settings.author_name | default: 'Customer Name' }}</p>
+                      {% if block.settings.author_title != blank %}
+                        <p class="as-ts-author-role">{{ block.settings.author_title }}</p>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <!-- Navigation Arrows -->
+                  {% if section.settings.show_arrows %}
+                    <div class="as-ts-nav-{{ section.id }}">
+                      <button
+                        type="button"
+                        class="as-ts-nav-btn-{{ section.id }} as-ts-prev-{{ section.id }}"
+                        aria-label="Previous testimonial"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        class="as-ts-nav-btn-{{ section.id }} as-ts-next-{{ section.id }}"
+                        aria-label="Next testimonial"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
                     </div>
                   {% endif %}
-                  <div class="as-ts-author-details">
-                    <h4 class="as-ts-author-name">{{ block.settings.author_name | default: 'Customer Name' }}</h4>
-                    {% if block.settings.author_title != blank %}
-                      <span class="as-ts-author-title">{{ block.settings.author_title }}</span>
-                    {% endif %}
-                  </div>
-                </div>
 
+                </div>
               </div>
             </div>
           {% endfor %}
         </div>
-
-        <!-- Navigation & Pagination -->
-        {% if section.settings.show_dots %}
-          <div class="swiper-pagination as-ts-pagination-{{ section.id }}"></div>
-        {% endif %}
-        
-        {% if section.settings.show_arrows %}
-          <button type="button" class="lx-prod-sec-nav-btn lx-prod-sec-prev" aria-label="Previous slide">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-      </button>
-          <button type="button" class="lx-prod-sec-nav-btn lx-prod-sec-next" aria-label="Next slide">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </button>
-        {% endif %}
       </div>
+
     </div>
   </div>
 </div>
@@ -288,42 +359,25 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const testimonialSwiper = new Swiper('.as-ts-swiper-{{ section.id }}', {
-      slidesPerView: 1.2,
-      centeredSlides: true,
+    new Swiper('.as-ts-swiper-{{ section.id }}', {
+      slidesPerView: 1,
+      spaceBetween: 0,
+      centeredSlides: false,
       loop: true,
       speed: 600,
+      effect: 'fade',
+      fadeEffect: {
+        crossFade: true
+      },
       autoplay: {
         delay: {{ section.settings.autoplay_speed | times: 1000 }},
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       },
-      pagination: {
-        el: '.as-ts-pagination-{{ section.id }}',
-        clickable: true,
-      },
       navigation: {
         nextEl: '.as-ts-next-{{ section.id }}',
         prevEl: '.as-ts-prev-{{ section.id }}',
       },
-      breakpoints: {
-        640: {
-          slidesPerView: 2,
-          spaceBetween: 20,
-        },
-        1024: {
-          slidesPerView: 3,
-          spaceBetween: 30,
-        },
-        1440: {
-          slidesPerView: 3.5,
-          spaceBetween: 40,
-        },
-        1600: {
-          slidesPerView: 3,
-          spaceBetween: 50,
-        }
-      }
     });
   });
 </script>
@@ -334,14 +388,20 @@
   "settings": [
     {
       "type": "text",
+      "id": "top_label",
+      "label": "Top Label Text",
+      "default": "Customer Feedback"
+    },
+    {
+      "type": "text",
       "id": "title",
-      "label": "Heading",
+      "label": "Heading (Legacy – not displayed)",
       "default": "What Our Clients Say"
     },
     {
       "type": "text",
       "id": "subtitle",
-      "label": "Subtitle",
+      "label": "Subtitle (Legacy – not displayed)",
       "default": "Real feedback from happy customers"
     },
     {
@@ -351,13 +411,13 @@
       "min": 2,
       "max": 8,
       "step": 1,
-      "default": 3
+      "default": 5
     },
     {
       "type": "checkbox",
       "id": "show_dots",
       "label": "Show Pagination Dots",
-      "default": true
+      "default": false
     },
     {
       "type": "checkbox",
@@ -369,25 +429,55 @@
       "type": "color",
       "id": "bg_color",
       "label": "Section Background",
-      "default": "#f9f9f9"
+      "default": "#f4f4f4"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Heading Color",
-      "default": "#111111"
+      "label": "Text Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Top Label Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Rating Color",
+      "default": "#FFB800"
     },
     {
       "type": "color",
       "id": "card_bg",
-      "label": "Card Background",
+      "label": "Card Background (Legacy)",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "card_text_color",
-      "label": "Card Text Color",
+      "label": "Card Text Color (Legacy)",
       "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg",
+      "label": "Arrow Background",
+      "default": "#d6d6d6"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow Icon Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_bg",
+      "label": "Arrow Hover Background",
+      "default": "#b0b0b0"
     },
     {
       "type": "range",
@@ -421,14 +511,14 @@
           "min": 1,
           "max": 5,
           "step": 1,
-          "label": "Star Rating",
+          "label": "Star Rating (not displayed)",
           "default": 5
         },
         {
           "type": "textarea",
           "id": "text",
           "label": "Testimonial Text",
-          "default": "The quality of the product was beyond my expectations. Delivery was fast and customer service helped me with my size questions quickly!"
+          "default": "Working with the Acreage Ag team gave us a competitive edge in bringing our crops to market. Their technical expertise, machinery, and customer service are outstanding. We consider them a key partner for all our harvesting needs"
         },
         {
           "type": "image_picker",
@@ -439,13 +529,13 @@
           "type": "text",
           "id": "author_name",
           "label": "Author Name",
-          "default": "John Doe"
+          "default": "Maranda Walsh"
         },
         {
           "type": "text",
           "id": "author_title",
           "label": "Author Designation / Location",
-          "default": "Verified Buyer"
+          "default": "Operations Manager, GreenAcres Farms"
         }
       ]
     }
