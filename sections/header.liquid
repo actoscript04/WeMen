@@ -1172,8 +1172,17 @@
   }
 
   /* CUSTOM STICKY HEADER TEXT & ICON COLOR */
-  .header[data-sticky-state='active'] {
+  .header:not([transparent]) .header__row--bottom {
+    background-color: #fff !important;
+  }
+  
+  .header:not([transparent]) {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  .header[data-sticky-state='active'],
+  .header[sticky='scroll-up'][data-scroll-direction='up'] {
     --color-foreground: #481118 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
   .header[data-sticky-state='active'] .header__heading-link,
