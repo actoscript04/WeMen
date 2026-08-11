@@ -1,0 +1,75 @@
+.help-banner-section {
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.help-banner-section .page-width {
+  max-width: 1900px !important;
+  margin: 0 auto !important;
+  padding: 0 40px !important;
+}
+
+.help-banner__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Text ko bottom alignment dene ke liye jaise image me hai */
+  gap: 2rem;
+}
+
+.help-banner__title-wrapper {
+  flex: 0 0 55%;
+}
+
+.help-banner__title {
+  font-size: clamp(3.5rem, 7vw, 8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: #121212;
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.help-banner__desc-wrapper {
+  flex: 0 0 35%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.help-banner__description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #050505;
+  max-width: 500px; /* Reference image ke mutabiq width control karne ke liye */
+  margin: 0;
+}
+
+.help-banner__description p {
+  margin: 0;
+}
+
+/* Responsive for Mobile/Tablets */
+@media screen and (max-width: 989px) {
+  .help-banner-section .page-width {
+    padding: 0 2rem !important;
+  }
+  
+  .help-banner__wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+  .help-banner__title-wrapper,
+  .help-banner__desc-wrapper {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .help-banner__desc-wrapper {
+    justify-content: flex-start;
+  }
+
+  .help-banner__description {
+    max-width: 100%;
+  }
+}

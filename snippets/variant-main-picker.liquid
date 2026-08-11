@@ -93,11 +93,36 @@
             ref="fieldsets[]"
             {{ option_id_attribute }}
           >
-            <legend>
-              {{ product_option.name | escape -}}
-              {%- if variant_style == 'swatch' -%}
-                <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
-              {%- endif %}
+            <legend style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+              <span>
+                {{ product_option.name | escape -}}
+                {%- if variant_style == 'swatch' -%}
+                  <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
+                {%- endif %}
+              </span>
+
+              {% assign p_type = product_resource.type | downcase %}
+              {% if p_type contains 'ring' or p_type contains 'bracelet' or p_type contains 'breslet' %}
+                {% assign opt_name = product_option.name | downcase %}
+                {% if opt_name contains 'size' %}
+                  <a href="#" class="size-guide-link" style="display: inline-flex; align-items: center; gap: 4px; font-size: 13px; text-decoration: underline; color: #000; text-underline-offset: 2px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="7" width="20" height="10" rx="2" ry="2"></rect>
+                      <path d="M2 12h20"></path>
+                      <path d="M6 7v2"></path>
+                      <path d="M10 7v2"></path>
+                      <path d="M14 7v2"></path>
+                      <path d="M18 7v2"></path>
+                      <path d="M4 7v3"></path>
+                      <path d="M8 7v3"></path>
+                      <path d="M12 7v3"></path>
+                      <path d="M16 7v3"></path>
+                      <path d="M20 7v3"></path>
+                    </svg>
+                    Size Guide
+                  </a>
+                {% endif %}
+              {% endif %}
             </legend>
             {%- for product_option_value in product_option.values -%}
               {% if product_option_value.size > longest_value and option_id_attribute %}
@@ -190,7 +215,31 @@
           %}
 
           <div class="variant-option variant-option--dropdowns">
-            <label for="Option-{{ block.id }}-{{ forloop.index0 }}">{{ product_option.name | escape }}</label>
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 8px;">
+              <label for="Option-{{ block.id }}-{{ forloop.index0 }}" style="margin-bottom: 0;">{{ product_option.name | escape }}</label>
+              {% assign p_type = product_resource.type | downcase %}
+              {% if p_type contains 'ring' or p_type contains 'bracelet' or p_type contains 'breslet' %}
+                {% assign opt_name = product_option.name | downcase %}
+                {% if opt_name contains 'size' %}
+                  <a href="#" class="size-guide-link" style="display: inline-flex; align-items: center; gap: 4px; font-size: 13px; text-decoration: underline; color: #000; text-underline-offset: 2px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="7" width="20" height="10" rx="2" ry="2"></rect>
+                      <path d="M2 12h20"></path>
+                      <path d="M6 7v2"></path>
+                      <path d="M10 7v2"></path>
+                      <path d="M14 7v2"></path>
+                      <path d="M18 7v2"></path>
+                      <path d="M4 7v3"></path>
+                      <path d="M8 7v3"></path>
+                      <path d="M12 7v3"></path>
+                      <path d="M16 7v3"></path>
+                      <path d="M20 7v3"></path>
+                    </svg>
+                    Size Guide
+                  </a>
+                {% endif %}
+              {% endif %}
+            </div>
             <div
               class="variant-option__select-wrapper"
               style="

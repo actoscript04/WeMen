@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "product-information",
@@ -25,12 +26,12 @@
             "thumbnail_position": "left",
             "thumbnail_width": 57,
             "thumbnail_radius": 0,
-            "aspect_ratio": "adapt",
-            "constrain_to_viewport": false,
+            "aspect_ratio": "1/1.25",
+            "constrain_to_viewport": true,
             "media_fit": "cover",
             "media_radius": 0,
             "extend_media": true,
-            "zoom": true,
+            "zoom": false,
             "video_loop": false,
             "hide_variants": true,
             "padding-block-start": 0,
@@ -72,21 +73,21 @@
               "name": "t:names.title",
               "settings": {
                 "text": "<h1>{{ closest.product.title }}</h1>",
-                "width": "100%",
+                "width": "fit-content",
                 "max_width": "normal",
-                "alignment": "center",
-                "type_preset": "h3",
+                "alignment": "left",
+                "type_preset": "custom",
                 "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
+                "font_size": "2.5rem",
+                "line_height": "tight",
+                "letter_spacing": "tight",
                 "case": "none",
                 "wrap": "pretty",
                 "text_color": "",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 50,
+                "padding-block-start": 10,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
@@ -99,32 +100,30 @@
                 "show_sale_price_first": true,
                 "show_installments": true,
                 "show_tax_info": true,
-                "type_preset": "h5",
+                "type_preset": "custom",
                 "width": "100%",
-                "alignment": "center",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
+                "alignment": "left",
+                "font": "var(--font-subheading--family)",
+                "font_size": "1.25rem",
+                "line_height": "tight",
+                "letter_spacing": "tight",
                 "case": "none",
                 "text_color": "",
-                "padding-block-start": 0,
-                "padding-block-end": 50,
+                "padding-block-start": 10,
+                "padding-block-end": 5,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {}
             },
-            "divider_HrJgFt": {
-              "type": "_divider",
-              "name": "t:names.divider",
+            "short_description_9LDCRj": {
+              "type": "short-description",
+              "name": "Short Description",
               "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "divider_color": "{{ settings.color_palette.color2 }}",
-                "width_percent": 100,
-                "padding-block-start": 12,
-                "padding-block-end": 12
+                "custom_text": "",
+                "word_limit": 30,
+                "margin_top": 4,
+                "margin_bottom": 12
               },
               "blocks": {}
             },
@@ -156,7 +155,7 @@
                 "stacking": false,
                 "text_color": "",
                 "show_pickup_availability": false,
-                "gift_card_form": true,
+                "gift_card_form": false,
                 "recipient_button_style": "default",
                 "recipient_button_background": "{{ settings.color_palette.background }}",
                 "recipient_button_text": "{{ settings.color_palette.foreground }}",
@@ -172,14 +171,13 @@
                 "border_width": 1,
                 "border_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 24,
+                "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {
                 "quantity": {
                   "type": "quantity",
-                  "disabled": true,
                   "static": true,
                   "settings": {
                     "input_style": "custom",
@@ -193,6 +191,7 @@
                 },
                 "add-to-cart": {
                   "type": "add-to-cart",
+                  "disabled": true,
                   "static": true,
                   "settings": {
                     "style_class": "button",
@@ -210,6 +209,92 @@
                 }
               },
               "block_order": []
+            },
+            "discount_offers_DCYePX": {
+              "type": "discount-offers",
+              "name": "Discount Offers",
+              "settings": {
+                "heading": "Offers Available",
+                "border_color": "#e0e0e0",
+                "badge_color": "#eef6ee",
+                "offer_1_text": "Get Cashback up to Rs.300 on a minimum transaction of Rs.799",
+                "offer_1_title": "GET THIS AT ₹6,389",
+                "offer_2_text": "Flat 10% off up to Rs.200 on a minimum transaction of Rs.999",
+                "offer_2_title": "BUY 2 GET 1 FREE",
+                "offer_3_text": "",
+                "offer_4_text": "",
+                "margin_top": 12,
+                "margin_bottom": 12
+              },
+              "blocks": {}
+            },
+            "gifting_options_BjzEjN": {
+              "type": "gifting-options",
+              "name": "Gifting Options",
+              "settings": {
+                "heading": "Gifting Options",
+                "option_1_title": "Add Gift Wrap",
+                "option_1_link": "",
+                "option_2_title": "Add Gift Box",
+                "option_2_link": "",
+                "margin_top": 4,
+                "margin_bottom": 16
+              },
+              "blocks": {}
+            },
+            "trust_badges_BGrfxF": {
+              "type": "trust-badges",
+              "name": "Trust Badges",
+              "settings": {
+                "text_color": "#000000",
+                "icon_color": "#000000",
+                "bg_color": "rgba(0,0,0,0)",
+                "icon_size": 24,
+                "margin_top": 0,
+                "margin_bottom": 12,
+                "padding": 12,
+                "item_1_svg": "<svg viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 20h20\"></path><path d=\"M16 20V6a2 2 0 0 0-2-2H10a2 2 0 0 0-2 2v14\"></path><path d=\"M12 4v16\"></path></svg>",
+                "item_1_text": "Lifetime Plating\nWarranty",
+                "item_2_svg": "<svg viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path><polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline><line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line></svg>",
+                "item_2_text": "7 Days\nMoneyback",
+                "item_3_svg": "<svg viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path><path d=\"M9 12l2 2 4-4\"></path></svg>",
+                "item_3_text": "Lifetime\nBuyback",
+                "item_4_svg": "<svg viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path><polygon points=\"12 15 9.06 16.54 9.62 13.27 7.24 10.96 10.53 10.48 12 7.5 13.47 10.48 16.76 10.96 14.38 13.27 14.94 16.54 12 15\"></polygon></svg>",
+                "item_4_text": "BIS-Registered\nJeweller"
+              },
+              "blocks": {}
+            },
+            "divider_xNAh4h": {
+              "type": "_divider",
+              "name": "t:names.divider",
+              "settings": {
+                "thickness": 1,
+                "corner_radius": "square",
+                "divider_color": "{{ settings.color_palette.background }}",
+                "width_percent": 100,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "pincode_checker_BFyn3w": {
+              "type": "pincode-checker",
+              "name": "Pincode Checker",
+              "settings": {
+                "heading": "DELIVERY OPTIONS",
+                "subtext": "Please enter PIN code to check Delivery Availability",
+                "heading_color": "{{ settings.color_palette.foreground }}",
+                "icon_color": "#481118",
+                "placeholder_text": "Enter pincode",
+                "btn_text": "Check",
+                "btn_bg_color": "#481118",
+                "btn_text_color": "#ffffff",
+                "bg_color": "#ffffff",
+                "border_color": "#222222",
+                "margin_top": 0,
+                "margin_bottom": 8
+              },
+              "blocks": {}
             },
             "accordion_NKWPiW": {
               "type": "accordion",
@@ -379,24 +464,34 @@
           "block_order": [
             "text_9WaLn7",
             "price_a7krng",
-            "divider_HrJgFt",
+            "short_description_9LDCRj",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "discount_offers_DCYePX",
+            "gifting_options_BjzEjN",
+            "trust_badges_BGrfxF",
+            "divider_xNAh4h",
+            "pincode_checker_BFyn3w",
             "accordion_NKWPiW",
             "disclosures_hFEnPD"
           ]
         }
       },
+      "custom_css": [
+        ".product-details {order: 1; padding: 0 15px !important;}",
+        ".button,button.shopify-payment-button__button--unbranded {--button-color: var(--color-primary-button-text); --button-background-color: #481118; --button-border-color: #481118; --button-border-width: var(--style-border-width-primary); --button-focus-outline-color: var(--color-primary-button-focus-outline);}",
+        "@media screen and (max-width: 768px) {.product-details {order: 1; padding: 0 0px !important; }}"
+      ],
       "settings": {
         "content_width": "content-full-width",
         "desktop_media_position": "left",
-        "equal_columns": true,
+        "equal_columns": false,
         "limit_details_width": true,
         "gap": 0,
         "enable_sticky_add_to_cart": true,
-        "background_color": "{{ settings.color_palette.background }}",
+        "background_color": "#ffffff",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 80
       }
     },
     "product_recommendations_qnzPkn": {
@@ -410,11 +505,37 @@
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
-            "type_preset": "h4",
-            "font": "var(--font-primary--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "2.5rem",
+            "line_height": "tight",
+            "letter_spacing": "tight",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_U6bGCn": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.875rem",
+            "line_height": "tight",
+            "letter_spacing": "tight",
             "case": "none",
             "wrap": "pretty",
             "text_color": "",
@@ -493,6 +614,7 @@
                 "border_opacity": 100,
                 "border_color": "",
                 "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "padding-block-start": 2,
                 "padding-block-end": 0,
@@ -531,6 +653,7 @@
                     "border_opacity": 100,
                     "border_color": "",
                     "border_radius": 0,
+                    "link": "",
                     "open_in_new_tab": false,
                     "padding-block-start": 0,
                     "padding-block-end": 0,
@@ -622,6 +745,7 @@
                     "border_opacity": 100,
                     "border_color": "",
                     "border_radius": 0,
+                    "link": "",
                     "open_in_new_tab": false,
                     "padding-block-start": 0,
                     "padding-block-end": 0,
@@ -661,7 +785,12 @@
         }
       },
       "block_order": [
-        "text_GbxcYC"
+        "text_GbxcYC",
+        "text_U6bGCn"
+      ],
+      "custom_css": [
+        ".section-resource-list__content {display: flex; flex-direction: column; align-items: var(--horizontal-alignment); gap: 10px; width: 100%;}",
+        "h3 {font-family: \"League Spartan\", sans-serif !important; font-weight: 500;}"
       ],
       "name": "t:names.product_recommendations",
       "settings": {
@@ -678,7 +807,7 @@
         "icons_shape": "none",
         "section_width": "page-width",
         "gap": 28,
-        "background_color": "{{ settings.color_palette.background }}",
+        "background_color": "#FFFFFF",
         "padding-block-start": 48,
         "padding-block-end": 48
       }

@@ -5,6 +5,15 @@
   fetchpriority="low"
 ></script>
 
+<style>
+  #product-recommendations-{{ section.id }} .section {
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+  }
+</style>
+
 {% liquid
   case section.settings.layout_type
     when 'grid'

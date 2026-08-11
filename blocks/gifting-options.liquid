@@ -1,0 +1,200 @@
+<div class="gifting-options-block" {{ block.shopify_attributes }} style="margin-top: {{ block.settings.margin_top }}px; margin-bottom: {{ block.settings.margin_bottom }}px;">
+  
+  {% if block.settings.heading != blank %}
+    <h3 class="gifting-options-heading">{{ block.settings.heading }}</h3>
+  {% endif %}
+
+  <div class="gifting-options-container">
+    
+    <!-- Option 1: Gift Wrap -->
+    {% if block.settings.option_1_link != blank %}
+      <a href="{{ block.settings.option_1_link }}" class="gifting-option">
+    {% else %}
+      <div class="gifting-option">
+    {% endif %}
+      
+      <div class="gifting-icon">
+        <!-- Gift Wrap Icon (Dark) -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 12 20 22 4 22 4 12"></polyline>
+          <rect x="2" y="7" width="20" height="5"></rect>
+          <line x1="12" y1="22" x2="12" y2="7"></line>
+          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+        </svg>
+      </div>
+      <span class="gifting-text">{{ block.settings.option_1_title }}</span>
+      
+      {% if block.settings.option_1_link != blank %}
+        <div class="gifting-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      {% endif %}
+      
+    {% if block.settings.option_1_link != blank %}
+      </a>
+    {% else %}
+      </div>
+    {% endif %}
+
+    <!-- Option 2: Gift Box -->
+    {% if block.settings.option_2_link != blank %}
+      <a href="{{ block.settings.option_2_link }}" class="gifting-option">
+    {% else %}
+      <div class="gifting-option">
+    {% endif %}
+      
+      <div class="gifting-icon">
+        <!-- Gift Box Icon (Dark) -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+      </div>
+      <span class="gifting-text">{{ block.settings.option_2_title }}</span>
+      
+      {% if block.settings.option_2_link != blank %}
+        <div class="gifting-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      {% endif %}
+      
+    {% if block.settings.option_2_link != blank %}
+      </a>
+    {% else %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<style>
+  .gifting-options-block {
+    width: 100%;
+  }
+  .gifting-options-heading {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    color: #222;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .gifting-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .gifting-option {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    background: #fafafa;
+    text-decoration: none;
+    color: #222;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  a.gifting-option:hover {
+    background: #f0f0f0;
+    border-color: #ccc;
+  }
+  .gifting-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+  .gifting-text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .gifting-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .gifting-options-container {
+      flex-direction: row;
+      gap: 12px;
+    }
+    .gifting-option {
+      flex: 1;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Gifting Options",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Gifting Options"
+    },
+    {
+      "type": "header",
+      "content": "Option 1: Gift Wrap"
+    },
+    {
+      "type": "text",
+      "id": "option_1_title",
+      "label": "Title",
+      "default": "Add Gift Wrap"
+    },
+    {
+      "type": "url",
+      "id": "option_1_link",
+      "label": "Link (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Option 2: Gift Box"
+    },
+    {
+      "type": "text",
+      "id": "option_2_title",
+      "label": "Title",
+      "default": "Add Gift Box"
+    },
+    {
+      "type": "url",
+      "id": "option_2_link",
+      "label": "Link (Optional)"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top margin",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom margin",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gifting Options"
+    }
+  ]
+}
+{% endschema %}

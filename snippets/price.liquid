@@ -15,8 +15,10 @@
   assign compare_at_price = selected_variant.compare_at_price
 
   assign show_compare_price = false
+  assign discount_percentage = 0
   if compare_at_price > price
     assign show_compare_price = true
+    assign discount_percentage = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
   endif
 
   if product_resource == blank
@@ -61,12 +63,12 @@
   # Format all prices
   if use_currency
     assign price = price | money_with_currency
-    assign compare_at_price = compare_at_price | money_with_currency
+    assign compare_at_price = compare_at_price | money_without_currency
     assign price_min = price_min | money_with_currency
     assign price_max = price_max | money_with_currency
   else
     assign price = price | money
-    assign compare_at_price = compare_at_price | money
+    assign compare_at_price = compare_at_price | money_without_currency
     assign price_min = price_min | money
     assign price_max = price_max | money
   endif
@@ -95,8 +97,15 @@
         {% endif %}
       "
     >
-      <span class="price">{{ price | default: '&nbsp;' }}</span>
+      <span class="price" style="font-weight: 500; font-size: 24px; color: #000;">{{ price | default: '&nbsp;' }}</span>
     </div>
+    <style>
+      .price__sale:not(.price__hidden) {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+    </style>
     <div
       class="
         price__sale
@@ -105,23 +114,20 @@
         {% endunless %}
       "
     >
-      {% if show_sale_price_first %}
-        <span class="price-item__group">
-          <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
-          <span class="price-item--sale price">{{ price | default: '&nbsp;' }}</span>
+      <span class="price-item__group">
+        <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
+        <span class="price-item--sale price" style="font-weight: 500; font-size: 24px; color: #000; margin-right: 8px;">{{ price | default: '&nbsp;' }}</span>
+      </span>
+      <span class="price-item__group">
+        <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
+        <span class="price-item--regular compare-at-price" style="font-size: 18px;">{{- compare_at_price -}}</span>
+      </span>
+      {% if discount_percentage > 0 %}
+        <span class="discount-badge" style="display: inline-flex; align-items: center; background: linear-gradient(90deg, rgba(212,234,210,0) 0%, #ffc4cb 100%); color: #ff0020; padding: 2px 14px 2px 6px; font-weight: 600; font-size: 14px; clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0% 100%); margin-left: 8px; line-height: 1.2;">
+          {{ discount_percentage }}% Off
         </span>
-        <span class="price-item__group">
-          <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
-          <span class="price-item--regular compare-at-price">{{- compare_at_price -}}</span>
-        </span>
-      {% else %}
-        <span class="price-item__group">
-          <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
-          <span class="price-item--regular compare-at-price">{{- compare_at_price -}}</span>
-        </span>
-        <span class="price-item__group">
-          <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
-          <span class="price-item--sale price">{{ price | default: '&nbsp;' }}</span>
+        <span class="info-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; margin-left: 6px; color: #777; cursor: help;" title="Discount applied to the original price">
+          <span class="svg-wrapper" style="width: 16px; height: 16px;">{{- 'icon-info.svg' | inline_asset_content -}}</span>
         </span>
       {% endif %}
     </div>

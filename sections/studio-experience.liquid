@@ -1,0 +1,342 @@
+{% comment %}
+  Section: Studio Experience
+  Fully dynamic & fully responsive editorial text section
+  Same-to-same layout jaisa reference image me hai
+{% endcomment %}
+
+<section
+  id="studio-experience-{{ section.id }}"
+  class="studio-experience"
+  style="
+    --se-bg: {{ section.settings.bg_color }};
+    --se-text: {{ section.settings.text_color }};
+    --se-muted: {{ section.settings.muted_color }};
+    --se-padding-top: {{ section.settings.padding_top }}px;
+    --se-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="studio-experience__inner">
+
+    {%- comment -%} LEFT BLOCK {%- endcomment -%}
+    <div class="studio-experience__left">
+      {%- if section.settings.left_muted != blank or section.settings.left_text != blank -%}
+        <p class="studio-experience__para">
+          {%- if section.settings.left_muted != blank -%}
+            <span class="studio-experience__muted">{{ section.settings.left_muted }}</span>
+          {%- endif -%}
+          {%- if section.settings.left_text != blank -%}
+            <span class="studio-experience__strong">{{ section.settings.left_text }}</span>
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="studio-experience__links">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link' -%}
+              <a
+                href="{{ block.settings.link_url | default: '#' }}"
+                class="studio-experience__link"
+                {% if block.settings.open_new_tab %}target="_blank" rel="noopener"{% endif %}
+                {{ block.shopify_attributes }}
+              >
+                <span>{{ block.settings.link_label }}</span>
+                <svg class="studio-experience__arrow" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M1 9L9 1M9 1H2M9 1V8" stroke="currentColor" stroke-width="1" stroke-linecap="square"/>
+                </svg>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} RIGHT BLOCK {%- endcomment -%}
+    <div class="studio-experience__right">
+      {%- if section.settings.right_muted != blank or section.settings.right_text != blank -%}
+        <p class="studio-experience__para studio-experience__para--right">
+          {%- if section.settings.right_muted != blank -%}
+            <span class="studio-experience__muted">{{ section.settings.right_muted }}</span>
+          {%- endif -%}
+          {%- if section.settings.right_text != blank -%}
+            <span class="studio-experience__strong">{{ section.settings.right_text }}</span>
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% stylesheet %}
+  .studio-experience {
+    background: var(--se-bg, #ffffff);
+    color: var(--se-text, #111111);
+    padding-top: var(--se-padding-top, 80px);
+    padding-bottom: var(--se-padding-bottom, 80px);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .studio-experience__inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .studio-experience__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 480px;
+    max-width: 620px;
+  }
+
+  .studio-experience__right {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    min-height: 480px;
+    padding-top: 220px;
+  }
+
+  .studio-experience__para {
+    font-family: inherit;
+    font-size: clamp(24px, 3.2vw, 44px);
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .studio-experience__para--right {
+    max-width: 460px;
+    text-align: left;
+  }
+
+  .studio-experience__muted {
+    color: var(--se-muted, #b5b5b5);
+  }
+
+  .studio-experience__strong {
+    color: var(--se-text, #111111);
+  }
+
+  .studio-experience__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 48px;
+  }
+
+  .studio-experience__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--se-text, #111111);
+    text-decoration: none;
+    border-bottom: 1px solid var(--se-text, #111111);
+    padding-bottom: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  .studio-experience__link:hover {
+    opacity: 0.6;
+  }
+
+  .studio-experience__arrow {
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ---------- Tablet ---------- */
+  @media (max-width: 1024px) {
+    .studio-experience__left,
+    .studio-experience__right {
+      min-height: auto;
+    }
+    .studio-experience__right {
+      padding-top: 80px;
+    }
+    .studio-experience__para {
+      font-size: clamp(22px, 3.6vw, 34px);
+    }
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 749px) {
+    .studio-experience {
+      padding-top: calc(var(--se-padding-top, 80px) * 0.6);
+      padding-bottom: calc(var(--se-padding-bottom, 80px) * 0.6);
+    }
+    .studio-experience__inner {
+      grid-template-columns: 1fr;
+      gap: 56px;
+      padding: 0 20px;
+    }
+    .studio-experience__left {
+      min-height: auto;
+      max-width: 100%;
+    }
+    .studio-experience__right {
+      padding-top: 0;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .studio-experience__para {
+      font-size: clamp(22px, 6vw, 30px);
+      line-height: 1.25;
+    }
+    .studio-experience__para--right {
+      max-width: 100%;
+    }
+    .studio-experience__links {
+      margin-top: 32px;
+      gap: 20px;
+    }
+    .studio-experience__link {
+      font-size: 11px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Studio Experience",
+  "tag": "section",
+  "class": "section-studio-experience",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left Text Block"
+    },
+    {
+      "type": "text",
+      "id": "left_muted",
+      "label": "Left – Muted (grey) part",
+      "default": "At our studios, a unique shopping experience awaits you"
+    },
+    {
+      "type": "textarea",
+      "id": "left_text",
+      "label": "Left – Bold (dark) part",
+      "default": "— complete with fabric books, coffee, and an in-store tailor for fittings that are as accurate as can be."
+    },
+    {
+      "type": "header",
+      "content": "Right Text Block"
+    },
+    {
+      "type": "text",
+      "id": "right_muted",
+      "label": "Right – Muted (grey) part",
+      "default": "We promise"
+    },
+    {
+      "type": "textarea",
+      "id": "right_text",
+      "label": "Right – Bold (dark) part",
+      "default": "you'll walk away with the fit you need, or your money back."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text color",
+      "default": "#b5b5b5"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "KNOW MORE"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Studio Experience",
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "link_label": "KNOW MORE"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "link_label": "FIND A STORE NEAR YOU"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

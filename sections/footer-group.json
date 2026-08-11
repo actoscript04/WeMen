@@ -14,13 +14,6 @@
     "dynamic_custom_footer_ExUYaW": {
       "type": "dynamic-custom-footer",
       "blocks": {
-        "link_list_V8Rx9y": {
-          "type": "link_list",
-          "settings": {
-            "heading": "HELP",
-            "menu": "footer"
-          }
-        },
         "link_list_fiV3Xw": {
           "type": "link_list",
           "settings": {
@@ -28,18 +21,25 @@
             "menu": "header-manu"
           }
         },
-        "link_list_fibhBy": {
+        "link_list_V8Rx9y": {
           "type": "link_list",
           "settings": {
-            "heading": "INFORMATION",
-            "menu": "main-menu"
+            "heading": "CORPORATE & LEGAL",
+            "menu": "footer"
           }
         },
         "link_list_bCrTJe": {
           "type": "link_list",
           "settings": {
-            "heading": "CORPORATE & LEGAL",
-            "menu": "customer-account-main-menu"
+            "heading": "Help",
+            "menu": "help"
+          }
+        },
+        "link_list_fibhBy": {
+          "type": "link_list",
+          "settings": {
+            "heading": "INFORMATION",
+            "menu": "main-menu"
           }
         },
         "social_icon_6iLMkB": {
@@ -76,10 +76,10 @@
         }
       },
       "block_order": [
-        "link_list_V8Rx9y",
         "link_list_fiV3Xw",
-        "link_list_fibhBy",
+        "link_list_V8Rx9y",
         "link_list_bCrTJe",
+        "link_list_fibhBy",
         "social_icon_6iLMkB",
         "social_icon_MaMfdw",
         "social_icon_F84gkm",

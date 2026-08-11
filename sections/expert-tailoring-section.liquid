@@ -1,0 +1,602 @@
+{% comment %}
+  ==============================================================================
+  EXPERT TAILORING & FIT SECTION (Shopify OS 2.0 Compatible)
+  ==============================================================================
+  Features:
+  - 100% Responsive (Desktop, Tablet, Mobile)
+  - Fully Dynamic via Shopify Theme Editor Schema
+  - Exact layout match: Left image + Right top-and-bottom split text layout
+  - Clean inline SVG icons & customizable colors/fonts
+  ==============================================================================
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    overflow: hidden;
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  .et-container-{{ section.id }} {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .et-container-{{ section.id }} {
+      padding: 0 40px;
+    }
+  }
+
+  /* Main Section Heading */
+  .et-main-heading-{{ section.id }} {
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    font-weight: {{ section.settings.heading_font_weight }};
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 24px 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-family: var(--font-heading-family, sans-serif);
+  }
+
+  @media screen and (min-width: 768px) {
+    .et-main-heading-{{ section.id }} {
+      font-size: {{ section.settings.heading_size_desktop }}px;
+      margin: 0 0 32px 0;
+    }
+  }
+
+  /* Two Column Grid Layout */
+  .et-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: stretch;
+  }
+
+  @media screen and (min-width: 992px) {
+    .et-grid-{{ section.id }} {
+      grid-template-columns: {{ section.settings.image_column_width }}% calc(100% - {{ section.settings.image_column_width }}% - {{ section.settings.column_gap }}px);
+      gap: {{ section.settings.column_gap }}px;
+    }
+  }
+
+  /* Left Column: Image Wrapper */
+  .et-image-wrapper-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f4f4f4;
+    border-radius: {{ section.settings.image_border_radius }}px;
+    display: flex;
+  }
+
+  .et-image-{{ section.id }} {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  {% if section.settings.enable_image_hover_zoom %}
+  .et-image-wrapper-{{ section.id }}:hover .et-image-{{ section.id }} {
+    transform: scale(1.03);
+  }
+  {% endif %}
+
+  /* Right Column: Content Box (Flex column space-between for exact screenshot layout) */
+  .et-content-wrapper-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  /* Top Text block in right column */
+  .et-lead-text-{{ section.id }} {
+    font-size: {{ section.settings.lead_size_mobile }}px;
+    line-height: 1.35;
+    font-weight: 400;
+    color: {{ section.settings.lead_text_color }};
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media screen and (min-width: 768px) {
+    .et-lead-text-{{ section.id }} {
+      font-size: {{ section.settings.lead_size_desktop }}px;
+    }
+  }
+
+  .et-lead-highlight-{{ section.id }} {
+    color: {{ section.settings.lead_highlight_color }};
+    font-weight: 400;
+  }
+
+  /* Bottom Text & Actions block in right column */
+  .et-bottom-block-{{ section.id }} {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  @media screen and (min-width: 992px) {
+    .et-bottom-block-{{ section.id }} {
+      margin-top: auto;
+    }
+  }
+
+  .et-description-{{ section.id }} {
+    font-size: {{ section.settings.desc_size }}px;
+    line-height: 1.6;
+    color: {{ section.settings.desc_color }};
+    margin: 0;
+    max-width: 520px;
+  }
+
+  /* Links / Buttons Row */
+  .et-links-group-{{ section.id }} {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .et-links-group-{{ section.id }} {
+      gap: 32px;
+    }
+  }
+
+  .et-link-item-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: {{ section.settings.link_size }}px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+    border-bottom: 1px solid {{ section.settings.link_border_color }};
+    padding-bottom: 4px;
+    transition: all 0.25s ease;
+  }
+
+  .et-link-item-{{ section.id }}:hover {
+    color: {{ section.settings.link_hover_color }};
+    border-bottom-color: {{ section.settings.link_hover_color }};
+  }
+
+  .et-link-icon-{{ section.id }} {
+    width: 11px;
+    height: 11px;
+    stroke-width: 2;
+    transition: transform 0.25s ease;
+  }
+
+  .et-link-item-{{ section.id }}:hover .et-link-icon-{{ section.id }} {
+    transform: translate(2px, -2px);
+  }
+
+  /* Placeholder SVG styling when no image selected */
+  .et-placeholder-svg {
+    width: 100%;
+    height: 380px;
+    fill: #ccc;
+    background-color: #eaeaea;
+  }
+{%- endstyle -%}
+
+<div class="et-section-wrapper-{{ section.id }}">
+  <div class="et-container-{{ section.id }}">
+    
+    {%- if section.settings.section_title != blank -%}
+      <h2 class="et-main-heading-{{ section.id }}">
+        {{ section.settings.section_title | escape }}
+      </h2>
+    {%- endif -%}
+
+    <div class="et-grid-{{ section.id }}">
+      
+      {%- comment -%} Left Column: Dynamic Image {%- endcomment -%}
+      <div class="et-image-wrapper-{{ section.id }}">
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1400 }}"
+            srcset="
+              {{ section.settings.image | image_url: width: 600 }} 600w,
+              {{ section.settings.image | image_url: width: 900 }} 900w,
+              {{ section.settings.image | image_url: width: 1200 }} 1200w,
+              {{ section.settings.image | image_url: width: 1600 }} 1600w
+            "
+            sizes="(min-width: 992px) {{ section.settings.image_column_width }}vw, 100vw"
+            alt="{{ section.settings.image.alt | default: section.settings.section_title | escape }}"
+            class="et-image-{{ section.id }}"
+            loading="lazy"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+          >
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'et-placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Right Column: Split Content (Top Lead Text + Bottom Description & Links) {%- endcomment -%}
+      <div class="et-content-wrapper-{{ section.id }}">
+        
+        {%- comment -%} Top Lead Heading {%- endcomment -%}
+        <div class="et-top-block-{{ section.id }}">
+          {%- if section.settings.lead_text != blank or section.settings.lead_highlight_text != blank -%}
+            <h3 class="et-lead-text-{{ section.id }}">
+              {{ section.settings.lead_text }}
+              {%- if section.settings.lead_highlight_text != blank -%}
+                <span class="et-lead-highlight-{{ section.id }}">{{ section.settings.lead_highlight_text }}</span>
+              {%- endif -%}
+            </h3>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Bottom Description & Action Links {%- endcomment -%}
+        <div class="et-bottom-block-{{ section.id }}">
+          {%- if section.settings.description != blank -%}
+            <p class="et-description-{{ section.id }}">
+              {{ section.settings.description }}
+            </p>
+          {%- endif -%}
+
+          {%- if section.settings.link_1_label != blank or section.settings.link_2_label != blank -%}
+            <div class="et-links-group-{{ section.id }}">
+              
+              {%- if section.settings.link_1_label != blank -%}
+                <a
+                  href="{{ section.settings.link_1_url | default: '#' }}"
+                  class="et-link-item-{{ section.id }}"
+                >
+                  <span>{{ section.settings.link_1_label }}</span>
+                  <svg class="et-link-icon-{{ section.id }}" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 11L11 1M11 1H3.5M11 1V8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              {%- endif -%}
+
+              {%- if section.settings.link_2_label != blank -%}
+                <a
+                  href="{{ section.settings.link_2_url | default: '#' }}"
+                  class="et-link-item-{{ section.id }}"
+                >
+                  <span>{{ section.settings.link_2_label }}</span>
+                  <svg class="et-link-icon-{{ section.id }}" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 11L11 1M11 1H3.5M11 1V8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              {%- endif -%}
+
+            </div>
+          {%- endif -%}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Expert Tailoring & Fit",
+  "tag": "section",
+  "class": "section-expert-tailoring",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Title"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Heading",
+      "default": "Expert Tailoring & Fit"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Image Column"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Tailoring Image"
+    },
+    {
+      "type": "range",
+      "id": "image_column_width",
+      "min": 45,
+      "max": 70,
+      "step": 1,
+      "unit": "%",
+      "label": "Image Column Width (Desktop)",
+      "default": 58
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between Image & Text",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_hover_zoom",
+      "label": "Enable subtle zoom on hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Right Column: Lead Text"
+    },
+    {
+      "type": "textarea",
+      "id": "lead_text",
+      "label": "Main Lead Text",
+      "default": "We’ve all stood in front of the mirror wishing our clothes fit better."
+    },
+    {
+      "type": "text",
+      "id": "lead_highlight_text",
+      "label": "Highlighted / Faded End Text",
+      "default": "No more."
+    },
+    {
+      "type": "range",
+      "id": "lead_size_desktop",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Lead Font Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "lead_size_mobile",
+      "min": 18,
+      "max": 34,
+      "step": 2,
+      "unit": "px",
+      "label": "Lead Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Right Column: Description & Links"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description Text",
+      "default": "We use the finest machinery and tailoring practices to craft garments of the highest quality, ensuring a fit that makes you look the best version of yourself."
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Font Size",
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "link_1_label",
+      "label": "First Link Label",
+      "default": "KNOW MORE"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "First Link URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_label",
+      "label": "Second Link Label",
+      "default": "NEED HELP WITH SIZING?"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Second Link URL"
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Link Font Size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Section Title Color",
+      "default": "#737373"
+    },
+    {
+      "type": "color",
+      "id": "lead_text_color",
+      "label": "Lead Text Primary Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "lead_highlight_color",
+      "label": "Lead Highlight ('No more') Color",
+      "default": "#8e8e8e"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Text Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Text Color",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "link_border_color",
+      "label": "Link Underline Color",
+      "default": "#222222"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding & Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding (Mobile)",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Expert Tailoring & Fit",
+      "category": "Custom Sections",
+      "settings": {
+        "section_title": "Expert Tailoring & Fit",
+        "lead_text": "We’ve all stood in front of the mirror wishing our clothes fit better.",
+        "lead_highlight_text": "No more.",
+        "description": "We use the finest machinery and tailoring practices to craft garments of the highest quality, ensuring a fit that makes you look the best version of yourself.",
+        "link_1_label": "KNOW MORE",
+        "link_2_label": "NEED HELP WITH SIZING?"
+      }
+    }
+  ]
+}
+{% endschema %}

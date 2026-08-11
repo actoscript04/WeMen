@@ -33,16 +33,20 @@
     align-items: center;
     font-size: var(--font-size--body-md);
     font-weight: 500;
-    margin-block: var(--margin-sm) var(--margin-xs);
     width: 100%;
     text-transform: var(--title-case);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 10px;
+    margin-top: 45px;
+    margin-bottom: 20px;
 
     &:first-of-type {
-      margin-block-start: 0;
+      margin-top: 0;
     }
 
     @media screen and (max-width: 749px) {
-      margin-block: var(--margin-lg) var(--margin-sm);
+      margin-top: 40px;
+      margin-bottom: 20px;
     }
   }
 
@@ -602,7 +606,7 @@
     transition: height var(--animation-speed-medium) var(--animation-easing);
 
     @container (min-width: 550px) {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -625,6 +629,39 @@
   .predictive-search-results__resource-header slideshow-controls {
     @media screen and (max-width: 749px) {
       display: none;
+    }
+  }
+
+  /* Custom Search Popup Width */
+  .search-modal__content.dialog-modal {
+    @media screen and (min-width: 750px) {
+      max-width: 1000px !important;
+      width: 100% !important;
+    }
+  }
+
+  /* Make Title and Price same font size */
+  .predictive-search-results__card .resource-card__title,
+  .predictive-search-results__card .price,
+  .predictive-search-results__card .price .price-item {
+    font-size: 15px !important;
+  }
+
+  /* Fix buttons overflowing on the right edge and set color to black */
+  .predictive-search__close-modal-button,
+  .predictive-search-results__clear {
+    margin-right: 0px !important;
+    color: #000000 !important;
+  }
+  
+  .predictive-search__close-modal-button svg {
+    color: #000000 !important;
+    fill: #000000 !important;
+  }
+
+  @media screen and (min-width: 750px) {
+    .predictive-search-results__wrapper-products:last-child {
+        padding-block-end: 50px !important;
     }
   }
 {% endstylesheet %}

@@ -1,0 +1,290 @@
+{% assign block_settings = block.settings %}
+
+<div class="discount-offers-block" {{ block.shopify_attributes }}>
+  {% if block_settings.heading != blank %}
+    <p class="discount-offers-heading">{{ block_settings.heading }}</p>
+  {% endif %}
+  
+  <div class="discount-offers-slider-wrapper">
+    <div class="discount-offers-slider" id="discount-slider-{{ block.id }}">
+      
+      {% for i in (1..4) %}
+        {% capture logo_key %}offer_{{ i }}_logo{% endcapture %}
+        {% capture text_key %}offer_{{ i }}_text{% endcapture %}
+        {% capture title_fallback_key %}offer_{{ i }}_title{% endcapture %}
+        
+        {% assign logo = block_settings[logo_key] %}
+        {% assign text = block_settings[text_key] %}
+        {% assign title_fallback = block_settings[title_fallback_key] %}
+        
+        {% if text == blank and title_fallback != blank %}
+          {% assign text = title_fallback %}
+        {% endif %}
+        
+        {% if logo != blank or text != blank %}
+          <div class="discount-offer-card" style="border-color: {{ block_settings.border_color }};">
+            <div class="discount-offer-badge" style="color: {{ block_settings.badge_color }};">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L14.4 4.8L18 4.2L18.6 7.8L21.4 10.2L19.2 13.2L20.4 16.8L16.8 17.4L15 20.4L12 18.6L9 20.4L7.2 17.4L3.6 16.8L4.8 13.2L2.6 10.2L5.4 7.8L6 4.2L9.6 4.8L12 2Z" fill="currentColor"/>
+                <path d="M9.5 10.5A1.5 1.5 0 1 1 9.5 7.5A1.5 1.5 0 1 1 9.5 10.5ZM14.5 16.5A1.5 1.5 0 1 1 14.5 13.5A1.5 1.5 0 1 1 14.5 16.5ZM8 16L16 8" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            
+            <div class="discount-offer-logo">
+              {% if logo != blank %}
+                <img src="{{ logo | img_url: 'master' }}" alt="Offer Logo">
+              {% else %}
+                <span class="discount-offer-logo-text">Offer</span>
+              {% endif %}
+            </div>
+            
+            <div class="discount-offer-text">
+              {{ text }}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+      
+    </div>
+    
+    <button type="button" class="discount-slider-next" onclick="var slider = document.getElementById('discount-slider-{{ block.id }}'); if(slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) { slider.scrollTo({left: 0, behavior: 'smooth'}); } else { slider.scrollBy({left: slider.clientWidth + 12, behavior: 'smooth'}); }">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .discount-offers-block {
+    width: 100%;
+    margin-top: {{ block_settings.margin_top }}px;
+    margin-bottom: {{ block_settings.margin_bottom }}px;
+    position: relative;
+    overflow: visible;
+  }
+  .discount-offers-heading {
+    font-size: 16px;
+    margin: 0 0 12px 0;
+    color: #000;
+    font-weight: 600;
+  }
+  .discount-offers-slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .discount-offers-slider {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+    width: 100%;
+  }
+  .discount-offers-slider::-webkit-scrollbar {
+    display: none;
+  }
+  .discount-offer-card {
+    flex: 0 0 100%;
+    border: 1px solid #d4ead2;
+    border-radius: 8px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .discount-offer-badge {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .discount-offer-logo {
+    height: 24px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .discount-offer-logo img {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+  .discount-offer-logo-text {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+  }
+  .discount-offer-text {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    position: relative;
+    z-index: 2;
+    padding-right: 20px;
+  }
+  .discount-slider-next {
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 3;
+    color: #666;
+    padding: 0;
+  }
+  .discount-slider-next:hover {
+    background: #f9f9f9;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .discount-slider-next {
+      right: -10px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Discount Offers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Offers Available"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Card Border Color",
+      "default": "#d4ead2"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge Color",
+      "default": "#eef6ee"
+    },
+    {
+      "type": "header",
+      "content": "Offer 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "offer_1_logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "textarea",
+      "id": "offer_1_text",
+      "label": "Text",
+      "default": "Get Cashback up to Rs.300 on a minimum transaction of Rs.799"
+    },
+    {
+      "type": "text",
+      "id": "offer_1_title",
+      "label": "Fallback Title (Legacy)"
+    },
+    {
+      "type": "header",
+      "content": "Offer 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "offer_2_logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "textarea",
+      "id": "offer_2_text",
+      "label": "Text",
+      "default": "Flat 10% off up to Rs.200 on a minimum transaction of Rs.999"
+    },
+    {
+      "type": "text",
+      "id": "offer_2_title",
+      "label": "Fallback Title (Legacy)"
+    },
+    {
+      "type": "header",
+      "content": "Offer 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "offer_3_logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "textarea",
+      "id": "offer_3_text",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Offer 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "offer_4_logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "textarea",
+      "id": "offer_4_text",
+      "label": "Text"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top margin",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom margin",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discount Offers"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,249 @@
+<div class="trust-badges-block" {{ block.shopify_attributes }}>
+  <div class="trust-badges-container">
+    {% for i in (1..4) %}
+      {% capture item_image_key %}item_{{ i }}_image{% endcapture %}
+      {% capture item_svg_key %}item_{{ i }}_svg{% endcapture %}
+      {% capture item_text_key %}item_{{ i }}_text{% endcapture %}
+
+      {% assign item_image = block.settings[item_image_key] %}
+      {% assign item_svg = block.settings[item_svg_key] %}
+      {% assign item_text = block.settings[item_text_key] %}
+
+      {% if item_image != blank or item_svg != blank or item_text != blank %}
+        <div class="trust-badge-item">
+          <div class="trust-badge-icon" style="width: {{ block.settings.icon_size }}px; height: {{ block.settings.icon_size }}px; color: {{ block.settings.icon_color }};">
+            {% if item_image != blank %}
+              <img src="{{ item_image | img_url: 'master' }}" alt="{{ item_image.alt | default: item_text | escape }}" style="width: 100%; height: 100%; object-fit: contain;">
+            {% elsif item_svg != blank %}
+              {{ item_svg }}
+            {% endif %}
+          </div>
+          {% if item_text != blank %}
+            <div class="trust-badge-text" style="color: {{ block.settings.text_color }}; font-family: inherit;">
+              {{ item_text | newline_to_br }}
+            </div>
+          {% endif %}
+        </div>
+        
+        {% if forloop.last == false %}
+          <div class="trust-badge-divider"></div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .trust-badges-block {
+    width: 100%;
+    margin-top: {{ block.settings.margin_top }}px;
+    margin-bottom: {{ block.settings.margin_bottom }}px;
+    background: {{ block.settings.bg_color }};
+    padding: {{ block.settings.padding }}px;
+    border-radius: 4px;
+  }
+  .trust-badges-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .trust-badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    padding: 0 5px;
+  }
+  .trust-badge-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .trust-badge-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .trust-badge-text {
+    font-size: 11px;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .trust-badge-divider {
+    width: 1px;
+    background-color: #e0e0e0;
+    min-height: 40px;
+    align-self: stretch;
+    margin: 0 5px;
+  }
+  @media screen and (max-width: 480px) {
+    .trust-badges-container {
+      flex-wrap: wrap;
+    }
+    .trust-badge-item {
+      flex: 0 0 45%;
+      margin-bottom: 20px;
+    }
+    .trust-badge-divider {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "settings": [
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "SVG Icon Color",
+      "info": "Applies if the SVG uses 'currentColor'.",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top margin",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom margin",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Item 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "item_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "html",
+      "id": "item_1_svg",
+      "label": "Custom SVG Code",
+      "default": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 20h20\"/><path d=\"M16 20V6a2 2 0 0 0-2-2H10a2 2 0 0 0-2 2v14\"/><path d=\"M12 4v16\"/></svg>"
+    },
+    {
+      "type": "textarea",
+      "id": "item_1_text",
+      "label": "Text",
+      "default": "Lifetime Plating\nWarranty"
+    },
+    {
+      "type": "header",
+      "content": "Item 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "item_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "html",
+      "id": "item_2_svg",
+      "label": "Custom SVG Code",
+      "default": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"/><polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"/><line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"/></svg>"
+    },
+    {
+      "type": "textarea",
+      "id": "item_2_text",
+      "label": "Text",
+      "default": "7 Days\nMoneyback"
+    },
+    {
+      "type": "header",
+      "content": "Item 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "item_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "html",
+      "id": "item_3_svg",
+      "label": "Custom SVG Code",
+      "default": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/><path d=\"M9 12l2 2 4-4\"/></svg>"
+    },
+    {
+      "type": "textarea",
+      "id": "item_3_text",
+      "label": "Text",
+      "default": "Lifetime\nBuyback"
+    },
+    {
+      "type": "header",
+      "content": "Item 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "item_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "html",
+      "id": "item_4_svg",
+      "label": "Custom SVG Code",
+      "default": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/><polygon points=\"12 15 9.06 16.54 9.62 13.27 7.24 10.96 10.53 10.48 12 7.5 13.47 10.48 16.76 10.96 14.38 13.27 14.94 16.54 12 15\"/></svg>"
+    },
+    {
+      "type": "textarea",
+      "id": "item_4_text",
+      "label": "Text",
+      "default": "BIS-Registered\nJeweller"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Badges"
+    }
+  ]
+}
+{% endschema %}

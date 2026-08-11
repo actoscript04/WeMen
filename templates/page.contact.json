@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "main-page",
@@ -21,12 +22,15 @@
             "alignment": "center",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
+            "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -44,12 +48,15 @@
             "alignment": "center",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
+            "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -62,6 +69,7 @@
         "title",
         "content"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -80,6 +88,13 @@
             "custom_width": 50,
             "width_mobile": "custom",
             "custom_width_mobile": 100,
+            "background_color": "",
+            "input_style": "default",
+            "input_background_color": "{{ settings.color_palette.background }}",
+            "input_text_color": "{{ settings.color_palette.foreground }}",
+            "input_border_color": "{{ settings.color_palette.foreground }}",
+            "border_width": 1,
+            "border_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -92,6 +107,9 @@
               "settings": {
                 "label": "Submit",
                 "style_class": "button",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
@@ -106,6 +124,7 @@
       "block_order": [
         "contact_form_UwiCkQ"
       ],
+      "disabled": true,
       "name": "t:names.contact_form",
       "settings": {
         "content_direction": "column",
@@ -117,25 +136,240 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 32,
         "section_width": "page-width",
+        "section_height": "",
         "section_height_custom": 50,
+        "background_media": "none",
         "background_color": "{{ settings.color_palette.background }}",
         "video_position": "cover",
         "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
         "toggle_overlay": false,
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
         "padding-block-start": 32,
         "padding-block-end": 32
+      }
+    },
+    "help_banner_GPRjTE": {
+      "type": "help-banner",
+      "name": "Help Banner Section",
+      "settings": {
+        "heading": "How Can We <br> Help You ?",
+        "description": "<p>We're here to help. Whether you're looking for assistance with present or past orders, have any suggestions for us or just want to let us know how we did, you can contact us easily between 06:00 AM to 09:00 PM | All days of the week</p>",
+        "padding_top": 180,
+        "padding_bottom": 24
+      }
+    },
+    "slideshow_rcziTB": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_j8cXbF": {
+          "type": "_slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/platform_collection_banner_desktop.avif",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "background_color": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 48,
+            "padding-inline-end": 48
+          },
+          "blocks": {
+            "text_UPa4Yt": {
+              "type": "text",
+              "name": "t:names.heading",
+              "disabled": true,
+              "settings": {
+                "text": "",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_jVQCA8": {
+              "type": "text",
+              "disabled": true,
+              "settings": {
+                "text": "<p>Introducing our latest products, made especially for the season. Shop your favorites before they're gone!</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 20,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_Gy9LN3": {
+              "type": "button",
+              "disabled": true,
+              "settings": {
+                "label": "Shop now",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_UPa4Yt",
+            "text_jVQCA8",
+            "button_Gy9LN3"
+          ]
+        }
+      },
+      "block_order": [
+        "slide_j8cXbF"
+      ],
+      "name": "t:names.slideshow_full_frame",
+      "settings": {
+        "display_mode": "full_frame",
+        "section_width": "full-width",
+        "full_frame_on_mobile": false,
+        "slideshow_gap": 0,
+        "corner_radius": 0,
+        "slide_height": "medium",
+        "content_position": "on-media",
+        "background_color": "",
+        "icons_style": "arrows_large",
+        "icons_shape": "none",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "contect_contact_info_b7iXdJ": {
+      "type": "contect-contact-info",
+      "disabled": true,
+      "name": "Contact Info",
+      "settings": {
+        "contact_title": "Contact Details",
+        "phone": "+91 9513446201",
+        "whatsapp_label": "WHATSAPP",
+        "whatsapp": "+919513446201",
+        "email": "support@bombayshirts.com",
+        "office_title": "Registered Office",
+        "company_name": "Tomorrowland Apparels Pvt Ltd",
+        "cin": "U18109MH2014PTC253178",
+        "address": "101 A, Marathon Chambers,\nN. M. Joshi Marg, Lower Parel (East), Mumbai - 400013.",
+        "grievance_title": "Grievance/Nodal Officer/CERT-IN Officer",
+        "officer_names": "Mr. Arokia Martin Nadar / Ms. Uzma Ansari",
+        "grievance_email": "grievances@bombayshirts.com",
+        "grievance_phone": "+91 9439780974",
+        "grievance_time": "10.00am to 6.00pm (Monday to Saturday)",
+        "bg_color": "#ffffff",
+        "title_color": "#111111",
+        "text_color": "#000000",
+        "font_family": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "title_size": 22,
+        "title_weight": "500",
+        "text_size": 16,
+        "text_weight": "400",
+        "container_width": 1200,
+        "column_gap": 60,
+        "divider_color": "#e5e5e5",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_side": 30
+      }
+    },
+    "contect_contact_info_9YbWQH": {
+      "type": "contect-contact-info",
+      "name": "Footer Contact Block",
+      "settings": {
+        "contact_title": "Contact Details",
+        "phone": "+91 9513446201",
+        "whatsapp_label": "WHATSAPP",
+        "whatsapp": "+919513446201",
+        "email": "support@wemen.com",
+        "office_title": "Registered Office",
+        "company_name": "Wemen Pvt Ltd",
+        "cin": "U18109MH2014PTC253178",
+        "address": "LiftNo.2,Office No. T8-11,\nNilkanth Business Hub,\nOpp. D-mart, Causeway Road,\nSinganpur, Katargam, Surat,\nGujarat, India 395004.",
+        "grievance_title": "CERT-In Main Contact Details",
+        "officer_names": "Mr. Kishan Vagashiya  / Mr. Parth Mujani",
+        "grievance_email": "help@wemen.com",
+        "grievance_phone": "+91 9439780974",
+        "grievance_time": "10.00am to 6.00pm (Monday to Saturday)",
+        "bg_color": "#ffffff",
+        "title_color": "#111111",
+        "text_color": "#666666",
+        "font_family": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "title_size": 22,
+        "title_weight": "500",
+        "text_size": 16,
+        "text_weight": "400",
+        "container_width": 1600,
+        "column_gap": 60,
+        "divider_color": "#e5e5e5",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_side": 30
       }
     }
   },
   "order": [
     "main",
-    "form"
+    "form",
+    "help_banner_GPRjTE",
+    "slideshow_rcziTB",
+    "contect_contact_info_b7iXdJ",
+    "contect_contact_info_9YbWQH"
   ]
 }

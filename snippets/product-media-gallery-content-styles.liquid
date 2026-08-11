@@ -171,19 +171,48 @@
     }
   }
 
-  /* Right Column - Scrollable images stacked vertically */
+  /* Right Column - Scrollable images, LEFT wali image jitni SAME SIZE */
   .media-gallery__split-sticky-right {
     display: flex;
     flex-direction: column;
-    gap: var(--image-gap, 20px);
+    gap: var(--image-gap, 4px);
   }
 
-  .media-gallery__split-sticky-right .product-media-container {
+  @media screen and (min-width: 750px) {
+    .media-gallery__split-sticky-right .product-media-container {
+      width: 100%;
+      height: 100vh;
+      max-height: none;
+      aspect-ratio: auto;
+      border-radius: var(--media-radius, 0px);
+      overflow: hidden;
+      margin: 0 !important;
+      background: transparent !important;
+    }
+
+    .media-gallery__split-sticky-right .product-media,
+    .media-gallery__split-sticky-right .product-media-constraint-wrapper,
+    .media-gallery__split-sticky-right .product-media__drag-zoom-wrapper {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .media-gallery__split-sticky-right .product-media :is(deferred-media, product-model) {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  /* Saari images (left + right) ek jaisi dikhengi */
+  .media-gallery__split-sticky .product-media-container :is(img, video) {
     width: 100%;
-    border-radius: var(--media-radius, 0px);
-    overflow: hidden;
-    margin: 0 !important;
-    background: transparent !important;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
   }
 
   /* Ensure images fill their container properly */
