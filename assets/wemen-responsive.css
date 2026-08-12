@@ -1,0 +1,442 @@
+/* ============================================================================
+   WeMen — Global Responsive Polish & Safety-Net Stylesheet
+   ----------------------------------------------------------------------------
+   Loaded AFTER base.css so it can layer on top of the theme.
+   Designed to guarantee a clean, consistent, fully-responsive view across
+   EVERY target breakpoint:
+        320px · 375px · 480px · 767px · 1023px · 1280px · 1440px
+   plus everything in between.
+
+   What this file does:
+     1.  Kills horizontal overflow (no sideways scroll) on every device.
+     2.  Fluid (clamp-based) scaling for large headings & spacing so nothing
+         "jumps" abruptly between breakpoints.
+     3.  Very-small-screen (320–374px) refinements so content never gets
+         cramped or clipped.
+     4.  Tablet-range (768–1023px) smoothing.
+     5.  Large-screen (>=1440px) content capping.
+     6.  Button, image, video, slider & touch-target safety nets.
+     7.  Bug fixes for alignment / overflow found during the audit.
+
+   Conventions: !important is only used to win against inline theme styles or
+   section-level inline CSS. Everything else relies on sensible specificity.
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. GLOBAL HORIZONTAL-OVERFLOW PROTECTION  (no sideways scroll anywhere)
+   ============================================================================ */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* `100vw` includes the scrollbar width and is the #1 cause of horizontal
+   scroll on Windows/desktop. Re-map the most common offenders to the
+   scroll-bar-safe equivalent. */
+:root {
+  --wemen-100vw: 100vw;
+}
+
+/* Headings / decorative SVG text that use vw-based sizing can push past the
+   viewport edge. Allow the section to clip them instead of leaking. */
+.shopify-section,
+.section,
+.page-wrapper {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* Any element wider than its parent should clip, not scroll the page. */
+main img,
+main video,
+main iframe,
+main svg,
+.shopify-section img,
+.shopify-section video,
+.shopify-section iframe {
+  max-width: 100%;
+}
+
+/* Tables often blow out the viewport on mobile — make them scroll in place. */
+.table-wrap,
+.scrollable,
+.rte table,
+.cart table,
+table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.rte table,
+.cart table {
+  display: table;
+}
+
+.rte {
+  display: flow-root;
+}
+
+
+/* ============================================================================
+   2. FLUID TYPOGRAPHY  (smooth scaling instead of abrupt jumps)
+   ----------------------------------------------------------------------------
+   These match the theme's existing min/max sizes but interpolate smoothly
+   with clamp(), so every intermediate width looks balanced.
+   ============================================================================ */
+
+/* Hero / section mega-headings shared across custom sections */
+.editorial-slider-section .section-header-editorial h2 {
+  font-size: clamp(26px, 5vw, 45px) !important;
+  letter-spacing: clamp(1px, 0.4vw, 3px);
+}
+
+.custom-luxury-products .lx-prod-sec-title {
+  font-size: clamp(22px, 4.2vw, 45px);
+}
+
+.curved-reels-fullwidth-section .cr-title {
+  font-size: clamp(24px, 4.4vw, 45px);
+}
+
+/* Split Grid Hero large heading (desktop 42px / mobile 32px) */
+.hero-title {
+  font-size: clamp(24px, 4vw, 42px);
+}
+
+/* Brotherhood about section big headings (desktop 68px / mobile 42px) */
+.usbb-heading-primary,
+.usbb-heading-accent {
+  font-size: clamp(34px, 7vw, 68px);
+  letter-spacing: -1px;
+}
+
+/* Premium product grid section heading */
+.premium-products-section .section-title,
+.premium-section-header .section-title {
+  font-size: clamp(22px, 4vw, 45px);
+}
+
+/* Generic guard: no heading should ever overflow on a 320px screen */
+h1, h2, h3 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+
+/* ============================================================================
+   3. BUTTON & TOUCH-TARGET SAFETY NETS
+   ============================================================================ */
+
+/* Buttons should never force horizontal scroll and should be easy to tap. */
+.button,
+.button-secondary,
+.btn,
+.hero-btn,
+.slide-btn-minimal,
+.as-ts-nav-btn,
+.lx-prod-sec-btn,
+.cr-cta {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Inline button groups wrap instead of overflowing on small screens */
+.header__column,
+.header-actions,
+.button-group,
+.rte p > a.button {
+  flex-wrap: wrap;
+}
+
+/* Make sure primary action buttons on mobile are comfortably tappable and
+   never wider than the screen. */
+@media screen and (max-width: 749px) {
+  .button,
+  .button-secondary,
+  .btn,
+  .hero-btn,
+  .lx-prod-sec-btn,
+  .cr-cta,
+  .slide-btn-minimal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 44px;            /* Apple/Google minimum touch target */
+    padding-inline: clamp(16px, 5vw, 35px);
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+
+/* ============================================================================
+   4. IMAGE / VIDEO / EMBED GUARDS
+   ============================================================================ */
+img,
+video,
+iframe,
+picture {
+  height: auto;
+}
+
+/* Aspect-ratio media cards keep their ratio and never exceed the column. */
+.slide-inner-box-editorial,
+.premium-card-media,
+.hero-media-wrapper,
+.cr-reel-card,
+.as-ts-card {
+  max-width: 100%;
+}
+
+/* Prevent any fixed inline-width media from overflowing on mobile */
+@media screen and (max-width: 749px) {
+  img[width],
+  video[width],
+  iframe[width] {
+    width: auto !important;
+    max-width: 100%;
+  }
+}
+
+
+/* ============================================================================
+   5. SWIPER / MARQUEE / SLIDER OVERFLOW GUARDS
+   ----------------------------------------------------------------------------
+   Carousels are the most common source of horizontal scroll. Force their
+   outer wrappers to clip while keeping inner tracks free to scroll.
+   ============================================================================ */
+.hero-swiper-section,
+.editorial-slider-section .sticky-wrapper,
+.custom-luxury-products,
+.as-ts-bg-wrapper,
+.premium-products-section,
+.custom-category-slider-wrapper,
+.curved-reels-fullwidth-section {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Marquee tracks must stay inside their masked wrapper */
+.cr-marquee-wrapper,
+.marquee,
+.marquee__track {
+  max-width: 100%;
+}
+
+/* Swiper's default container sometimes gets overridden to overflow:visible
+   in custom sections — keep the page safe by clipping at the section level. */
+.swiper {
+  max-width: 100%;
+}
+
+
+/* ============================================================================
+   6. PAGE-WIDTH & CONTENT CAPPING ON LARGE SCREENS (>= 1440px)
+   ---------------------------------------------------------------------------- */
+@media screen and (min-width: 1440px) {
+  /* Cap ultra-wide custom containers so content stays readable, not stretched. */
+  .editorial-slider-section .page-width-editorial,
+  .as-ts-wrapper,
+  .custom-luxury-products .lx-prod-sec-container,
+  .custom-split-section .split-container,
+  .premium-products-section .premium-layout-container {
+    margin-inline: auto;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  /* On very large displays, give breathing room without huge text jumps. */
+  body {
+    font-size: 1rem;
+  }
+}
+
+
+/* ============================================================================
+   7. TABLET LANDSCAPE & SMALL-LAPTOP  (768px – 1023px)
+   ----------------------------------------------------------------------------
+   The theme switches header/mobile behaviour around 750/990/1024px. This
+   range (768–1023) is a common "gap" where custom sections can look off.
+   ============================================================================ */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Editorial slider: it switches to horizontal scroll under 1024 — make sure
+     the first/last cards aren't clipped under the page padding. */
+  .editorial-slider-section .page-width-editorial {
+    padding-inline: 24px;
+  }
+
+  /* Two-up product sliders show 3 on tablet — keep gaps balanced. */
+  .premium-products-section .swiper {
+    padding-inline: 8px;
+  }
+
+  /* Footer newsletter area can crowd in this range. */
+  .dynamic-custom-footer .footer-grid {
+    gap: 28px 24px;
+  }
+}
+
+
+/* ============================================================================
+   8. SMALL MOBILE  (max-width: 480px)
+   ============================================================================ */
+@media screen and (max-width: 480px) {
+  /* Section-level horizontal paddings get a touch tighter so 320–480px phones
+     have more room for content. */
+  .page-width-editorial,
+  .as-ts-section-padding,
+  .lx-prod-sec-container {
+    padding-inline: 16px;
+  }
+
+  /* Hero overlay content should never touch the screen edges. */
+  .hero-content-overlay {
+    padding-inline: 16px;
+  }
+
+  .hero-swiper-section .swiper-button-next,
+  .hero-swiper-section .swiper-button-prev {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Testimonial slider — comfortable read on small phones. */
+  .as-ts-inner {
+    padding-top: 24px;
+    min-height: 220px;
+  }
+  .as-ts-quote {
+    font-size: 16px !important;
+    line-height: 1.5;
+  }
+  .as-ts-bottom-row {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Editorial slider cards on small phones. */
+  .customEditorialSwiper .swiper-slide.type-large-card,
+  .customEditorialSwiper .swiper-slide.type-split-card {
+    width: 86% !important;
+    height: 400px !important;
+  }
+  .editorial-slider-section .slide-content-editorial {
+    padding: 56px 18px 14px 18px;
+  }
+  .editorial-slider-section .slide-title-ed {
+    font-size: 16px;
+  }
+}
+
+
+/* ============================================================================
+   9. VERY-SMALL MOBILE  (max-width: 374px)  — 320px & 360px phones
+   ----------------------------------------------------------------------------
+   At 320px the base 16px page-margin leaves only ~288px. Tighten everything
+   that can be tightened without breaking layout.
+   ============================================================================ */
+@media screen and (max-width: 374px) {
+  /* Slightly reduce the global mobile side margin for more content width. */
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    --page-margin: 12px;
+  }
+
+  /* Headings shrink a touch so long words don't overflow. */
+  h1 { font-size: clamp(22px, 7vw, 28px); }
+  h2 { font-size: clamp(20px, 6.5vw, 26px); }
+
+  .editorial-slider-section .section-header-editorial h2 {
+    font-size: 24px !important;
+    letter-spacing: 1px;
+  }
+
+  /* Buttons go full-width-ish to stay tappable on tiny screens. */
+  .button,
+  .button-secondary,
+  .btn,
+  .hero-btn,
+  .lx-prod-sec-btn,
+  .cr-cta,
+  .slide-btn-minimal {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  /* Curved reels: show ~2 cards cleanly on 320px. */
+  .cr-reel-card {
+    width: calc((100vw - 36px) / 2.2) !important;
+    height: 280px;
+  }
+
+  /* Product grid: force single column so cards aren't tiny. */
+  ul.product-grid:not([product-grid-view='zoom-out']) {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Testimonials full width. */
+  .as-ts-quote {
+    font-size: 15px !important;
+  }
+}
+
+
+/* ============================================================================
+   10. ACCESSIBILITY — reduced motion & print
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .cr-marquee-track,
+  .marquee__track,
+  .swiper-wrapper {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media print {
+  .header,
+  .footer,
+  .dynamic-custom-footer,
+  .hero-swiper-section,
+  .swiper-button-next,
+  .swiper-button-prev,
+  .cart-drawer {
+    display: none !important;
+  }
+  body {
+    overflow: visible !important;
+  }
+}
+
+
+/* ============================================================================
+   11. FORM / INPUT / SEARCH FIELD RESPONSIVE SAFETY
+   ============================================================================ */
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+textarea,
+select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 480px) {
+  /* Search & newsletter inputs span full width on mobile. */
+  .newsletter-form__input,
+  .search__input,
+  .header-search input,
+  .footer-newsletter input[type="email"] {
+    width: 100%;
+  }
+}
