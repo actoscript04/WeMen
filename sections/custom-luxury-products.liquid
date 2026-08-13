@@ -1,0 +1,471 @@
+{% comment %}
+  Custom Luxury Products Section
+  - 1800px Max Container Width
+  - Unique CSS Class Prefix: lx-prod-sec-
+  - Fully Dynamic Schema (Blocks, Settings, Text, Buttons)
+  - Responsive Grid & Horizontal Scroll Carousel for Mobile
+{% endcomment %}
+
+<div class="lx-prod-sec-wrapper" id="lx-prod-sec-{{ section.id }}">
+  <div class="lx-prod-sec-container">
+    <div class="lx-prod-sec-slider-outer">
+      {% if section.settings.heading != blank or section.settings.subheading != blank %}
+        <div class="lx-prod-sec-header">
+          {% if section.settings.heading != blank %}
+            <h2 class="lx-prod-sec-title">{{ section.settings.heading | escape }}</h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <p class="lx-prod-sec-subtitle">{{ section.settings.subheading | escape }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+      <button type="button" class="lx-prod-sec-nav-btn lx-prod-sec-prev" aria-label="Previous slide">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
+      <div class="lx-prod-sec-grid" id="lx-prod-sec-grid-{{ section.id }}">
+        {% for block in section.blocks %}
+          <div class="lx-prod-sec-card" {{ block.shopify_attributes }}>
+            <div class="lx-prod-sec-card-inner">
+              <div class="lx-prod-sec-image-wrap">
+                {% if block.settings.image != blank %}
+                  <img 
+                    src="{{ block.settings.image | image_url: width: 800 }}" 
+                    alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    class="lx-prod-sec-img"
+                  >
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag: 'lx-prod-sec-img lx-prod-sec-placeholder' }}
+                {% endif %}
+                <div class="lx-prod-sec-overlay"></div>
+              </div>
+
+              <div class="lx-prod-sec-content">
+                {% if block.settings.title != blank %}
+                  <h3 class="lx-prod-sec-card-title">{{ block.settings.title | escape }}</h3>
+                {% endif %}
+
+                {% if block.settings.button_label != blank %}
+                  <a href="{{ block.settings.button_link | default: '#' }}" class="lx-prod-sec-btn">
+                    {{ block.settings.button_label | escape }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <button type="button" class="lx-prod-sec-nav-btn lx-prod-sec-next" aria-label="Next slide">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Base Container Styles */
+  #lx-prod-sec-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  .lx-prod-sec-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Header Styles - Positioned Over Slider */
+  .lx-prod-sec-header {
+    position: absolute;
+    top: 40px; /* Distance from top of the images */
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0 20px;
+    z-index: 20;
+    pointer-events: none; /* Allows interacting with slides underneath if needed */
+  }
+
+  .lx-prod-sec-title {
+    font-size: 45px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 -5px 0;
+    line-height: 1.2;
+  }
+
+  .lx-prod-sec-subtitle {
+    font-size: 18px;
+    color: {{ section.settings.text_color }};
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Slider Outer Wrapper & Arrows */
+  .lx-prod-sec-slider-outer {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .lx-prod-sec-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #000000;
+  }
+
+  .lx-prod-sec-nav-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+  }
+
+  .lx-prod-sec-nav-btn:hover {
+    background: #000000;
+    color: #ffffff;
+  }
+
+  .lx-prod-sec-prev {
+    left: 15px;
+  }
+
+  .lx-prod-sec-next {
+    right: 15px;
+  }
+
+  /* Grid Layout (Desktop First) */
+  .lx-prod-sec-grid {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0;
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    padding: 0;
+  }
+
+  .lx-prod-sec-grid::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .lx-prod-sec-card {
+    flex: 0 0 50%;
+    min-width: 50%;
+    height: 100vh;
+    min-height: 500px;
+    box-sizing: border-box;
+  }
+
+  .lx-prod-sec-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    background-color: transparent;
+  }
+
+  .lx-prod-sec-image-wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .lx-prod-sec-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .lx-prod-sec-placeholder {
+    background: #e0e0e0;
+  }
+
+  /* Overlay for Dark Bottom & Top Gradients */
+  .lx-prod-sec-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%);
+    pointer-events: none;
+  }
+
+  /* Content Overlay */
+  .lx-prod-sec-content {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .lx-prod-sec-card-title {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .lx-prod-sec-btn {
+    display: inline-block;
+    padding: 10px 32px;
+    border: 1px solid #ffffff;
+    border-radius: 30px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+
+  .lx-prod-sec-btn:hover {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  /* Responsive Breakpoints */
+  @media screen and (max-width: 1200px) {
+    .lx-prod-sec-container {
+      padding: 0;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    .lx-prod-sec-title {
+      font-size: 26px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .lx-prod-sec-container {
+      padding: 0;
+    }
+    .lx-prod-sec-card {
+      flex: 0 0 100%;
+      min-width: 100%;
+      height: 70vh;
+      min-height: 400px;
+    }
+    .lx-prod-sec-card-inner {
+      height: 100%;
+    }
+    .lx-prod-sec-card-title {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    .lx-prod-sec-btn {
+      padding: 8px 24px;
+      font-size: 13px;
+    }
+    .lx-prod-sec-nav-btn {
+      width: 36px;
+      height: 36px;
+    }
+    .lx-prod-sec-prev {
+      left: 5px;
+    }
+    .lx-prod-sec-next {
+      right: 5px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const grid = document.getElementById('lx-prod-sec-grid-{{ section.id }}');
+    const prevBtn = document.querySelector('#lx-prod-sec-{{ section.id }} .lx-prod-sec-prev');
+    const nextBtn = document.querySelector('#lx-prod-sec-{{ section.id }} .lx-prod-sec-next');
+
+    if (grid && prevBtn && nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        const card = grid.querySelector('.lx-prod-sec-card');
+        if (card) {
+          const scrollAmount = card.offsetWidth;
+          grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+      });
+
+      prevBtn.addEventListener('click', () => {
+        const card = grid.querySelector('.lx-prod-sec-card');
+        if (card) {
+          const scrollAmount = card.offsetWidth;
+          grid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+      });
+
+      // Auto-slide functionality for mobile
+      let autoSlideInterval;
+      
+      function startAutoSlide() {
+        if (window.innerWidth <= 600) {
+          autoSlideInterval = setInterval(() => {
+            const card = grid.querySelector('.lx-prod-sec-card');
+            if (card) {
+              const maxScrollLeft = grid.scrollWidth - grid.clientWidth;
+              if (grid.scrollLeft >= maxScrollLeft - 10) { 
+                grid.scrollTo({ left: 0, behavior: 'smooth' });
+              } else {
+                grid.scrollBy({ left: card.offsetWidth, behavior: 'smooth' });
+              }
+            }
+          }, 3000); // 3 seconds per slide
+        }
+      }
+
+      function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+      }
+
+      startAutoSlide();
+
+      // Pause auto-slide on touch or interaction
+      grid.addEventListener('touchstart', stopAutoSlide, { passive: true });
+      grid.addEventListener('touchend', () => {
+        setTimeout(startAutoSlide, 3000);
+      });
+      grid.addEventListener('mouseenter', stopAutoSlide);
+      grid.addEventListener('mouseleave', startAutoSlide);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Products Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "LUXURY PRODUCTS"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Continue exploring the Maison's collections"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Product / Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category Name"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Discover"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Products Slider",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "Category Name"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Accessories"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Perfumes"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

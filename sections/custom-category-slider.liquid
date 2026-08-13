@@ -1,0 +1,514 @@
+<!-- Swiper CSS & JS CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* 1800px Max Width Container */
+  .category-slider-container-{{ section.id }} {
+    max-width: 1800px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+  }
+
+  .custom-category-slider-wrapper-{{ section.id }} {
+    position: relative;
+    padding: 0 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .custom-category-slider-{{ section.id }} {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .category-card {
+    position: relative;
+    border-radius: {{ section.settings.card_border_radius }}px;
+    overflow: hidden;
+    height: {{ section.settings.card_height_mobile }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 30px 20px;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .category-card {
+      height: {{ section.settings.card_height_desktop }}px;
+    }
+  }
+
+  .category-card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .category-card:hover .category-card__image {
+    transform: scale(1.06);
+  }
+
+  .category-card__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }}) 100%);
+    z-index: 2;
+  }
+
+  .category-card__content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .category-card__title {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.title_font_size_mobile }}px;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+
+  @media screen and (min-width: 750px) {
+    .category-card__title {
+      font-size: {{ section.settings.title_font_size }}px;
+    }
+  }
+
+  .category-card__button {
+    display: inline-block;
+    padding: 10px 36px;
+    border-radius: 50px;
+    border: 1px solid {{ section.settings.text_color }};
+    background-color: rgba(255, 255, 255, 0.15);
+    color: {{ section.settings.text_color }};
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+  }
+
+  .category-card:hover .category-card__button {
+    background-color: {{ section.settings.text_color }};
+    color: #000000;
+  }
+
+  /* Navigation Buttons */
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-next,
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-prev {
+    width: 48px !important;
+    height: 48px !important;
+    background-color: #ffffff !important;
+    border-radius: 50%;
+    color: #000000 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-next::after,
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-prev::after {
+    content: none !important;
+  }
+
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-next svg, 
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-prev svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+  }
+
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-prev {
+    left: 5px;
+  }
+
+  .custom-category-slider-wrapper-{{ section.id }} .swiper-button-next {
+    right: 5px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .custom-category-slider-wrapper-{{ section.id }} .swiper-button-prev {
+      left: 20px;
+    }
+    .custom-category-slider-wrapper-{{ section.id }} .swiper-button-next {
+      right: 20px;
+    }
+  }
+
+  .category-card__placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding">
+  <div class="page-width category-slider-container-{{ section.id }}" style="max-width: 1800px !important; margin: 0 auto !important;">
+    <div class="custom-category-slider-wrapper-{{ section.id }}">
+      <div class="swiper custom-category-slider-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.button_link | default: '#' }}" class="category-card">
+                {%- if block.settings.image != blank -%}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 800 }}"
+                    alt="{{ block.settings.title | escape }}"
+                    class="category-card__image"
+                    loading="lazy"
+                    width="800"
+                    height="1000"
+                  >
+                {%- else -%}
+                  <div class="category-card__placeholder">
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {%- endif -%}
+
+                <div class="category-card__overlay"></div>
+
+                <div class="category-card__content">
+                  {%- if block.settings.title != blank -%}
+                    <h3 class="category-card__title">{{ block.settings.title }}</h3>
+                  {%- endif -%}
+
+                  {%- if block.settings.button_label != blank -%}
+                    <span class="category-card__button">{{ block.settings.button_label }}</span>
+                  {%- endif -%}
+                </div>
+              </a>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.show_navigation -%}
+          <div class="swiper-button-prev swiper-button-prev-{{ section.id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </div>
+          <div class="swiper-button-next swiper-button-next-{{ section.id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  function runSwiperInit_{{ section.id | replace: '-', '_' }}() {
+    if (typeof Swiper !== 'undefined') {
+      new Swiper('.custom-category-slider-{{ section.id }}', {
+        slidesPerView: {{ section.settings.slides_per_view_mobile }},
+        spaceBetween: {{ section.settings.space_between }},
+        loop: {{ section.settings.enable_loop }},
+        centeredSlides: {{ section.settings.centered_slides }},
+        navigation: {
+          nextEl: '.swiper-button-next-{{ section.id }}',
+          prevEl: '.swiper-button-prev-{{ section.id }}',
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 2,
+            spaceBetween: {{ section.settings.space_between }},
+          },
+          990: {
+            slidesPerView: {{ section.settings.slides_per_view_desktop }},
+            spaceBetween: {{ section.settings.space_between }},
+          }
+        }
+      });
+    } else {
+      setTimeout(runSwiperInit_{{ section.id | replace: '-', '_' }}, 100);
+    }
+  }
+
+  window.addEventListener('load', runSwiperInit_{{ section.id | replace: '-', '_' }});
+  document.addEventListener('DOMContentLoaded', runSwiperInit_{{ section.id | replace: '-', '_' }});
+
+  document.addEventListener('shopify:section:load', function(event) {
+    if (event.detail.sectionId === '{{ section.id }}') {
+      runSwiperInit_{{ section.id | replace: '-', '_' }}();
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Products Slider",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 0.1,
+      "label": "Slides per view (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "card_height_desktop",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Height (Desktop)",
+      "default": 550
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 18,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Font Size (Desktop)",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 0.1,
+      "label": "Slides per view (Mobile)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "min": 250,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Height (Mobile)",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "min": 16,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Font Size (Mobile)",
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Layout & Styling"
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Gradient Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & Button Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Slider Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show Next/Prev Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable Infinite Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "centered_slides",
+      "label": "Center Active Slide",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_slide",
+      "name": "Category Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Category Name"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Discover"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Category Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Category Slider",
+      "blocks": [
+        {
+          "type": "category_slide",
+          "settings": {
+            "title": "Accessories",
+            "button_label": "Discover"
+          }
+        },
+        {
+          "type": "category_slide",
+          "settings": {
+            "title": "Perfumes",
+            "button_label": "Discover"
+          }
+        },
+        {
+          "type": "category_slide",
+          "settings": {
+            "title": "Shoes",
+            "button_label": "Discover"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,578 @@
+{% comment %}
+  Auto Loop Media Grid
+  - Image aur Shopify-hosted uploaded video blocks
+  - Koi external video URL setting nahi hai
+  - Videos autoplay + muted + playsinline + infinite loop par chalte hain
+{% endcomment %}
+
+{% liquid
+  assign desktop_columns = section.settings.columns_desktop
+  assign mobile_columns = section.settings.columns_mobile | plus: 0
+  assign desktop_media_width = 100 | divided_by: desktop_columns
+  assign mobile_media_width = 100 | divided_by: mobile_columns
+%}
+
+<section
+  id="DynamicMedia-{{ section.id }}"
+  class="dmg-section{% if section.settings.use_original_ratio %} dmg-section--natural{% endif %}"
+  style="
+    --dmg-background: {{ section.settings.background_color }};
+    --dmg-text: {{ section.settings.text_color }};
+    --dmg-max-width: {{ section.settings.max_width }}px;
+    --dmg-columns-desktop: {{ section.settings.columns_desktop }};
+    --dmg-columns-mobile: {{ section.settings.columns_mobile }};
+    --dmg-gap: {{ section.settings.gap }}px;
+    --dmg-ratio: {{ section.settings.media_ratio }};
+    --dmg-fit: {{ section.settings.object_fit }};
+    --dmg-radius: {{ section.settings.border_radius }}px;
+    --dmg-padding-top: {{ section.settings.padding_top }}px;
+    --dmg-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --dmg-heading-size: {{ section.settings.heading_size }}px;
+    --dmg-text-align: {{ section.settings.text_alignment }};
+  "
+>
+  <div class="dmg-container{% if section.settings.full_width %} dmg-container--full{% endif %}">
+    {% if section.settings.heading != blank or section.settings.description != blank %}
+      <div class="dmg-header">
+        {% if section.settings.heading != blank %}
+          <h2 class="dmg-heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <div class="dmg-description rte">{{ section.settings.description }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="dmg-grid" role="list">
+        {% for block in section.blocks %}
+          {% capture responsive_sizes %}(min-width: 990px) {{ desktop_media_width }}vw, {{ mobile_media_width }}vw{% endcapture %}
+          {% assign image_loading = 'lazy' %}
+          {% if forloop.first %}
+            {% assign image_loading = 'eager' %}
+          {% endif %}
+
+          <article class="dmg-card" role="listitem" {{ block.shopify_attributes }}>
+            <div class="dmg-media">
+              {% case block.type %}
+                {% when 'image' %}
+                  {% if block.settings.image != blank %}
+                    {% liquid
+                      assign image_alt = block.settings.alt_text
+                      if image_alt == blank
+                        assign image_alt = block.settings.image.alt
+                      endif
+                      if image_alt == blank
+                        assign image_alt = section.settings.heading
+                      endif
+                    %}
+
+                    {{
+                      block.settings.image
+                      | image_url: width: 2400
+                      | image_tag:
+                        class: 'dmg-asset',
+                        loading: image_loading,
+                        widths: '320, 480, 640, 750, 960, 1200, 1500, 1800, 2100, 2400',
+                        sizes: responsive_sizes,
+                        alt: image_alt
+                    }}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'dmg-asset dmg-placeholder' }}
+                  {% endif %}
+
+                {% when 'video' %}
+                  {% if block.settings.video != blank %}
+                    {% liquid
+                      assign poster_image = block.settings.poster_image
+                      if poster_image == blank
+                        assign poster_image = block.settings.video.preview_image
+                      endif
+                      assign video_label = block.settings.accessibility_label
+                      if video_label == blank
+                        assign video_label = 'Looping promotional video'
+                      endif
+                    %}
+
+                    <video
+                      class="dmg-asset dmg-video"
+                      style="object-position: {{ block.settings.video_position }};"
+                      {% if poster_image != blank %}poster="{{ poster_image | image_url: width: 2000 }}"{% endif %}
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      webkit-playsinline
+                      preload="metadata"
+                      disablepictureinpicture
+                      controlslist="nodownload noplaybackrate nofullscreen"
+                      tabindex="-1"
+                      aria-label="{{ video_label | escape }}"
+                      data-dmg-video
+                    >
+                      {% for source in block.settings.video.sources %}
+                        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                      {% endfor %}
+                    </video>
+                  {% else %}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'dmg-asset dmg-placeholder' }}
+                  {% endif %}
+              {% endcase %}
+            </div>
+
+            {% if block.settings.caption != blank %}
+              <div class="dmg-caption">{{ block.settings.caption }}</div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% elsif request.design_mode %}
+      <div class="dmg-empty">
+        “Add block” par click karke Image ya Uploaded Video add karein.
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #DynamicMedia-{{ section.id }} {
+    width: 100%;
+    background: var(--dmg-background);
+    color: var(--dmg-text);
+    padding-top: var(--dmg-padding-top);
+    padding-bottom: var(--dmg-padding-bottom);
+  }
+
+  #DynamicMedia-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-container {
+    width: 100%;
+    max-width: var(--dmg-max-width);
+    margin: 0 auto;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-container--full {
+    max-width: none;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-header {
+    width: 100%;
+    margin: 0 0 clamp(20px, 3vw, 36px);
+    text-align: var(--dmg-text-align);
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-heading {
+    margin: 0;
+    color: inherit;
+    font-size: clamp(24px, 4vw, var(--dmg-heading-size));
+    line-height: 1.15;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-description {
+    max-width: 760px;
+    margin-top: 12px;
+    margin-inline: {% if section.settings.text_alignment == 'center' %}auto{% elsif section.settings.text_alignment == 'right' %}auto 0{% else %}0 auto{% endif %};
+    color: inherit;
+    opacity: 0.82;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-description > *:first-child {
+    margin-top: 0;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-description > *:last-child {
+    margin-bottom: 0;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--dmg-columns-desktop), minmax(0, 1fr));
+    gap: var(--dmg-gap);
+    width: 100%;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-card {
+    min-width: 0;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--dmg-ratio);
+    overflow: hidden;
+    border-radius: var(--dmg-radius);
+    background: rgba(127, 127, 127, 0.12);
+    isolation: isolate;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-asset {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    object-fit: var(--dmg-fit);
+  }
+
+  /* Default: har image/video apne original aspect ratio ke hisaab se height leta hai. */
+  #DynamicMedia-{{ section.id }}.dmg-section--natural .dmg-media {
+    aspect-ratio: auto;
+    background: transparent;
+  }
+
+  #DynamicMedia-{{ section.id }}.dmg-section--natural .dmg-asset {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  #DynamicMedia-{{ section.id }}.dmg-section--natural .dmg-placeholder {
+    min-height: 240px;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-video {
+    pointer-events: none;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-placeholder {
+    color: rgba(127, 127, 127, 0.4);
+    background: rgba(127, 127, 127, 0.08);
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-caption {
+    margin-top: 10px;
+    color: inherit;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  #DynamicMedia-{{ section.id }} .dmg-empty {
+    width: 100%;
+    padding: 28px;
+    border: 1px dashed currentColor;
+    border-radius: var(--dmg-radius);
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  @media screen and (max-width: 749px) {
+    #DynamicMedia-{{ section.id }} {
+      padding-top: calc(var(--dmg-padding-top) * 0.72);
+      padding-bottom: calc(var(--dmg-padding-bottom) * 0.72);
+    }
+
+    #DynamicMedia-{{ section.id }} .dmg-container {
+      padding-inline: 14px;
+    }
+
+    #DynamicMedia-{{ section.id }} .dmg-grid {
+      grid-template-columns: repeat(var(--dmg-columns-mobile), minmax(0, 1fr));
+    }
+
+    #DynamicMedia-{{ section.id }} .dmg-heading {
+      font-size: clamp(22px, 7vw, var(--dmg-heading-size));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* User ne continuous loop manga hai; video loop intentionally active rakha gaya hai. */
+    #DynamicMedia-{{ section.id }} .dmg-video {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('DynamicMedia-{{ section.id }}');
+    if (!root || root.dataset.dmgReady === 'true') return;
+
+    root.dataset.dmgReady = 'true';
+    const videos = Array.from(root.querySelectorAll('[data-dmg-video]'));
+
+    const keepPlaying = (video) => {
+      if (!video || !video.isConnected || document.hidden) return;
+
+      video.loop = true;
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+
+      if (video.paused) {
+        const playRequest = video.play();
+        if (playRequest && typeof playRequest.catch === 'function') {
+          playRequest.catch(() => {});
+        }
+      }
+    };
+
+    videos.forEach((video) => {
+      video.addEventListener('ended', () => {
+        video.currentTime = 0;
+        keepPlaying(video);
+      });
+
+      video.addEventListener('pause', () => {
+        window.setTimeout(() => keepPlaying(video), 120);
+      });
+
+      video.addEventListener('loadeddata', () => keepPlaying(video), { once: true });
+      keepPlaying(video);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) videos.forEach(keepPlaying);
+    });
+
+    root.addEventListener('shopify:block:select', () => {
+      videos.forEach(keepPlaying);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Auto loop media grid",
+  "tag": "section",
+  "class": "section-auto-loop-media-grid",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Image & video gallery"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop heading size",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 720,
+      "max": 1800,
+      "step": 60,
+      "unit": "px",
+      "label": "Maximum content width",
+      "default": 1320
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Desktop columns",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile columns",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between items",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "use_original_ratio",
+      "label": "Use original image/video height",
+      "info": "On rehne par har image aur video ki height uske original size/aspect ratio se automatically aayegi.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Fixed ratio (when original height is off)",
+      "options": [
+        { "value": "16 / 9", "label": "Landscape 16:9" },
+        { "value": "4 / 3", "label": "Landscape 4:3" },
+        { "value": "1 / 1", "label": "Square 1:1" },
+        { "value": "4 / 5", "label": "Portrait 4:5" },
+        { "value": "9 / 16", "label": "Vertical 9:16" }
+      ],
+      "default": "16 / 9"
+    },
+    {
+      "type": "select",
+      "id": "object_fit",
+      "label": "Media fitting (when original height is off)",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Show full media" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Colors and spacing"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Upload image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Image alt text",
+          "info": "Accessibility aur SEO ke liye."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Uploaded video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Upload video",
+          "info": "Shopify Files se video select ya upload karein. External URL ki zaroorat nahi hai."
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "Poster image (optional)",
+          "info": "Video load hone se pehle dikhai degi."
+        },
+        {
+          "type": "select",
+          "id": "video_position",
+          "label": "Video position",
+          "options": [
+            { "value": "center center", "label": "Center" },
+            { "value": "center top", "label": "Top" },
+            { "value": "center bottom", "label": "Bottom" },
+            { "value": "left center", "label": "Left" },
+            { "value": "right center", "label": "Right" }
+          ],
+          "default": "center center"
+        },
+        {
+          "type": "text",
+          "id": "accessibility_label",
+          "label": "Video accessibility label",
+          "default": "Looping promotional video"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Auto loop media grid",
+      "blocks": [
+        { "type": "video" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

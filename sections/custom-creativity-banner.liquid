@@ -1,0 +1,213 @@
+
+<style>
+  .custom-banner-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding: 80px 40px 70px; /* Bottom padding added to give space to small text */
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .custom-banner-container-{{ section.id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .custom-banner-text-{{ section.id }} {
+    flex: 1 1 40%;
+    color: {{ section.settings.text_color }};
+    min-width: 300px;
+  }
+
+  .custom-banner-text-{{ section.id }} p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    font-weight: 500;
+  }
+
+  .custom-banner-image-{{ section.id }} {
+    flex: 1 1 50%;
+    min-width: 300px;
+  }
+
+  .custom-banner-image-{{ section.id }} img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Updated Top Heading Section */
+  .custom-banner-heading-{{ section.id }} {
+    margin-bottom: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Chhote text ko right align karne ke liye */
+  }
+
+  .custom-banner-heading-{{ section.id }} h1 {
+    font-size: 11vw;
+    margin: 0;
+    line-height: 0.85;
+    text-transform: uppercase;
+    color: {{ section.settings.heading_color }};
+    font-weight: 600;
+    letter-spacing: -2px;
+    width: 100%; /* Bada text pura space lega */
+    text-align: left;
+  }
+
+  .custom-banner-heading-{{ section.id }} .small-subtext {
+    font-size: 2.5vw;
+    color: {{ section.settings.subheading_color }};
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding-right: 1vw; /* 'S' ke theek niche align karne ke liye thoda margin */
+    margin-top: -15px !important;
+  }
+
+  /* Responsive Design - Mobile aur Tablet ke liye */
+  @media screen and (max-width: 990px) {
+    .custom-banner-container-{{ section.id }} {
+      flex-direction: column;
+    }
+    .custom-banner-text-{{ section.id }},
+    .custom-banner-image-{{ section.id }} {
+      flex: 1 1 100%;
+      width: 100%;
+    }
+    .custom-banner-text-{{ section.id }} p {
+      font-size: 15px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .custom-banner-{{ section.id }} {
+      padding: 40px 20px 30px;
+    }
+    .custom-banner-heading-{{ section.id }} h1 {
+      font-size: 20vw;
+    }
+    .custom-banner-heading-{{ section.id }} .small-subtext {
+      font-size: 6vw; /* Mobile par chhota text thoda visible rakhne ke liye */
+      margin-top: 0px !important;
+    }
+     .custom-banner-container-{{ section.id }} {
+
+    gap: 20px;
+  }
+  }
+</style>
+
+<div class="custom-banner-{{ section.id }}">
+  <!-- Top Heading Text Box (Large + Small) -->
+  <div class="custom-banner-heading-{{ section.id }}">
+    {% if section.settings.heading_text != blank %}
+      <h1>{{ section.settings.heading_text }}</h1>
+    {% endif %}
+    
+    {% if section.settings.subheading_text != blank %}
+      <p class="small-subtext">{{ section.settings.subheading_text }}</p>
+    {% endif %}
+  </div>
+
+  <div class="custom-banner-container-{{ section.id }}">
+    
+    <!-- Left Text Section -->
+    <div class="custom-banner-text-{{ section.id }}">
+      {% if section.settings.paragraph_1 != blank %}
+        <p>{{ section.settings.paragraph_1 | newline_to_br }}</p>
+      {% endif %}
+      {% if section.settings.paragraph_2 != blank %}
+        <p>{{ section.settings.paragraph_2 | newline_to_br }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Right Image Section -->
+    <div class="custom-banner-image-{{ section.id }}">
+      {% if section.settings.main_image != blank %}
+        {{ section.settings.main_image | image_url: width: 1000 | image_tag: alt: section.settings.main_image.alt, loading: 'lazy' }}
+      {% else %}
+        <div style="background: #e0e0e0; width: 100%; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; color: #666;">
+          Please select an image from settings
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Creativity Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#d76751"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Paragraph Text Color",
+      "default": "#2b1a17"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_1",
+      "label": "First Paragraph",
+      "default": "Innovation doesn't follow rules — it rewrites them. Creativity lives in contrast: logic meets spontaneity, design meets disruption."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_2",
+      "label": "Second Paragraph",
+      "default": "We craft digital experiences that challenge norms, stir curiosity, and spark movement. This is where structure dances with spontaneity."
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Top Large Text",
+      "default": "BUILT BY BROTHERS"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Top Large Text Color",
+      "default": "#f4ebd9"
+    },
+    {
+      "type": "text",
+      "id": "subheading_text",
+      "label": "Top Small Text (Right Aligned)",
+      "default": "FOR THE BROTHERHOOD"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Top Small Text Color",
+      "default": "#f4ebd9"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Creativity Banner"
+    }
+  ]
+}
+{% endschema %}

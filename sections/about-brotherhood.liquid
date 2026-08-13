@@ -1,0 +1,575 @@
+{% comment %}
+  Section: USBB Style Dynamic About Us Hero
+  Features: Background watermark text, top social bar, 3D bottom illustration with BROTHERHOOD text & contact pill.
+{% endcomment %}
+
+<div class="usbb-about-section section-{{ section.id }}">
+  {%- if section.settings.show_watermark -%}
+    <div class="usbb-bg-watermark" aria-hidden="true">
+      <span>{{ section.settings.watermark_text }}</span>
+      <span>{{ section.settings.watermark_text }}</span>
+      <span>{{ section.settings.watermark_text }}</span>
+    </div>
+  {%- endif -%}
+
+  <div class="usbb-container">
+    <!-- Top Bar: Logo/Brand & Social Icons -->
+    <div class="usbb-topbar">
+      <div class="usbb-brand-logo">
+        {{ section.settings.brand_logo_text }}
+      </div>
+      <div class="usbb-social-icons">
+        {%- if section.settings.fb_link != blank -%}
+          <a href="{{ section.settings.fb_link }}" class="social-icon fb" aria-label="Facebook" target="_blank">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H7.5v-3H10V9.5C10 7.01 11.49 5.65 13.7 5.65c1.06 0 2.17.19 2.17.19v2.38h-1.22c-1.23 0-1.62.77-1.62 1.56V12h2.7l-.43 3h-2.27v6.8c4.56-.93 8-4.96 8-9.8z"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.li_link != blank -%}
+          <a href="{{ section.settings.li_link }}" class="social-icon li" aria-label="LinkedIn" target="_blank">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.ig_link != blank -%}
+          <a href="{{ section.settings.ig_link }}" class="social-icon ig" aria-label="Instagram" target="_blank">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.pin_link != blank -%}
+          <a href="{{ section.settings.pin_link }}" class="social-icon pin" aria-label="Pinterest" target="_blank">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Main Content Block -->
+    <div class="usbb-content-block">
+      {%- if section.settings.sub_title != blank -%}
+        <h4 class="usbb-sub-title">{{ section.settings.sub_title }}</h4>
+      {%- endif -%}
+
+      {%- if section.settings.heading_line1 != blank -%}
+        <h1 class="usbb-heading-primary">{{ section.settings.heading_line1 }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.heading_line2 != blank -%}
+        <h2 class="usbb-heading-accent">{{ section.settings.heading_line2 }}</h2>
+      {%- endif -%}
+
+      <div class="usbb-red-divider"></div>
+
+      {%- if section.settings.body_text != blank -%}
+        <div class="usbb-body-paragraph">
+          {{ section.settings.body_text }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Bottom Graphic Illustration Area -->
+    <div class="usbb-graphic-wrapper">
+      {%- if section.settings.custom_graphic_image != blank -%}
+        <img 
+          src="{{ section.settings.custom_graphic_image | image_url: width: 1200 }}" 
+          alt="{{ section.settings.heading_line1 }}" 
+          loading="lazy" 
+          width="{{ section.settings.custom_graphic_image.width }}" 
+          height="{{ section.settings.custom_graphic_image.height }}"
+          class="usbb-graphic-img"
+        >
+      {%- else -%}
+        <!-- SVG Vector Graphic with 3D BROTHERHOOD Perspective Text -->
+        <div class="usbb-vector-perspective">
+          <svg viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet" class="usbb-svg-illustration">
+            <defs>
+              <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#e31e24" />
+                <stop offset="100%" stop-color="#b80c11" />
+              </linearGradient>
+
+              <!-- Perspective Mask / Clip for 3D Text -->
+              <clipPath id="perspectiveClip">
+                <polygon points="20,520 450,230 550,230 980,520" />
+              </clipPath>
+            </defs>
+
+            <!-- Perspective Red Base Strip -->
+            <polygon points="20,520 450,230 550,230 980,520" fill="url(#redGrad)" />
+
+            <!-- Perspective White Stripes -->
+            <polygon points="110,520 460,240 478,240 200,520" fill="#ffffff" />
+            <polygon points="280,520 482,240 498,240 370,520" fill="#ffffff" />
+            <polygon points="460,520 500,240 512,240 540,520" fill="#ffffff" />
+            <polygon points="630,520 516,240 530,240 730,520" fill="#ffffff" />
+            <polygon points="810,520 534,240 548,240 900,520" fill="#ffffff" />
+
+            <!-- BROTHERHOOD Perspective Text Group -->
+            <g clip-path="url(#perspectiveClip)">
+              <g transform="translate(500, 390) scale(1, 0.45) rotate(-22) skewX(52)">
+                <text x="0" y="0" text-anchor="middle" fill="#000" font-size="115" font-weight="900" font-family="Arial Black, Impact, sans-serif" letter-spacing="12">
+                  {{ section.settings.path_text | default: "BROTHERHOOD" }}
+                </text>
+              </g>
+            </g>
+
+            <!-- Walking Man Silhouette on Top -->
+            <g transform="translate(460, 125) scale(0.65)">
+              <!-- Shadow -->
+              <ellipse cx="50" cy="168" rx="35" ry="6" fill="rgba(0,0,0,0.25)" />
+              <!-- Head -->
+              <circle cx="50" cy="20" r="12" fill="#e31e24" />
+              <!-- Body Torso -->
+              <path d="M38 35 L62 35 L55 90 L40 90 Z" fill="#e31e24" />
+              <!-- Briefcase -->
+              <rect x="12" y="80" width="22" height="26" rx="3" fill="#e31e24" />
+              <path d="M18 80 L18 73 L28 73 L28 80" stroke="#e31e24" stroke-width="3" fill="none" />
+              <!-- Arms -->
+              <path d="M42 38 L25 78" stroke="#e31e24" stroke-width="8" stroke-linecap="round" />
+              <path d="M58 38 L78 72" stroke="#e31e24" stroke-width="8" stroke-linecap="round" />
+              <!-- Legs walking posture -->
+              <path d="M43 88 L18 160 L5 168" stroke="#e31e24" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <path d="M53 88 L80 155 L95 162" stroke="#e31e24" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            </g>
+          </svg>
+        </div>
+      {%- endif -%}
+
+      <!-- Bottom Floating Contact Badge -->
+      {%- if section.settings.show_contact_bar -%}
+        <div class="usbb-contact-badge">
+          {%- if section.settings.contact_phone != blank -%}
+            <a href="tel:{{ section.settings.contact_phone | replace: ' ', '' }}" class="badge-link phone">
+              {{ section.settings.contact_phone }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.contact_url_text != blank -%}
+            {%- if section.settings.contact_url != blank -%}
+              <a href="{{ section.settings.contact_url }}" class="badge-link web">
+                {{ section.settings.contact_url_text }}
+              </a>
+            {%- else -%}
+              <span class="badge-link web">{{ section.settings.contact_url_text }}</span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .section-{{ section.id }} {
+    position: relative;
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .usbb-bg-watermark {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .usbb-bg-watermark span {
+    display: block;
+    font-size: 15vw;
+    font-weight: 900;
+    line-height: 0.85;
+    text-transform: uppercase;
+    color: {{ section.settings.watermark_color }};
+    letter-spacing: -2px;
+    opacity: {{ section.settings.watermark_opacity | divided_by: 100.0 }};
+  }
+
+  .usbb-container {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .usbb-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+  }
+
+  .usbb-brand-logo {
+    font-size: 32px;
+    font-weight: 900;
+    color: {{ section.settings.accent_color }};
+    letter-spacing: -0.5px;
+  }
+
+  .usbb-social-icons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: #ffffff;
+    background-color: {{ section.settings.accent_color }};
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .social-icon:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .usbb-content-block {
+    text-align: left;
+    max-width: 820px;
+  }
+
+  .usbb-sub-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #000000;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .usbb-heading-primary {
+    font-size: 68px;
+    font-weight: 900;
+    line-height: 1.05;
+    color: {{ section.settings.primary_text_color }};
+    margin: 0;
+    letter-spacing: -1.5px;
+  }
+
+  .usbb-heading-accent {
+    font-size: 68px;
+    font-weight: 900;
+    line-height: 1.05;
+    color: {{ section.settings.accent_color }};
+    margin: 0 0 25px 0;
+    letter-spacing: -1.5px;
+  }
+
+  .usbb-red-divider {
+    width: 140px;
+    height: 4px;
+    background-color: {{ section.settings.accent_color }};
+    margin-bottom: 25px;
+    border-radius: 2px;
+  }
+
+  .usbb-body-paragraph {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #222222;
+    font-weight: 500;
+  }
+
+  .usbb-body-paragraph p {
+    margin-bottom: 16px;
+  }
+
+  .usbb-graphic-wrapper {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .usbb-graphic-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .usbb-vector-perspective {
+    width: 100%;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  .usbb-svg-illustration {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .usbb-contact-badge {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: {{ section.settings.accent_color }};
+    padding: 12px 28px;
+    border-radius: 8px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(227, 30, 36, 0.35);
+    z-index: 5;
+  }
+
+  .badge-link {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+
+  .badge-link.phone {
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    padding-right: 15px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .usbb-heading-primary,
+    .usbb-heading-accent {
+      font-size: 42px;
+    }
+
+    .usbb-sub-title {
+      font-size: 20px;
+    }
+
+    .usbb-body-paragraph {
+      font-size: 16px;
+    }
+
+    .usbb-brand-logo {
+      font-size: 26px;
+    }
+
+    .usbb-bg-watermark span {
+      font-size: 22vw;
+    }
+
+    .usbb-contact-badge {
+      bottom: 10px;
+      padding: 8px 16px;
+      gap: 8px;
+      width: 90%;
+    }
+
+    .badge-link {
+      font-size: 13px;
+    }
+
+    .badge-link.phone {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "USBB About Us Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Top Header Settings"
+    },
+    {
+      "type": "text",
+      "id": "brand_logo_text",
+      "label": "Brand Logo Text",
+      "default": "USBB."
+    },
+    {
+      "type": "url",
+      "id": "fb_link",
+      "label": "Facebook Link"
+    },
+    {
+      "type": "url",
+      "id": "li_link",
+      "label": "LinkedIn Link"
+    },
+    {
+      "type": "url",
+      "id": "ig_link",
+      "label": "Instagram Link"
+    },
+    {
+      "type": "url",
+      "id": "pin_link",
+      "label": "Pinterest Link"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Sub Title",
+      "default": "About Us"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading Line 1",
+      "default": "Built By Brothers,"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading Line 2 (Red Accent)",
+      "default": "For The Brotherhood"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body Paragraph Text",
+      "default": "<p>Most men don't need more choices. They need someone to point them toward the good stuff and save them from wasting time on the rest. That's where we come in.</p><p>Founded by 5 brothers, built in India, and made for the modern gentleman, we create pieces that help men feel a little more put together every day. Because we know you have better things to do than overthink the details.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Graphic & Perspective Text"
+    },
+    {
+      "type": "text",
+      "id": "path_text",
+      "label": "Perspective Path Text",
+      "default": "BROTHERHOOD"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_graphic_image",
+      "label": "Custom Perspective Image (Optional)",
+      "info": "Upload custom 3D image or leave blank for SVG walking man vector design"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Contact Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact_bar",
+      "label": "Show Bottom Contact Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone Number",
+      "default": "+1 443-247-3922"
+    },
+    {
+      "type": "text",
+      "id": "contact_url_text",
+      "label": "Website Display Text",
+      "default": "www.usbrandbooster.com"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Website URL Link"
+    },
+    {
+      "type": "header",
+      "content": "Background Watermark Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_watermark",
+      "label": "Show Watermark Text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "watermark_text",
+      "label": "Watermark Text",
+      "default": "BRAND"
+    },
+    {
+      "type": "color",
+      "id": "watermark_color",
+      "label": "Watermark Color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "range",
+      "id": "watermark_opacity",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "label": "Watermark Opacity",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Color Scheme"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "primary_text_color",
+      "label": "Primary Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Red Accent Color",
+      "default": "#e31e24"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "USBB About Us Hero"
+    }
+  ]
+}
+{% endschema %}

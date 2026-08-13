@@ -1,0 +1,184 @@
+<div class="collection-sub-menu" style="padding-top: {{ block.settings.padding-block-start }}px; padding-bottom: {{ block.settings.padding-block-end }}px; padding-left: {{ block.settings.padding-inline-start }}px; padding-right: {{ block.settings.padding-inline-end }}px; width: 100%;" {{ block.shopify_attributes }}>
+  <div class="collection-sub-menu__wrapper">
+    <ul class="collection-sub-menu__list">
+      {%- assign has_submenu = false -%}
+      {%- assign target_link = blank -%}
+      
+      {%- comment -%} Check if there is a specific menu for this collection {%- endcomment -%}
+      {%- if linklists[collection.handle] and linklists[collection.handle].links.size > 0 -%}
+        {%- assign has_submenu = true -%}
+        <li class="collection-sub-menu__item">
+          <a href="{{ collection.url }}" class="collection-sub-menu__link {% if current_tags == blank %}collection-sub-menu__link--active{% endif %}">
+            VIEW ALL
+          </a>
+        </li>
+        {%- for sub_link in linklists[collection.handle].links -%}
+          <li class="collection-sub-menu__item">
+            <a href="{{ sub_link.url }}" class="collection-sub-menu__link {% if sub_link.active or sub_link.current %}collection-sub-menu__link--active{% endif %}">
+              {{ sub_link.title | upcase }}
+            </a>
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Look for the collection in the selected menu {%- endcomment -%}
+        {%- for link in block.settings.menu.links -%}
+          {%- if link.active or link.child_active -%}
+            {%- assign target_link = link -%}
+            {%- break -%}
+          {%- elsif link.type == 'collection_link' and link.object.handle == collection.handle -%}
+            {%- assign target_link = link -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if target_link != blank and target_link.links.size > 0 -%}
+          {%- assign has_submenu = true -%}
+          <li class="collection-sub-menu__item">
+            <a href="{{ target_link.url }}" class="collection-sub-menu__link {% if current_tags == blank and target_link.active %}collection-sub-menu__link--active{% endif %}">
+              VIEW ALL
+            </a>
+          </li>
+          {%- for sub_link in target_link.links -%}
+            <li class="collection-sub-menu__item">
+              <a href="{{ sub_link.url }}" class="collection-sub-menu__link {% if sub_link.active or sub_link.current %}collection-sub-menu__link--active{% endif %}">
+                {{ sub_link.title | upcase }}
+              </a>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if has_submenu == false -%}
+        {%- for link in block.settings.menu.links -%}
+          <li class="collection-sub-menu__item">
+            <a href="{{ link.url }}" class="collection-sub-menu__link {% if link.active or link.current %}collection-sub-menu__link--active{% endif %}">
+              {{ link.title | upcase }}
+            </a>
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .collection-sub-menu__wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+  }
+  .collection-sub-menu__wrapper::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: -1; /* Ensures it sits underneath the active underline */
+  }
+  .collection-sub-menu__list {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+  .collection-sub-menu__list::-webkit-scrollbar { 
+    display: none; /* Safari and Chrome */
+  }
+  .collection-sub-menu__item {
+    flex-shrink: 0;
+  }
+  .collection-sub-menu__link {
+    text-decoration: none;
+    color: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding-bottom: 14px;
+    display: inline-block;
+    opacity: 0.5;
+    position: relative;
+    white-space: nowrap;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent; /* Transparent border for inactive */
+    transition: opacity 0.3s ease, border-color 0.3s ease;
+  }
+  .collection-sub-menu__link:hover {
+    opacity: 0.8;
+  }
+  .collection-sub-menu__link--active {
+    opacity: 1;
+    font-weight: 700;
+    border-bottom-color: currentColor; /* Active underline matches text color */
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Sub-Menu",
+  "tag": null,
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Sub-Menu",
+      "category": "Collections"
+    }
+  ]
+}
+{% endschema %}

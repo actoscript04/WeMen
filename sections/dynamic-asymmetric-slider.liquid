@@ -1,0 +1,545 @@
+<style>
+/* Base Layout Reset */
+.editorial-slider-section *, 
+.editorial-slider-section *::before, 
+.editorial-slider-section *::after {
+  box-sizing: border-box;
+}
+
+.editorial-slider-section {
+  background-color: #fffff;
+  width: 100%;
+  position: relative;
+}
+
+.sticky-wrapper-{{ section.id }} {
+  padding: 150px 0 100px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.customEditorialSwiper .swiper-slide {
+  flex-shrink: 0;
+}
+
+@media screen and (min-width: 1024px) {
+  .sticky-wrapper-{{ section.id }} {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .track-{{ section.id }} {
+    width: max-content !important;
+    will-change: transform;
+    padding-right: 15vw; 
+    gap: 70px;
+  }
+  .customEditorialSwiper {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .sticky-wrapper-{{ section.id }} {
+    padding: 60px 0;
+  }
+  .track-{{ section.id }} {
+    width: 100% !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    padding: 0 30px;
+    gap: 24px;
+  }
+  .track-{{ section.id }}::-webkit-scrollbar {
+    display: none;
+  }
+  .customEditorialSwiper .swiper-slide {
+    scroll-snap-align: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .track-{{ section.id }} {
+    padding: 0 20px;
+  }
+}
+
+.editorial-slider-section .page-width-editorial {
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.editorial-slider-section .section-header-editorial {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.editorial-slider-section .section-header-editorial h2 {
+  font-size: 45px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  color: #111111;
+  text-transform: uppercase;
+  font-family: "League Spartan", sans-serif;
+}
+
+.section-description-editorial{
+  font-size: 15px;
+  line-height: 1.2;
+  color: #383636;
+  font-weight: 400;
+  font-family: "League Spartan", sans-serif;
+  margin-bottom: 30px !important;
+  text-align: center;
+  padding: 0 10px;
+}
+
+
+
+/* Swiper Alignment Canvas Height fixed to hold heights layout safely */
+.customEditorialSwiper {
+  overflow: visible !important;
+  width: 100%;
+}
+
+.customEditorialSwiper .swiper-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  height: 720px; /* Full structural block safety height envelope */
+}
+
+/* Structural Alignment Wrapper Container */
+.editorial-slider-section .alignment-wrapper-min {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Image Item Geometric Box */
+.editorial-slider-section .slide-inner-box-editorial {
+  position: relative;
+  width: 100%;
+  border-radius: 0px; 
+  overflow: hidden;
+  background-color: #fafafa;
+  box-shadow: none !important;
+  transition: opacity 0.4s ease;
+}
+
+.editorial-slider-section .slide-inner-box-editorial img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.editorial-slider-section .slide-inner-box-editorial:hover img {
+  opacity: 0.92;
+}
+
+/* Text Content Left Bottom overlay */
+.editorial-slider-section .slide-content-editorial {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 80px 35px 15px 35px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0, 0, 0, 0.28) 50%, rgba(0,0,0,0) 100%);
+  color: #ffffff;
+  z-index: 3;
+  text-align: left;
+}
+
+.editorial-slider-section .slide-subheading-ed {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 0 0 8px 0;
+  opacity: 0.9;
+}
+
+.editorial-slider-section .slide-title-ed {
+  font-size: 20px;
+  margin: 0 0 20px 0;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+/* CLEAN PREMIUM MINIMAL BUTTON STYLE */
+.editorial-slider-section .slide-btn-minimal {
+  display: inline-block;
+  background-color: #ffffff; /* Pure Clean White solid look */
+  color: #111111;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: 0px; /* Sharp professional cut */
+  transition: all 0.3s ease;
+  border: 1px solid #ffffff;
+}
+
+.editorial-slider-section .slide-btn-minimal:hover {
+  background-color: transparent;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* ==========================================================================
+   DESKTOP DYNAMIC WIDTHS & MANUAL POSITION ALIGNMENT WRAPPERS (>= 1024px)
+   ========================================================================== */
+@media screen and (min-width: 1024px) {
+  
+  /* Large Item Core base size rules */
+  .customEditorialSwiper .swiper-slide.type-large-card { height: 100% !important; }
+  .customEditorialSwiper .swiper-slide.type-large-card .slide-inner-box-editorial { height: 530px; }
+
+  .customEditorialSwiper .swiper-slide.type-large-card.size-normal { width: 45vw !important; }
+  .customEditorialSwiper .swiper-slide.type-large-card.size-slim { width: 34vw !important; }
+  .customEditorialSwiper .swiper-slide.type-large-card.size-wide { width: 52vw !important; }
+  
+  /* Split Item Box Base sizes rules */
+  .customEditorialSwiper .swiper-slide.type-split-card { width: 28vw !important; height: 100% !important; }
+  .customEditorialSwiper .swiper-slide.type-split-card .split-wrapper-editorial { width: 100%; height: 620px; display: flex; flex-direction: column; }
+  .customEditorialSwiper .split-wrapper-editorial .slide-inner-box-editorial { height: calc(50% - 20px); }
+
+  /* --- FLEX ALIGNMENT ENGINE DRIVER --- */
+  .editorial-slider-section .alignment-wrapper-min.v-align-top { align-items: flex-start !important; }
+  .editorial-slider-section .alignment-wrapper-min.v-align-center { align-items: center !important; }
+  .editorial-slider-section .alignment-wrapper-min.v-align-bottom { align-items: flex-end !important; }
+
+  /* --- HORIZONTAL SEGMENT ASYMMETRIC GAPS --- */
+  .editorial-slider-section .alignment-wrapper-min.h-shift-left { padding-right: 80px; }
+  .editorial-slider-section .alignment-wrapper-min.h-shift-right { padding-left: 80px; }
+  .editorial-slider-section .alignment-wrapper-min.h-shift-normal { padding: 0; }
+}
+
+/* ==========================================================================
+   MOBILE & TABLETS RESPONSIVE HANDLING
+   ========================================================================== */
+@media screen and (max-width: 1023px) {
+  .editorial-slider-section .page-width-editorial { padding: 0 30px; }
+  .customEditorialSwiper .swiper-wrapper { height: auto !important; }
+  .editorial-slider-section .alignment-wrapper-min { display: block !important; padding: 0 !important; }
+
+  .customEditorialSwiper .swiper-slide.type-large-card,
+  .customEditorialSwiper .swiper-slide.type-split-card {
+    width: 78% !important;
+    height: 460px !important;
+    margin: 0 !important;
+  }
+  .customEditorialSwiper .swiper-slide.type-large-card .slide-inner-box-editorial { height: 100% !important; }
+  .customEditorialSwiper .swiper-slide.type-split-card .split-wrapper-editorial { height: 100% !important; display: flex; flex-direction: column; gap: 20px !important; }
+  .customEditorialSwiper .split-wrapper-editorial .slide-inner-box-editorial { height: calc(50% - 10px) !important; margin: 0 !important; }
+}
+
+@media screen and (max-width: 480px) {
+  .editorial-slider-section .page-width-editorial { padding: 0 0px; }
+  .customEditorialSwiper .swiper-slide.type-large-card,
+  .customEditorialSwiper .swiper-slide.type-split-card { width: 88% !important; height: 420px !important; }
+  .editorial-slider-section .slide-title-ed { font-size: 17px; margin-bottom: 15px; }
+  .editorial-slider-section .slide-btn-minimal { padding: 10px 22px; font-size: 10px; }
+}
+</style>
+
+
+
+
+<div class="editorial-slider-section section-{{ section.id }}" id="pinned-container-{{ section.id }}">
+  <div class="sticky-wrapper-{{ section.id }}">
+    <div class="page-width-editorial">
+    
+    {%- if section.settings.heading != blank -%}
+      <div class="section-header-editorial">
+        <h2>
+          {% if section.settings.show_icon and section.settings.icon_svg != blank %}
+            <span class="header-icon-editorial">{{ section.settings.icon_svg }}</span>
+          {% endif %}
+          {{ section.settings.heading }}
+        </h2>
+        <div>
+          <p class="section-description-editorial">
+            {{ section.settings.description }}
+          </p>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Main Swiper -->
+    <div class="swiper customEditorialSwiper">
+      <div class="swiper-wrapper track-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          
+          {%- if block.type == 'single_slide' -%}
+            <!-- Slide Block A / D (Large Image with Manual Control Wrapper) -->
+            <div class="swiper-slide type-large-card size-{{ block.settings.card_size }}" {{ block.shopify_attributes }}>
+              <div class="alignment-wrapper-min v-align-{{ block.settings.v_alignment }} h-shift-{{ block.settings.h_shift }}">
+                <div class="slide-inner-box-editorial">
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | image_url: width: 1400 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                  
+                  {%- if block.settings.link != blank -%}
+                    <a href="{{ block.settings.link }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></a>
+                  {%- endif -%}
+                  <div class="slide-content-editorial">
+                    {%- if block.settings.subheading != blank -%}<p class="slide-subheading-ed">{{ block.settings.subheading }}</p>{%- endif -%}
+                    {%- if block.settings.title != blank -%}<h3 class="slide-title-ed">{{ block.settings.title }}</h3>{%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          {% comment %} {%- opacity_check -%} {% endcomment %}
+          {%- elsif block.type == 'double_slide' -%}
+            <!-- Slide Block B & C Stack (2 Images Inside 1 Slider Track) -->
+            <div class="swiper-slide type-split-card" {{ block.shopify_attributes }}>
+              <div class="alignment-wrapper-min v-align-{{ block.settings.v_alignment }} h-shift-{{ block.settings.h_shift }}">
+                <div class="split-wrapper-editorial" style="gap: {{ block.settings.gap_between }}px;">
+                  
+                  <!-- Top Mini Card (B) -->
+                  <div class="slide-inner-box-editorial split-top" style="margin-left: {{ block.settings.b_left_offset }}px;">
+                    {%- if block.settings.image_b != blank -%}
+                      <img src="{{ block.settings.image_b | image_url: width: 900 }}" alt="{{ block.settings.title_b | escape }}" loading="lazy">
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                    {%- if block.settings.link_b != blank -%}
+                      <a href="{{ block.settings.link_b }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></a>
+                    {%- endif -%}
+                    <div class="slide-content-editorial">
+                      {%- if block.settings.subheading_b != blank -%}<p class="slide-subheading-ed">{{ block.settings.subheading_b }}</p>{%- endif -%}
+                      {%- if block.settings.title_b != blank -%}<h3 class="slide-title-ed">{{ block.settings.title_b }}</h3>{%- endif -%}
+                    </div>
+                  </div>
+
+                  <!-- Bottom Mini Card (C) -->
+                  <div class="slide-inner-box-editorial split-bottom" style="margin-right: {{ block.settings.c_right_offset }}px;">
+                    {%- if block.settings.image_c != blank -%}
+                      <img src="{{ block.settings.image_c | image_url: width: 900 }}" alt="{{ block.settings.title_c | escape }}" loading="lazy">
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                    {%- if block.settings.link_c != blank -%}
+                      <a href="{{ block.settings.link_c }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></a>
+                    {%- endif -%}
+                    <div class="slide-content-editorial">
+                      {%- if block.settings.subheading_c != blank -%}<p class="slide-subheading-ed">{{ block.settings.subheading_c }}</p>{%- endif -%}
+                      {%- if block.settings.title_c != blank -%}<h3 class="slide-title-ed">{{ block.settings.title_c }}</h3>{%- endif -%}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+
+        {%- endfor -%}
+      </div>
+    </div>
+
+  </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById('pinned-container-{{ section.id }}');
+  const track = document.querySelector('.track-{{ section.id }}');
+  
+  if(!container || !track) return;
+
+  let trackWidth = 0;
+  let viewportWidth = 0;
+  let maxScroll = 0;
+  let currentScroll = 0;
+  let targetScroll = 0;
+  let isDesktop = window.innerWidth >= 1024;
+
+  function updateDimensions() {
+    isDesktop = window.innerWidth >= 1024;
+    if (isDesktop) {
+      trackWidth = track.scrollWidth;
+      viewportWidth = window.innerWidth;
+      
+      if (trackWidth > viewportWidth) {
+        maxScroll = trackWidth - viewportWidth; 
+        container.style.height = `${maxScroll + window.innerHeight}px`;
+      } else {
+        container.style.height = 'auto';
+        maxScroll = 0;
+      }
+    } else {
+      container.style.height = 'auto';
+      track.style.transform = 'none';
+      maxScroll = 0;
+    }
+  }
+
+  function render() {
+    if (isDesktop && maxScroll > 0) {
+      const containerRect = container.getBoundingClientRect();
+      
+      if (containerRect.top <= 0) {
+        targetScroll = -containerRect.top;
+        if (targetScroll > maxScroll) targetScroll = maxScroll;
+      } else {
+        targetScroll = 0;
+      }
+
+      currentScroll += (targetScroll - currentScroll) * 0.08;
+      
+      if (Math.abs(targetScroll - currentScroll) > 0.5) {
+        track.style.transform = `translate3d(-${currentScroll}px, 0, 0)`;
+      } else {
+        track.style.transform = `translate3d(-${targetScroll}px, 0, 0)`;
+      }
+    }
+    requestAnimationFrame(render);
+  }
+
+  window.addEventListener('resize', updateDimensions);
+  
+  if (window.ResizeObserver) {
+    const observer = new ResizeObserver(updateDimensions);
+    observer.observe(track);
+  }
+  
+  setTimeout(updateDimensions, 100);
+  updateDimensions();
+  requestAnimationFrame(render);
+});
+</script>
+
+
+
+{% schema %}
+{
+  "name": "Editorial Segment Slider",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Section Title", "default": "THE EDITORIAL SERIES" },
+    { "type": "textarea", "id": "description", "label": "Section Description"},
+    { "type": "checkbox", "id": "show_icon", "label": "Show Icon", "default": false },
+    { "type": "html", "id": "icon_svg", "label": "Icon SVG" },
+    { "type": "range", "id": "autoplay_speed", "min": 3, "max": 5, "step": 1, "unit": "s", "label": "Rotation Speed", "default": 4 }
+  ],
+  "blocks": [
+    {
+      "type": "single_slide",
+      "name": "Large Dynamic Card (A/D)",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "subheading", "label": "Subheading", "default": "SERIES 01" },
+        { "type": "text", "id": "title", "label": "Product Name/Title", "default": "Minimal Leather Artifacts" },
+        { "type": "text", "id": "button_text", "label": "Button Label", "default": "Shop Collection" },
+        { "type": "url", "id": "link", "label": "Button Link" },
+        {
+          "type": "select",
+          "id": "v_alignment",
+          "label": "Vertical Alignment Setup",
+          "options": [
+            { "value": "top", "label": "Top Aligned (Upar Chipke)" },
+            { "value": "center", "label": "Center Balanced (Beech Me)" },
+            { "value": "bottom", "label": "Bottom Aligned (Neeche Chipke)" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "h_shift",
+          "label": "Horizontal Space Shift",
+          "options": [
+            { "value": "normal", "label": "Standard Gap" },
+            { "value": "left", "label": "Add Right Extra Spacing" },
+            { "value": "right", "label": "Add Left Extra Spacing" }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "card_size",
+          "label": "Card Width Variant",
+          "options": [
+            { "value": "slim", "label": "Slim Style" },
+            { "value": "normal", "label": "Standard Width" },
+            { "value": "wide", "label": "Extra Wide Spread" }
+          ],
+          "default": "normal"
+        }
+      ]
+    },
+    {
+      "type": "double_slide",
+      "name": "Split Image Combo ",
+      "settings": [
+        {
+          "type": "select",
+          "id": "v_alignment",
+          "label": "Vertical Stack Global Alignment",
+          "options": [
+            { "value": "top", "label": "Top Aligned" },
+            { "value": "center", "label": "Center Balanced" },
+            { "value": "bottom", "label": "Bottom Aligned" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "h_shift",
+          "label": "Horizontal Space Shift",
+          "options": [
+            { "value": "normal", "label": "Standard" },
+            { "value": "left", "label": "Add Right Spacing" },
+            { "value": "right", "label": "Add Left Spacing" }
+          ],
+          "default": "normal"
+        },
+        { "type": "range", "id": "gap_between", "min": 20, "max": 60, "step": 5, "unit": "px", "label": "Gap between B & C", "default": 40 },
+        { "type": "header", "content": "Top Element (Image B)" },
+        { "type": "image_picker", "id": "image_b", "label": "Image B" },
+        { "type": "text", "id": "title_b", "label": "Title B", "default": "Mini Collectibles A" },
+        { "type": "text", "id": "button_text_b", "label": "Button Text B", "default": "View Product" },
+        { "type": "url", "id": "link_b", "label": "Link B" },
+        { "type": "range", "id": "b_left_offset", "min": 0, "max": 60, "step": 5, "unit": "px", "label": "B Left Extra Push Spacing", "default": 0 },
+        { "type": "header", "content": "Bottom Element (Image C)" },
+        { "type": "image_picker", "id": "image_c", "label": "Image C" },
+        { "type": "text", "id": "title_c", "label": "Title C", "default": "Mini Collectibles B" },
+        { "type": "text", "id": "button_text_c", "label": "Button Text C", "default": "View Product" },
+        { "type": "url", "id": "link_c", "label": "Link C" },
+        { "type": "range", "id": "c_right_offset", "min": 0, "max": 60, "step": 5, "unit": "px", "label": "C Right Extra Push Spacing", "default": 0 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Segment Slider",
+      "blocks": [
+        { "type": "single_slide" },
+        { "type": "double_slide" },
+        { "type": "single_slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

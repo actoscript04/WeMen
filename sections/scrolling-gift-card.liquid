@@ -1,0 +1,218 @@
+<section class="scroll-card-section" style="background-color: {{ section.settings.bg_color }};">
+  <div class="scroll-card-container">
+    
+    <!-- Background Splash Effect -->
+    {% if section.settings.bg_splash != blank %}
+      <img src="{{ section.settings.bg_splash | img_url: '800x' }}" class="card-bg-splash" alt="Background Splash">
+    {% endif %}
+
+    <!-- 3D Card Wrapper -->
+    <div class="card-3d-wrapper" id="gift-card-trigger-{{ section.id }}">
+      {% if section.settings.card_image != blank %}
+        <img src="{{ section.settings.card_image | img_url: '600x' }}" class="gift-card-3d-img" id="gift-card3d-{{ section.id }}" alt="Gift Card">
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+<style>
+.scroll-card-section {
+  position: relative;
+  width: 100%;
+  height: 120vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.scroll-card-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Perspective should be on the PARENT of the element that gets transformed */
+  perspective: 1200px;
+}
+
+.card-bg-splash {
+  position: absolute;
+  width: 100%;
+  max-width: 650px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.8;
+  transition: opacity 0.4s ease;
+}
+
+.card-3d-wrapper {
+  position: relative;
+  z-index: 2;
+  transform-style: preserve-3d;
+  will-change: transform;
+  /* Perspective on direct parent for proper 3D depth */
+  perspective: 1200px;
+}
+
+.gift-card-3d-img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  display: block;
+  /* Initial tilt — matches JS starting values exactly */
+  transform: rotateX(60deg) rotateY(-25deg) rotateZ(30deg);
+  transform-origin: center center;
+  /* NO CSS transition — JS handles smooth scroll-driven updates via rAF */
+  filter: drop-shadow(0 30px 40px rgba(0,0,0,0.18));
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .gift-card-3d-img { max-width: 420px; }
+}
+@media (max-width: 768px) {
+  .gift-card-3d-img { max-width: 350px; }
+  .scroll-card-section { height: 100vh; }
+}
+@media (max-width: 480px) {
+  .gift-card-3d-img { max-width: 280px; }
+}
+</style>
+
+<script>
+(function() {
+  var sectionId = '{{ section.id }}';
+
+  function initScrollCard() {
+    var card = document.getElementById('gift-card3d-' + sectionId);
+    var section = card ? card.closest('.scroll-card-section') : null;
+    if (!card || !section) return;
+
+    var ticking = false;
+    var lastProgress = -1;
+
+    function updateCardTransform() {
+      var rect = section.getBoundingClientRect();
+      var viewHeight = window.innerHeight;
+
+      // Check if section is visible in viewport
+      if (rect.top <= viewHeight && rect.bottom >= 0) {
+        // Calculate scroll progress from 0 to 1
+        var totalScrollableDistance = viewHeight + rect.height;
+        var currentScrolledDistance = viewHeight - rect.top;
+        var progress = currentScrolledDistance / totalScrollableDistance;
+
+        // Clamp between 0 and 1
+        if (progress < 0) progress = 0;
+        if (progress > 1) progress = 1;
+
+        // Avoid unnecessary DOM writes
+        if (Math.abs(progress - lastProgress) < 0.001) {
+          ticking = false;
+          return;
+        }
+        lastProgress = progress;
+
+        // Smooth easing function (ease-in-out cubic)
+        var eased = progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+        // Rotation calculations with eased progress
+        // rotateX: 60deg → 5deg  (tilts forward to almost flat)
+        var rotateX = 60 - (eased * 55);
+        // rotateY: -25deg → 25deg  (swings left to right)
+        var rotateY = -25 + (eased * 50);
+        // rotateZ: 30deg → -10deg  (tilts clockwise to counter-clockwise)
+        var rotateZ = 30 - (eased * 40);
+        // Scale: 0.85 → 1.05 (grows slightly as it comes to front)
+        var scale = 0.85 + (eased * 0.2);
+        // Translate Y: move up slightly as it levels out
+        var translateY = 30 - (eased * 50);
+
+        card.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg) scale(' + scale + ') translateY(' + translateY + 'px)';
+
+        // Dynamic shadow depth based on how "lifted" the card looks
+        var shadowBlur = 30 + (eased * 20);
+        var shadowY = 30 - (eased * 15);
+        var shadowOpacity = 0.18 + (eased * 0.12);
+        card.style.filter = 'drop-shadow(0 ' + shadowY + 'px ' + shadowBlur + 'px rgba(0,0,0,' + shadowOpacity + '))';
+
+        // Background splash subtle scale animation
+        var splash = section.querySelector('.card-bg-splash');
+        if (splash) {
+          var splashScale = 0.9 + (eased * 0.15);
+          splash.style.transform = 'scale(' + splashScale + ')';
+          splash.style.opacity = 0.6 + (eased * 0.4);
+        }
+      }
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateCardTransform);
+      }
+    }
+
+    // Passive scroll listener for best performance
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Also listen to resize for responsive recalculation
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    // Initial call to set correct state
+    updateCardTransform();
+  }
+
+  // Run on DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollCard);
+  } else {
+    initScrollCard();
+  }
+
+  // Shopify Theme Editor: re-initialize when section is loaded/selected
+  document.addEventListener('shopify:section:load', function(e) {
+    if (e.detail && e.detail.sectionId === sectionId) {
+      initScrollCard();
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Scrolling 3D Gift Card",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "card_image",
+      "label": "Gift Card Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_splash",
+      "label": "Background Splash/Shadow Image"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f4f9fc"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling 3D Gift Card"
+    }
+  ]
+}
+{% endschema %}

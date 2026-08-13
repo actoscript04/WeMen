@@ -1,0 +1,1006 @@
+{% comment %}
+  ┌─────────────────────────────────────────────────────────┐
+  │  Slot-Machine Reveal Section                            │
+  │  3-strip horizontal reel / split-screen image reveal    │
+  │  Triggered on click · Staggered cubic-bezier animation  │
+  │  Fully responsive · Touch-friendly · Sound effects      │
+  └─────────────────────────────────────────────────────────┘
+{% endcomment %}
+
+{%- liquid
+  assign section_id = section.id
+  assign logo_text_top    = section.settings.logo_text_top | default: 'MAISON'
+  assign logo_text_bottom = section.settings.logo_text_bottom | default: 'KITSUNÉ'
+  assign logo_subtext     = section.settings.logo_subtext | default: 'PARIS'
+  assign cta_text         = section.settings.cta_text | default: 'Click to Play'
+  assign overlay_color    = section.settings.overlay_color | default: 'rgba(245, 240, 235, 0.72)'
+  assign overlay_blur     = section.settings.overlay_blur | default: 12
+  assign strip_gap        = section.settings.strip_gap | default: 3
+  assign anim_duration    = section.settings.animation_duration | default: 850
+  assign stagger_delay    = section.settings.stagger_delay | default: 140
+  assign auto_play        = section.settings.auto_play
+  assign auto_interval    = section.settings.auto_play_interval | default: 3500
+  assign sound_enabled    = section.settings.sound_enabled
+  assign max_width        = section.settings.max_width | default: 480
+  assign border_radius    = section.settings.border_radius | default: 20
+  assign padding_top      = section.settings.padding_top | default: 60
+  assign padding_bottom   = section.settings.padding_bottom | default: 60
+  assign bg_color         = section.settings.background_color | default: '#0a0a0f'
+-%}
+
+{%- comment -%} ═══════ STYLES ═══════ {%- endcomment -%}
+<style>
+  /* ─── Section Wrapper ─── */
+  .smr-section-{{ section_id }} {
+    --smr-max-w: {{ max_width }}px;
+    --smr-radius: {{ border_radius }}px;
+    --smr-strip-gap: {{ strip_gap }}px;
+    --smr-overlay-blur: {{ overlay_blur }}px;
+    --smr-anim-dur: {{ anim_duration }}ms;
+    --smr-stagger: {{ stagger_delay }}ms;
+
+    /* Color tokens */
+    --smr-bg: {{ bg_color }};
+    --smr-overlay: {{ overlay_color }};
+    --smr-gold: #c9a96e;
+    --smr-gold-light: #e2d1a8;
+    --smr-cream: #f5f0eb;
+    --smr-ink: #1a1714;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: {{ padding_top }}px 20px {{ padding_bottom }}px;
+    background: var(--smr-bg);
+    min-height: 100dvh;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── Hero Container (9:16) ─── */
+  .smr-hero-{{ section_id }} {
+    position: relative;
+    width: 100%;
+    max-width: var(--smr-max-w);
+    aspect-ratio: 9 / 16;
+    border-radius: var(--smr-radius);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(255, 255, 255, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transform: translateZ(0);           /* GPU layer */
+    will-change: transform;
+  }
+
+  /* ─── Strips Container ─── */
+  .smr-strips-{{ section_id }} {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--smr-strip-gap);
+    background: var(--smr-ink);
+  }
+
+  /* ─── Individual Strip ─── */
+  .smr-strip {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  /* ─── Reel (translating column of scene slices) ─── */
+  .smr-reel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform var(--smr-anim-dur) cubic-bezier(0.22, 1.0, 0.36, 1.0);
+    will-change: transform;
+  }
+
+  /* Top strip (delay 0) */
+  .smr-strip[data-index="0"] .smr-reel {
+    transition-delay: 0ms;
+  }
+  /* Middle strip (stagger ×1) */
+  .smr-strip[data-index="1"] .smr-reel {
+    transition-delay: var(--smr-stagger);
+  }
+  /* Bottom strip (stagger ×2) */
+  .smr-strip[data-index="2"] .smr-reel {
+    transition-delay: calc(var(--smr-stagger) * 2);
+  }
+
+  /* Bounce-landing class toggled via JS for extra overshoot */
+  .smr-reel.smr-bounce {
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ─── Scene Slice ─── */
+  .smr-slice {
+    width: 100%;
+    flex-shrink: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  /* Background-position for each strip index */
+  .smr-strip[data-index="0"] .smr-slice { background-position: center 0%; }
+  .smr-strip[data-index="1"] .smr-slice { background-position: center 50%; }
+  .smr-strip[data-index="2"] .smr-slice { background-position: center 100%; }
+
+  /* ─── Strip Separator Lines ─── */
+  .smr-sep {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--smr-strip-gap);
+    background: var(--smr-ink);
+    z-index: 5;
+    pointer-events: none;
+  }
+  .smr-sep--top    { top: calc(33.333% - var(--smr-strip-gap) / 2); }
+  .smr-sep--bottom { top: calc(66.666% - var(--smr-strip-gap) / 2); }
+
+  /* ─── Frosted Glass Overlay ─── */
+  .smr-overlay-{{ section_id }} {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    background: var(--smr-overlay);
+    backdrop-filter: blur(var(--smr-overlay-blur)) saturate(1.4);
+    -webkit-backdrop-filter: blur(var(--smr-overlay-blur)) saturate(1.4);
+    opacity: 1;
+    transition:
+      opacity 600ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+  }
+
+  .smr-overlay-{{ section_id }}.smr-hidden {
+    opacity: 0;
+    transform: scale(1.04) translateY(-10px);
+    pointer-events: none;
+  }
+
+  /* Grain texture on overlay */
+  .smr-overlay-{{ section_id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── Logo Badge ─── */
+  .smr-logo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .smr-logo__frame {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 1.5px solid var(--smr-gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(201, 169, 110, 0.15);
+  }
+
+  .smr-logo__line {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--smr-ink);
+    line-height: 1.4;
+  }
+
+  .smr-logo__sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--smr-gold);
+    margin-top: 4px;
+  }
+
+  .smr-logo__divider {
+    width: 30px;
+    height: 1px;
+    background: var(--smr-gold);
+    margin: 4px 0;
+  }
+
+  /* ─── Play Button ─── */
+  .smr-play-btn {
+    position: relative;
+    z-index: 1;
+    appearance: none;
+    border: 1.5px solid var(--smr-gold);
+    background: transparent;
+    color: var(--smr-ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 12px 36px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition:
+      background 350ms ease,
+      color 350ms ease,
+      transform 200ms ease,
+      box-shadow 350ms ease;
+  }
+
+  .smr-play-btn:hover,
+  .smr-play-btn:focus-visible {
+    background: var(--smr-gold);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(201, 169, 110, 0.35);
+    transform: translateY(-1px);
+    outline: none;
+  }
+
+  .smr-play-btn:active {
+    transform: scale(0.97) translateY(0);
+  }
+
+  /* Pulse animation on CTA */
+  .smr-play-btn::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 100px;
+    border: 1px solid var(--smr-gold);
+    opacity: 0;
+    animation: smrPulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes smrPulse {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(1.06); }
+  }
+
+  /* ─── Scene Indicator Dots ─── */
+  .smr-dots-{{ section_id }} {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 8;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 500ms ease 800ms;
+    pointer-events: none;
+  }
+
+  .smr-dots-{{ section_id }}.smr-visible {
+    opacity: 1;
+  }
+
+  .smr-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transition: background 350ms ease, transform 350ms ease;
+  }
+
+  .smr-dot.smr-active {
+    background: var(--smr-gold-light);
+    transform: scale(1.35);
+    box-shadow: 0 0 6px rgba(201, 169, 110, 0.5);
+  }
+
+  /* ─── Scene Counter Badge ─── */
+  .smr-counter-{{ section_id }} {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 8;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 100px;
+    opacity: 0;
+    transition: opacity 500ms ease 800ms;
+    pointer-events: none;
+  }
+
+  .smr-counter-{{ section_id }}.smr-visible {
+    opacity: 1;
+  }
+
+  /* ─── Tap Ripple Effect ─── */
+  .smr-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(201, 169, 110, 0.25);
+    transform: scale(0);
+    animation: smrRipple 600ms ease-out forwards;
+    pointer-events: none;
+    z-index: 6;
+  }
+
+  @keyframes smrRipple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  /* ─── Strip flash/land effect ─── */
+  .smr-strip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.08) 100%
+    );
+    opacity: 0;
+    transition: opacity 200ms ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .smr-strip.smr-flashing::after {
+    opacity: 1;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .smr-section-{{ section_id }} {
+      padding: 24px 12px 24px;
+      min-height: auto;
+    }
+
+    .smr-hero-{{ section_id }} {
+      max-width: 100%;
+      border-radius: calc(var(--smr-radius) * 0.75);
+    }
+
+    .smr-logo__frame {
+      width: 110px;
+      height: 110px;
+    }
+
+    .smr-logo__line {
+      font-size: 12px;
+      letter-spacing: 4px;
+    }
+
+    .smr-logo__sub {
+      font-size: 8px;
+      letter-spacing: 6px;
+    }
+
+    .smr-play-btn {
+      font-size: 10px;
+      letter-spacing: 3px;
+      padding: 10px 28px;
+    }
+
+    .smr-counter-{{ section_id }} {
+      font-size: 10px;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .smr-hero-{{ section_id }} {
+      box-shadow:
+        0 8px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  /* ─── Prefers-reduced-motion ─── */
+  @media (prefers-reduced-motion: reduce) {
+    .smr-reel {
+      transition-duration: 10ms !important;
+      transition-delay: 0ms !important;
+    }
+    .smr-overlay-{{ section_id }} {
+      transition-duration: 10ms !important;
+    }
+    .smr-play-btn::after {
+      animation: none !important;
+    }
+  }
+</style>
+
+{%- comment -%} ═══════ MARKUP ═══════ {%- endcomment -%}
+<section
+  class="smr-section-{{ section_id }}"
+  id="slot-machine-{{ section_id }}"
+  aria-label="Slot machine image reveal"
+>
+  <div
+    class="smr-hero-{{ section_id }}"
+    id="smr-hero-{{ section_id }}"
+    role="button"
+    tabindex="0"
+    aria-label="{{ cta_text }}"
+  >
+    {%- comment -%} 3 Strips ─ built by JS for clean reel generation {%- endcomment -%}
+    <div class="smr-strips-{{ section_id }}" id="smr-strips-{{ section_id }}"></div>
+
+    {%- comment -%} Separator lines between strips {%- endcomment -%}
+    <div class="smr-sep smr-sep--top"></div>
+    <div class="smr-sep smr-sep--bottom"></div>
+
+    {%- comment -%} Frosted overlay with logo badge {%- endcomment -%}
+    <div class="smr-overlay-{{ section_id }}" id="smr-overlay-{{ section_id }}">
+      <div class="smr-logo">
+        <div class="smr-logo__frame">
+          <span class="smr-logo__line">{{ logo_text_top }}</span>
+          <div class="smr-logo__divider"></div>
+          <span class="smr-logo__line">{{ logo_text_bottom }}</span>
+        </div>
+        <span class="smr-logo__sub">{{ logo_subtext }}</span>
+      </div>
+      <button class="smr-play-btn" id="smr-play-{{ section_id }}" type="button">
+        {{ cta_text }}
+      </button>
+    </div>
+
+    {%- comment -%} Scene indicator dots {%- endcomment -%}
+    <div class="smr-dots-{{ section_id }}" id="smr-dots-{{ section_id }}"></div>
+
+    {%- comment -%} Scene counter {%- endcomment -%}
+    <div class="smr-counter-{{ section_id }}" id="smr-counter-{{ section_id }}">
+      1 / 6
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ═══════ JAVASCRIPT ═══════ {%- endcomment -%}
+<script>
+  (function () {
+    'use strict';
+
+    /* ── Configuration ── */
+    const SECTION_ID   = '{{ section_id }}';
+    const ANIM_DUR     = {{ anim_duration }};
+    const STAGGER      = {{ stagger_delay }};
+    const AUTO_PLAY    = {{ auto_play }};
+    const AUTO_INTERVAL = {{ auto_interval }};
+    const SOUND_ON     = {{ sound_enabled }};
+    const STRIP_COUNT  = 3;
+
+    /* ── Scene Images (Unsplash – vertical/portrait – works out of the box) ── */
+    const SCENES = [
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'scene' and block.settings.image != blank -%}
+          '{{ block.settings.image | image_url: width: 900 }}',
+        {%- endif -%}
+      {%- endfor -%}
+    ];
+
+    /* Fallback to Unsplash if no blocks are configured */
+    const DEFAULT_SCENES = [
+      'https://images.unsplash.com/photo-1512389142860-9c449e58a814?w=900&h=1600&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=900&h=1600&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&h=1600&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=900&h=1600&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1482517967863-00e15c9b44be?w=900&h=1600&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=900&h=1600&fit=crop&q=80',
+    ];
+
+    const scenes = SCENES.length >= 2 ? SCENES : DEFAULT_SCENES;
+    const totalScenes = scenes.length;
+
+    /* ── DOM References ── */
+    const hero     = document.getElementById('smr-hero-' + SECTION_ID);
+    const strips   = document.getElementById('smr-strips-' + SECTION_ID);
+    const overlay  = document.getElementById('smr-overlay-' + SECTION_ID);
+    const dotsWrap = document.getElementById('smr-dots-' + SECTION_ID);
+    const counter  = document.getElementById('smr-counter-' + SECTION_ID);
+    const playBtn  = document.getElementById('smr-play-' + SECTION_ID);
+
+    if (!hero || !strips) return;
+
+    /* ── State ── */
+    let currentScene = 0;
+    let isAnimating  = false;
+    let started      = false;
+    let autoTimer    = null;
+    const reels      = [];
+
+    /* ══════════════════════════════════════════════
+       BUILD THE REELS
+       Each strip has a reel of N slices stacked vertically.
+       Each slice shows its strip's 1/3 of the scene image.
+    ══════════════════════════════════════════════ */
+    function buildReels() {
+      for (let s = 0; s < STRIP_COUNT; s++) {
+        const stripEl = document.createElement('div');
+        stripEl.className = 'smr-strip';
+        stripEl.dataset.index = s;
+
+        const reelEl = document.createElement('div');
+        reelEl.className = 'smr-reel';
+
+        for (let i = 0; i < totalScenes; i++) {
+          const slice = document.createElement('div');
+          slice.className = 'smr-slice';
+          slice.style.backgroundImage = 'url("' + scenes[i] + '")';
+          /* Height set dynamically after layout */
+          reelEl.appendChild(slice);
+        }
+
+        stripEl.appendChild(reelEl);
+        strips.appendChild(stripEl);
+        reels.push(reelEl);
+      }
+
+      /* Build indicator dots */
+      for (let i = 0; i < totalScenes; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'smr-dot' + (i === 0 ? ' smr-active' : '');
+        dotsWrap.appendChild(dot);
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+       SIZE SLICES
+       Each slice height = strip's rendered height.
+       background-size: auto 300%  makes the image cover the
+       full hero height across 3 strips.
+    ══════════════════════════════════════════════ */
+    function sizeSlices() {
+      const stripEls = strips.querySelectorAll('.smr-strip');
+      stripEls.forEach(function (stripEl, si) {
+        const h = stripEl.offsetHeight;
+        const reel = reels[si];
+        /* Reel total height = N * stripHeight */
+        reel.style.height = (totalScenes * h) + 'px';
+        const slices = reel.querySelectorAll('.smr-slice');
+        slices.forEach(function (slice) {
+          slice.style.height = h + 'px';
+          /* The image must span 3× strip height to align across strips */
+          slice.style.backgroundSize = 'cover';
+          /* Override cover with calculated size: width auto, height = 3 × strip height */
+          slice.style.backgroundSize = 'auto ' + (h * 3) + 'px';
+        });
+      });
+    }
+
+    /* ══════════════════════════════════════════════
+       NAVIGATE TO SCENE
+    ══════════════════════════════════════════════ */
+    function goToScene(index) {
+      if (isAnimating || index === currentScene) return;
+      isAnimating = true;
+
+      /* Play click sound */
+      if (SOUND_ON) playClickSound();
+
+      /* Move each reel with staggered timing */
+      reels.forEach(function (reel, i) {
+        const stripH = reel.parentElement.offsetHeight;
+        const offset = -(index * stripH);
+
+        /* Add bounce class momentarily */
+        reel.classList.add('smr-bounce');
+
+        /* Add flash to strip */
+        reel.parentElement.classList.add('smr-flashing');
+
+        reel.style.transform = 'translateY(' + offset + 'px)';
+
+        /* Remove bounce after transition */
+        setTimeout(function () {
+          reel.classList.remove('smr-bounce');
+          reel.parentElement.classList.remove('smr-flashing');
+        }, ANIM_DUR + (i * STAGGER) + 100);
+      });
+
+      /* Update dots */
+      const dots = dotsWrap.querySelectorAll('.smr-dot');
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('smr-active', i === index);
+      });
+
+      /* Update counter */
+      counter.textContent = (index + 1) + ' / ' + totalScenes;
+
+      /* Create ripple effect at center */
+      spawnRipple(hero.offsetWidth / 2, hero.offsetHeight / 2);
+
+      /* Unlock after full animation completes */
+      var totalAnimTime = ANIM_DUR + (STAGGER * (STRIP_COUNT - 1)) + 100;
+      setTimeout(function () {
+        isAnimating = false;
+        currentScene = index;
+      }, totalAnimTime);
+
+      /* Update currentScene early for next-click logic */
+      currentScene = index;
+    }
+
+    function nextScene() {
+      var next = (currentScene + 1) % totalScenes;
+      goToScene(next);
+    }
+
+    /* ══════════════════════════════════════════════
+       OVERLAY & START
+    ══════════════════════════════════════════════ */
+    function start() {
+      if (started) return;
+      started = true;
+
+      /* Fade overlay */
+      overlay.classList.add('smr-hidden');
+
+      /* Show dots & counter */
+      dotsWrap.classList.add('smr-visible');
+      counter.classList.add('smr-visible');
+
+      /* Start auto-play if enabled */
+      if (AUTO_PLAY) {
+        autoTimer = setInterval(nextScene, AUTO_INTERVAL);
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+       CLICK / TAP HANDLER
+    ══════════════════════════════════════════════ */
+    function handleInteraction(e) {
+      if (!started) {
+        start();
+        return;
+      }
+      nextScene();
+
+      /* Reset auto-play timer on manual interaction */
+      if (AUTO_PLAY && autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(nextScene, AUTO_INTERVAL);
+      }
+    }
+
+    hero.addEventListener('click', handleInteraction);
+    hero.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleInteraction(e);
+      }
+    });
+
+    /* Prevent overlay button from double-firing */
+    playBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      handleInteraction(e);
+    });
+
+    /* ══════════════════════════════════════════════
+       RIPPLE EFFECT
+    ══════════════════════════════════════════════ */
+    function spawnRipple(x, y) {
+      var ripple = document.createElement('div');
+      ripple.className = 'smr-ripple';
+      var size = Math.max(hero.offsetWidth, hero.offsetHeight) * 0.35;
+      ripple.style.width = size + 'px';
+      ripple.style.height = size + 'px';
+      ripple.style.left = (x - size / 2) + 'px';
+      ripple.style.top = (y - size / 2) + 'px';
+      hero.appendChild(ripple);
+      setTimeout(function () { ripple.remove(); }, 650);
+    }
+
+    /* ══════════════════════════════════════════════
+       SOUND EFFECTS (Web Audio API – no files needed)
+    ══════════════════════════════════════════════ */
+    var audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playClickSound() {
+      try {
+        var ctx = getAudioCtx();
+        /* Short percussive "click" – white noise burst */
+        var bufferSize = ctx.sampleRate * 0.04;  /* 40ms */
+        var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        var data = buffer.getChannelData(0);
+        for (var i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 8);
+        }
+
+        var source = ctx.createBufferSource();
+        source.buffer = buffer;
+
+        /* Bandpass for a mechanical "tick" quality */
+        var filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 3200;
+        filter.Q.value = 1.2;
+
+        var gain = ctx.createGain();
+        gain.gain.value = 0.15;
+
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        source.start();
+      } catch (err) {
+        /* Silent fail – sound is optional */
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+       PRELOAD IMAGES
+    ══════════════════════════════════════════════ */
+    function preloadImages() {
+      scenes.forEach(function (src) {
+        var img = new Image();
+        img.src = src;
+      });
+    }
+
+    /* ══════════════════════════════════════════════
+       INIT
+    ══════════════════════════════════════════════ */
+    function init() {
+      buildReels();
+      sizeSlices();
+      preloadImages();
+    }
+
+    /* Run on DOM ready */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    /* Resize handler (debounced) */
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        sizeSlices();
+        /* Re-apply current position after resize */
+        reels.forEach(function (reel) {
+          var stripH = reel.parentElement.offsetHeight;
+          reel.style.transform = 'translateY(' + (-(currentScene * stripH)) + 'px)';
+        });
+      }, 150);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Slot Machine Reveal",
+  "tag": "section",
+  "class": "slot-machine-reveal-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Branding"
+    },
+    {
+      "type": "text",
+      "id": "logo_text_top",
+      "label": "Logo Text – Top Line",
+      "default": "MAISON"
+    },
+    {
+      "type": "text",
+      "id": "logo_text_bottom",
+      "label": "Logo Text – Bottom Line",
+      "default": "KITSUNÉ"
+    },
+    {
+      "type": "text",
+      "id": "logo_subtext",
+      "label": "Logo Sub-text",
+      "default": "PARIS"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Call-to-Action Text",
+      "default": "Click to Play"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#f5f0eb"
+    },
+    {
+      "type": "range",
+      "id": "overlay_blur",
+      "label": "Overlay Blur (px)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "label": "Reel Animation Duration (ms)",
+      "min": 300,
+      "max": 2000,
+      "step": 50,
+      "default": 850
+    },
+    {
+      "type": "range",
+      "id": "stagger_delay",
+      "label": "Strip Stagger Delay (ms)",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "strip_gap",
+      "label": "Strip Gap (px)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "sound_enabled",
+      "label": "Enable Sound Effects",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Auto-Play"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_play",
+      "label": "Auto-Play After Start",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "auto_play_interval",
+      "label": "Auto-Play Interval (ms)",
+      "min": 1500,
+      "max": 8000,
+      "step": 250,
+      "default": 3500
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Container Width (px)",
+      "min": 280,
+      "max": 800,
+      "step": 10,
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Section Padding Top (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Section Padding Bottom (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background Color",
+      "default": "#0a0a0f"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "scene",
+      "name": "Scene Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Scene Image",
+          "info": "Use a vertical/portrait image (recommended 9:16 ratio). Each image is split into 3 horizontal strips for the reel effect."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Scene Label (optional)",
+          "info": "For your reference only."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slot Machine Reveal",
+      "category": "Image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

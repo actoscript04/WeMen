@@ -1,0 +1,83 @@
+{{ 'section-help-banner.css' | asset_url | stylesheet_tag }}
+
+<div class="help-banner-section section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="help-banner__wrapper">
+      <div class="help-banner__title-wrapper">
+        <h2 class="help-banner__title">
+          {{ section.settings.heading | replace: 'We Help', 'We <br> Help' | replace: 'We help', 'We <br> help' }}
+        </h2>
+      </div>
+      <div class="help-banner__desc-wrapper">
+        <div class="help-banner__description">
+          {{ section.settings.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Help Banner Section",
+  "tag": "section",
+  "class": "section section--full-width",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How Can We Help You ?"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>We’re here to help. Whether you’re looking for assistance with present or past orders, have any suggestions for us or just want to let us know how we did, you can contact us easily between 06:00 AM to 09:00 PM | All days of the week</p>"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Help Banner Section"
+    }
+  ]
+}
+{% endschema %}

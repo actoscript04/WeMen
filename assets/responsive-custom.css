@@ -1,0 +1,204 @@
+/* ==========================================================================
+   Custom Responsive Styles
+   Breakpoints: 320px, 375px, 480px, 767px, 1023px, 1280px, 1440px
+   ========================================================================== */
+
+/* Very Small Devices (Phones) - 320px to 374px */
+@media screen and (min-width: 320px) and (max-width: 374px) {
+  /* Add your styles here for very small screens */
+  .page-width {
+    padding: 0 1.5rem;
+  }
+}
+
+/* Small Devices (Phones) - 375px to 479px */
+@media screen and (min-width: 375px) and (max-width: 479px) {
+  /* Add your styles here for standard mobile screens */
+}
+
+/* Medium Mobile Devices - 480px to 767px */
+@media screen and (min-width: 480px) and (max-width: 767px) {
+  /* Add your styles here for large phones/small tablets */
+}
+
+/* Tablets (Portrait) - 768px to 1023px */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Add your styles here for tablets */
+}
+
+/* Laptops / Small Desktops - 1024px to 1279px */
+@media screen and (min-width: 1024px) and (max-width: 1279px) {
+  /* Add your styles here for small desktops */
+}
+
+/* Standard Desktops - 1280px to 1439px */
+@media screen and (min-width: 1280px) and (max-width: 1439px) {
+  /* Add your styles here for standard desktops */
+}
+
+/* Large Desktops - 1440px and up */
+@media screen and (min-width: 1440px) {
+  /* Add your styles here for large screens */
+}
+
+/* ==========================================================================
+   Mobile Sidebar Menu Styles (Drawer)
+   ========================================================================== */
+.menu-drawer {
+  background-color: #fff !important;
+}
+
+.menu-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.menu-drawer__header-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.menu-drawer__header .menu-drawer__close-button {
+  background: transparent !important;
+  border: none !important;
+  color: #000 !important;
+  padding: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.menu-drawer__header .menu-drawer__close-button svg {
+  width: 16px;
+  height: 16px;
+  color: #000;
+}
+
+.menu-drawer__navigation,
+.menu-drawer__menu {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.menu-drawer__list-item {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.menu-drawer__list-item::before,
+.menu-drawer__list-item::after {
+  display: none !important;
+}
+
+.menu-drawer__navigation .menu-drawer__menu-item {
+  padding: 12px 16px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid #e5e5e56e !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  width: 100% !important;
+}
+
+.menu-drawer__navigation .menu-drawer__menu-item-text {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #000 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.menu-drawer__navigation .menu-drawer__menu-item:hover {
+  background-color: #f9f9f9;
+}
+
+.menu-drawer__navigation .icon-caret,
+.menu-drawer__navigation .icon-plus {
+  width: 14px;
+  height: 14px;
+  color: #000;
+  right: 16px;
+  position: absolute;
+}
+
+/* ==========================================================================
+   Global Fixes
+   ========================================================================== */
+/* Fix section gap color bleeding (makes empty margin spaces white instead of beige) */
+body, html, .page-wrapper, #MainContent, .gradient {
+  background-color: #ffffff !important;
+}
+
+/* Fix specific beige gap below Gifting Section */
+.rich-text-custom [class*="rich-text-body"] {
+  margin-bottom: 10px !important; /* Overrides the 50px margin causing the gap */
+}
+
+.as-mb-30 {
+  margin-bottom: 0 !important; /* Removes negative margin that causes overlap/gap glitches */
+}
+
+/* ==========================================================================
+   Mobile Header Adjustments
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  /* White Background for Header */
+  .header-wrapper,
+  .header,
+  header-component {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+  }
+  
+  /* Hide Wishlist and Account Icons */
+  .header-actions__action.action__wishlist,
+  .account-button {
+    display: none !important;
+  }
+  
+  /* Ensure Search, Menu, and Cart Icons are Black */
+  .header__icon svg,
+  .header-actions__action svg,
+  .header__icon--menu svg {
+    color: #000000 !important;
+  }
+  
+  .header__icon,
+  .header-actions__action,
+  .header-actions__cart-icon {
+    color: #000000 !important;
+  }
+
+  /* Force display of standard (dark) logo over inverse (white) logo */
+  .header-logo {
+    --header-logo-display: block !important;
+    --header-logo-inverse-display: none !important;
+  }
+  
+  /* Logo Size and Header Padding */
+  .header {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+  
+  .header-logo__image {
+    max-width: 130px !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+
+}
+
+body {
+    color: var(--color-foreground);
+    background-color: #ffffff;
+}

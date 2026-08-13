@@ -1,0 +1,294 @@
+{% comment %}
+  Section: Duda Style Brother's Intro
+{% endcomment %}
+
+<!-- GSAP & Plugins CDN Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+<style>
+  :root {
+      --dark: {{ section.settings.text_color | default: '#242423' }};
+      --bg-color: {{ section.settings.bg_color | default: '#C0D7D8' }};
+  }
+
+  .duda-stage {
+      position: relative;
+      background: white;
+      visibility: hidden;
+      width: 100%;
+      overflow: hidden;
+  }
+
+  /* Intro Section Styles */
+  .duda-intro {
+      position: relative;
+      height: 100vh;
+      padding: 5vw;
+      background: var(--bg-color);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+  }
+
+  .duda-intro__content {
+      position: absolute;
+      right: 8%;
+      bottom: 15%;
+      z-index: 3;
+  }
+
+  @media all and (max-width: 768px) {
+      .duda-intro__content {
+          right: auto;
+          left: 5%;
+          bottom: 10%;
+          width: 90%;
+      }
+  }
+
+  .duda-intro__title {
+      font-size: {{ section.settings.title_font_size }}vw;
+      line-height: 0.9;
+      margin: 0 0 2vw 0;
+      letter-spacing: -0.05em;
+      color: var(--dark);
+      font-weight: 400;
+  }
+
+  @media all and (max-width: 768px) {
+      .duda-intro__title {
+          font-size: 18vw;
+          margin-bottom: 3vh;
+      }
+  }
+
+  .duda-intro__txt {
+      max-width: 35vw;
+      margin-left: 20vw;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--dark);
+  }
+
+  @media all and (max-width: 768px) {
+      .duda-intro__txt {
+          max-width: 85vw;
+          margin-left: 0;
+          font-size: 15px;
+      }
+  }
+
+  .duda-intro__img {
+      position: absolute;
+      width: 35%;
+      max-width: 390px;
+      height: auto;
+      object-fit: cover;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  @media all and (max-width: 768px) {
+      .duda-intro__img {
+          width: 65vw;
+      }
+  }
+
+  .duda-intro__img--1 {
+      z-index: 2;
+      left: 10%;
+      bottom: 35%;
+  }
+
+  @media all and (max-width: 768px) {
+      .duda-intro__img--1 {
+          left: 10%;
+          bottom: 45vh;
+      }
+  }
+
+  .duda-intro__img--2 {
+      z-index: 1;
+      left: 25%;
+      bottom: 40%;
+  }
+
+  @media all and (max-width: 768px) {
+      .duda-intro__img--2 {
+          left: 30%;
+          bottom: 55vh;
+      }
+  }
+
+  /* GSAP Line Animation Wrapper */
+  .intro-line-wrap {
+      overflow: hidden;
+      display: block;
+  }
+  .intro-line {
+      display: block;
+  }
+</style>
+
+<div class="duda-stage" id="duda-stage-{{ section.id }}">
+    <section class="duda-intro" id="slide-0">
+        <div class="duda-intro__content">
+            <h1 class="duda-intro__title">
+              <span class="intro-line-wrap"><span class="intro-line">{{ section.settings.heading_line1 }}</span></span>
+              {% if section.settings.heading_line2 != blank %}
+                <span class="intro-line-wrap"><span class="intro-line">{{ section.settings.heading_line2 }}</span></span>
+              {% endif %}
+            </h1>
+            <p class="duda-intro__txt">{{ section.settings.description }}</p>
+        </div>
+
+        {% if section.settings.image_1 != blank %}
+            <img class="duda-intro__img duda-intro__img--1" src="{{ section.settings.image_1 | image_url: width: 800 }}" alt="{{ section.settings.image_1.alt | escape }}" />
+        {% else %}
+            <img class="duda-intro__img duda-intro__img--1" src="https://assets.codepen.io/61488/duda-intro-1.jpg" alt="Brotherhood Style 1" />
+        {% endif %}
+
+        {% if section.settings.image_2 != blank %}
+            <img class="duda-intro__img duda-intro__img--2" src="{{ section.settings.image_2 | image_url: width: 800 }}" alt="{{ section.settings.image_2.alt | escape }}" />
+        {% else %}
+            <img class="duda-intro__img duda-intro__img--2" src="https://assets.codepen.io/61488/duda-intro-2.jpg" alt="Brotherhood Style 2" />
+        {% endif %}
+    </section>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    const stage = document.querySelector('#duda-stage-{{ section.id }}');
+    
+    // Unhide Stage
+    gsap.set(stage, { autoAlpha: 1 });
+
+    function initIntroAnimation() {
+        // Entry Animations
+        let tl = gsap.timeline({ delay: 0.3 });
+
+        tl.from('#duda-stage-{{ section.id }} .intro-line', {
+            y: 300,
+            ease: 'power4.out',
+            duration: 2,
+            stagger: 0.2
+        })
+        .from('#duda-stage-{{ section.id }} .duda-intro__txt', {
+            x: -80,
+            opacity: 0,
+            ease: 'power4.out',
+            duration: 2
+        }, "-=1.5")
+        .from('#duda-stage-{{ section.id }} .duda-intro__img--1', {
+            y: 100,
+            opacity: 0,
+            ease: 'power2.out',
+            duration: 2.5
+        }, "-=1.8")
+        .from('#duda-stage-{{ section.id }} .duda-intro__img--2', {
+            y: -100,
+            opacity: 0,
+            ease: 'power2.out',
+            duration: 2.5
+        }, "-=2.2");
+
+        // Scroll Out Parallax Effect
+        let stl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '#duda-stage-{{ section.id }} .duda-intro',
+                scrub: 1,
+                start: "top top",
+                end: "bottom top"
+            }
+        });
+
+        stl.to('#duda-stage-{{ section.id }} .duda-intro__title', {
+            x: 200,
+            ease: 'power4.in',
+            duration: 3
+        })
+        .to('#duda-stage-{{ section.id }} .duda-intro__txt', {
+            y: 80,
+            ease: 'power4.in',
+            duration: 3
+        }, 0)
+        .to('#duda-stage-{{ section.id }} .duda-intro__img--1', {
+            y: -150,
+            ease: 'none'
+        }, 0)
+        .to('#duda-stage-{{ section.id }} .duda-intro__img--2', {
+            y: -250,
+            ease: 'none'
+        }, 0);
+    }
+
+    initIntroAnimation();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Duda Hero Intro",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading Line 1",
+      "default": "Built By Brothers,"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading Line 2",
+      "default": "For The Brotherhood"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 5,
+      "max": 20,
+      "step": 1,
+      "unit": "vw",
+      "label": "Title Size (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Content Text",
+      "default": "Most men don't need more choices. They need someone to point them toward the good stuff and save them from wasting time on the rest. Founded by 5 brothers, built in India, and made for the modern gentleman."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Front Image (Image 1)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Back Parallax Image (Image 2)"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#C0D7D8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#242423"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Duda Hero Intro",
+      "category": "Custom Animated Sections"
+    }
+  ]
+}
+{% endschema %}
