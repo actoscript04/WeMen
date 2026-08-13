@@ -60,7 +60,45 @@
 
       {% paginate collection.products by products_per_page %}
         {% capture children %}
+          {% assign promotional_media = collection.metafields.custom.promotional_media.value %}
           {% for product in collection.products %}
+            {% assign product_index = forloop.index %}
+            {% assign current_row = product_index | minus: 1 | divided_by: 5 | plus: 1 %}
+            {% assign current_column = product_index | minus: 1 | modulo: 5 | plus: 1 %}
+
+            {% for media in promotional_media %}
+              {% if media.row.value == current_row and media.column.value == current_column %}
+                <li class="product-grid__item collection-promotional-media" style="display: flex; flex-direction: column; aspect-ratio: 4 / 5;">
+                  {% if media.media_type.value == 'Image' %}
+                    {% if media.link.value != blank %}
+                      <a href="{{ media.link.value }}" style="display: block; width: 100%; height: 100%; flex-grow: 1;">
+                    {% endif %}
+                    {{
+                      media.image.value
+                      | image_url: width: 1200
+                      | image_tag:
+                        loading: 'lazy',
+                        alt: media.alt_text.value,
+                        style: 'width: 100%; height: 100%; object-fit: cover; display: block; flex-grow: 1;'
+                    }}
+                    {% if media.link.value != blank %}
+                      </a>
+                    {% endif %}
+                  {% elsif media.media_type.value == 'Video' %}
+                    {{
+                      media.video.value
+                      | video_tag:
+                        autoplay: true,
+                        loop: true,
+                        muted: true,
+                        controls: false,
+                        style: 'width: 100%; height: 100%; object-fit: cover; display: block; flex-grow: 1;'
+                    }}
+                  {% endif %}
+                </li>
+              {% endif %}
+            {% endfor %}
+
             <li
               id="{{ section.id }}-{{ product.id }}"
               class="product-grid__item product-grid__item--{{ forloop.index0 }}"
