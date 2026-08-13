@@ -157,6 +157,9 @@
         "single_slide_btE8t3",
         "single_slide_rX3xWH"
       ],
+      "custom_css": [
+        "@media screen and (max-width: 750px) {.editorial-slider-section .section-header-editorial h2 {font-size: 30px; }}"
+      ],
       "name": "Dynamic Asymmetric Slider",
       "settings": {
         "heading": "The Line-Up ",
@@ -319,7 +322,8 @@
       "type": "rich-text-custom",
       "custom_css": [
         "@media screen and (min-width: 750px) {.rich-text-title-template--22510704787503__rich_text_custom_NQndPn {font-size: 45px; font-weight: 500; }}",
-        ".rich-text-body-template--22510704787503__rich_text_custom_NQndPn {margin-bottom: 50px;}"
+        ".rich-text-body-template--22510704787503__rich_text_custom_NQndPn {margin-bottom: 50px;}",
+        "@media screen and (max-width: 750px) {.section-template--22510704787503__rich_text_custom_NQndPn-padding {padding-top: 60px; } .rich-text-title-template--22510704787503__rich_text_custom_NQndPn {font-weight: 500; }}"
       ],
       "name": "Custom Rich Text",
       "settings": {
@@ -332,11 +336,11 @@
         "title": "Gifting section",
         "title_color": "#121212",
         "title_size_desktop": 46,
-        "title_size_mobile": 25,
+        "title_size_mobile": 30,
         "body_text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
         "body_color": "#333333",
-        "body_size_desktop": 15,
-        "body_size_mobile": 14,
+        "body_size_desktop": 16,
+        "body_size_mobile": 15,
         "btn_label": "",
         "btn_link": "",
         "btn_bg_color": "#000000",
@@ -353,7 +357,7 @@
     "premium_product_grid_slider_73c9VC": {
       "type": "premium-product-grid-slider",
       "custom_css": [
-        ".section-template--22510704787503__premium_product_grid_slider_73c9VC {padding-top: 0px; padding-bottom: 100px; background-color: #fff;}"
+        "@media screen and (max-width: 767px) {.section-template--22510704787503__premium_product_grid_slider_73c9VC {padding-bottom: 60px !important; }}"
       ],
       "name": "Premium Grid & Slider",
       "settings": {
@@ -405,10 +409,12 @@
         "padding_bottom": 80
       }
     },
-    "rich_text_custom_j4hfdR": {
+    "rich_text_custom_KqCLY4": {
       "type": "rich-text-custom",
       "custom_css": [
-        "@media screen and (min-width: 750px) {.rich-text-title-template--22510704787503__rich_text_custom_j4hfdR {font-size: 45px; font-weight: 500; }}"
+        "@media screen and (min-width: 750px) {.rich-text-title-template--22510704787503__rich_text_custom_NQndPn {font-size: 45px; font-weight: 500; }}",
+        ".rich-text-body-template--22510704787503__rich_text_custom_NQndPn {margin-bottom: 50px;}",
+        "@media screen and (max-width: 750px) {.section-template--22510704787503__rich_text_custom_NQndPn-padding {padding-top: 60px; } .rich-text-title-template--22510704787503__rich_text_custom_NQndPn {font-weight: 500; }}"
       ],
       "name": "Custom Rich Text",
       "settings": {
@@ -421,11 +427,11 @@
         "title": "Our Signature Best sellers",
         "title_color": "#121212",
         "title_size_desktop": 46,
-        "title_size_mobile": 25,
-        "body_text": "<p>Our signature collection is built around the pieces you’ll carry, wear, and rely on every single day.<br/><br/></p>",
+        "title_size_mobile": 30,
+        "body_text": "<p>Our signature collection is built around the pieces you’ll carry, wear, and rely on every single day.</p>",
         "body_color": "#333333",
-        "body_size_desktop": 15,
-        "body_size_mobile": 14,
+        "body_size_desktop": 16,
+        "body_size_mobile": 15,
         "btn_label": "",
         "btn_link": "",
         "btn_bg_color": "#000000",
@@ -439,10 +445,10 @@
         "padding_bottom": 0
       }
     },
-    "premium_product_grid_slider_byz7pr": {
+    "premium_product_grid_slider_hARbB3": {
       "type": "premium-product-grid-slider",
       "custom_css": [
-        ".section-template--22510704787503__premium_product_grid_slider_73c9VC {padding-top: 0px; padding-bottom: 100px; background-color: #fff;}"
+        "@media screen and (max-width: 767px) {.section-template--22510704787503__premium_product_grid_slider_73c9VC {padding-bottom: 60px !important; }}"
       ],
       "name": "Premium Grid & Slider",
       "settings": {
@@ -454,7 +460,7 @@
         "show_view_all": true,
         "view_all_text": "View All",
         "bg_color": "#ffffff",
-        "padding_top": 0,
+        "padding_top": 12,
         "padding_bottom": 100
       }
     },
@@ -625,6 +631,9 @@
         "card_VbnzYJ",
         "card_rYz4zy",
         "card_Nht6G8"
+      ],
+      "custom_css": [
+        "@media (max-width: 768px){#lx-prod-sec-template--22510704787503__custom_luxury_products_DFekXb {padding-bottom: 20px;}}"
       ],
       "name": "Luxury Products Slider",
       "settings": {
@@ -929,8 +938,8 @@
     "premium_product_grid_slider_73c9VC",
     "custom_creativity_banner_7XzHet",
     "custom_split_section_qyp8jp",
-    "rich_text_custom_j4hfdR",
-    "premium_product_grid_slider_byz7pr",
+    "rich_text_custom_KqCLY4",
+    "premium_product_grid_slider_hARbB3",
     "curved_reels_YL4Pfh",
     "custom_luxury_products_DFekXb",
     "as_split_grid_hero_xfhczn",

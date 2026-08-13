@@ -97,7 +97,8 @@
         "newsletter_heading": "10% OFF YOUR FIRST ORDER JOIN THE A-LIST",
         "newsletter_terms": "<p>We establish personal relationships with our boutiques, to makesure each is vetted for a stress-free shopping experience.<br/></p>",
         "social_title": "FOLLOW US",
-        "right_image": "shopify://shop_images/BRAND_MASCOT.png"
+        "right_image": "shopify://shop_images/BRAND_MASCOT.png",
+        "mobile_logo": "shopify://shop_images/VERRO_2x_dc5c2b42-382a-46bb-90de-31f429cceaee.png"
       }
     },
     "footer": {

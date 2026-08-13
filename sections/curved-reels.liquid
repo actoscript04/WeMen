@@ -356,18 +356,23 @@
     100% { transform: translateX(-50%); }
   }
 
-  /* MOBILE RESPONSIVE: Exactly 2.5 Cards per screen */
+  /* MOBILE RESPONSIVE */
   @media (max-width: 767px) {
-    .curved-reels-fullwidth-section { padding-bottom: 90px; }
-    .curved-reels-fullwidth-section::after { height: 50px; }
+    .curved-reels-fullwidth-section { padding-bottom: 60px; padding-top: 60px; }
+    .curved-reels-fullwidth-section::after { display: none; } /* Remove curve on mobile */
     
-    .cr-title { font-size: 28px; }
-    .cr-marquee-track { gap: 12px; }
+    .cr-title { font-size: 26px; }
+    .cr-marquee-wrapper { 
+      padding: 20px 0 20px 0; 
+      mask-image: none; 
+      -webkit-mask-image: none; 
+    }
+    .cr-marquee-track { gap: 20px; }
     
     .cr-reel-card { 
-      width: calc((100vw - (12px * 2) - 30px) / 2.5); /* Fits 2 full cards + half card on side */
-      height: 290px; /* Proportional Mobile Height */
-      border-radius: 20px; 
+      width: calc(100vw - 40px); /* Single card view */
+      height: 480px; /* Big height */
+      border-radius: 15px; 
     }
     
     .cr-accent-right, .cr-accent-bottom { display: none; }
@@ -471,6 +476,11 @@
       const arcRotate = isMobile ? 8 : 10;
 
       cards.forEach(card => {
+        if (isMobile) {
+          card.style.transform = 'none';
+          return;
+        }
+
         const rect = card.getBoundingClientRect();
         const cardCenter = rect.left + rect.width / 2;
         
@@ -481,6 +491,8 @@
           const rotateDeg = distFromCenter * arcRotate;
           
           card.style.transform = `translateY(${translateY}px) rotate(${rotateDeg}deg)`;
+        } else {
+          card.style.transform = 'none';
         }
       });
 

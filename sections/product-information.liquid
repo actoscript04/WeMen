@@ -26,6 +26,7 @@
 
 {% if section.settings.enable_sticky_add_to_cart %}
   {% liquid
+    assign product = closest.product | default: product
     assign current_variant = product.selected_or_first_available_variant
     # Get the initial quantity based on quantity rules
     assign initial_quantity = current_variant.quantity_rule.min | default: 1
@@ -93,6 +94,14 @@
         >
           {{ product.title | escape }}
         </p>
+
+        <div
+          class="sticky-add-to-cart__price"
+          data-testid="sticky-price-display"
+        >
+          {% render 'price', product_resource: product, show_sale_price_first: true %}
+        </div>
+
         <div
           class="sticky-add-to-cart__variant"
           data-testid="sticky-variant-title"
@@ -107,13 +116,6 @@
             {{ variant_title }}
           {% endunless %}
         </div>
-      </div>
-
-      <div
-        class="sticky-add-to-cart__price"
-        data-testid="sticky-price-display"
-      >
-        {% render 'price', product_resource: product, show_sale_price_first: true %}
       </div>
 
       <button
@@ -270,11 +272,27 @@
   .sticky-add-to-cart__variant {
     color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
     font-size: var(--font-paragraph-small--size);
-    margin-top: var(--margin-3xs);
+    margin-top: 2px;
   }
 
   .sticky-add-to-cart__price {
     font-weight: var(--font-weight-semibold);
+    margin-top: 2px;
+  }
+  
+  .sticky-add-to-cart__price .price,
+  .sticky-add-to-cart__price .price-item--sale {
+    font-size: 14px !important;
+  }
+  
+  .sticky-add-to-cart__price .compare-at-price,
+  .sticky-add-to-cart__price .price-item--regular {
+    font-size: 12px !important;
+  }
+  
+  .sticky-add-to-cart__price .discount-badge {
+    font-size: 11px !important;
+    padding: 2px 8px 2px 4px !important;
   }
 
   .sticky-add-to-cart__button {
@@ -343,7 +361,7 @@
     }
   }
 
-  /* Small mobile - hide text content and compare price */
+  /* Small mobile - hide compare price, keep title */
   @media screen and (max-width: 389px) {
     .sticky-add-to-cart__bar {
       .compare-at-price {
@@ -352,7 +370,7 @@
     }
 
     .sticky-add-to-cart__title {
-      display: none;
+      display: block;
     }
 
     /* For product with only default variant show title */

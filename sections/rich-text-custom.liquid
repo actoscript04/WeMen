@@ -74,7 +74,22 @@
     .rich-text-body-{{ section.id }} {
       font-size: {{ section.settings.body_size_desktop }}px;
     }
+   
   }
+  @media screen and (min-width: 750px) {
+  .rich-text-title-template--22510704787503__rich_text_custom_NQndPn {
+    font-size: 45px;
+    font-weight: 500;
+  }
+}
+.rich-text-body-template--22510704787503__rich_text_custom_NQndPn {
+  margin-bottom: 50px;
+}
+@media screen and (max-width: 767px) {
+  .rich-text-wrapper-{{ section.id }} {
+      margin-bottom: -25px;
+    }
+}
   .as-mb-30{
     margin-bottom: -40px;
   }

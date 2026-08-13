@@ -235,10 +235,61 @@
       }
     }
 
+    .footer-mobile-logo {
+      display: none;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+    .footer-mobile-logo img {
+      max-width: 150px;
+      height: auto;
+      display: block;
+    }
+    
+    .footer-accordion-icon {
+      display: none;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 300;
+      transition: transform 0.3s ease;
+    }
+
     @media (max-width: 575px) {
+      .footer-mobile-logo {
+        display: block;
+      }
+      .footer-right-image {
+        display: none !important;
+      }
       .footer-links-grid {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 0;
+      }
+      .footer-column {
+        border-bottom: 1px solid rgba(128,128,128,0.3);
+      }
+      .footer-column h4 {
+        margin-bottom: 0;
+        padding: 16px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+      .footer-accordion-icon {
+        display: block;
+      }
+      .footer-accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding-bottom 0.3s ease;
+      }
+      .footer-column.active .footer-accordion-content {
+        max-height: 600px;
+        padding-bottom: 16px;
+      }
+      .footer-column.active .footer-accordion-icon {
+        transform: rotate(45deg);
       }
       .footer-newsletter h3 {
         font-size: 18px;
@@ -257,14 +308,25 @@
   <div class="footer-container">
     <!-- Left Area (Links + Newsletter + Socials) -->
     <div class="footer-left-content">
+      
+      <!-- Mobile Logo -->
+      {%- if section.settings.mobile_logo != blank -%}
+        <div class="footer-mobile-logo">
+          <img src="{{ section.settings.mobile_logo | image_url: width: 300 }}" alt="{{ shop.name }}" loading="lazy">
+        </div>
+      {%- endif -%}
+
       <!-- Navigation Blocks -->
       <div class="footer-links-grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'link_list' -%}
             <div class="footer-column" {{ block.shopify_attributes }}>
-              <h4>{{ block.settings.heading | escape }}</h4>
+              <h4 class="footer-accordion-toggle">
+                {{ block.settings.heading | escape }}
+                <span class="footer-accordion-icon">+</span>
+              </h4>
               {%- if block.settings.menu != blank -%}
-                <ul>
+                <ul class="footer-accordion-content">
                   {%- for link in block.settings.menu.links -%}
                     <li>
                       <a href="{{ link.url }}">{{ link.title }}</a>
@@ -319,11 +381,13 @@
 
         <!-- Dynamic Social Media Section -->
         <div class="footer-social-media">
-          <div class="social-title">{{ section.settings.social_title }}</div>
+          {%- if section.settings.social_title != blank -%}
+            <div class="social-title">{{ section.settings.social_title }}</div>
+          {%- endif -%}
+          
           <div class="social-icons-wrapper">
             {%- for block in section.blocks -%}
-              {%- if block.type == 'social_icon' -%}
-                {%- if block.settings.social_link != blank -%}
+              {%- if block.type == 'social_icon' and block.settings.social_link != blank -%}
                   <a
                     href="{{ block.settings.social_link }}"
                     class="social-icon-item"
@@ -332,7 +396,6 @@
                     {{ block.shopify_attributes }}
                   >
                     {%- if block.settings.social_svg != blank -%}
-                      <!-- Fixed: Correctly fetching image URL from Image Picker object -->
                       <img
                         src="{{ block.settings.social_svg | image_url: width: 60 }}"
                         alt="{{ block.settings.social_name }}"
@@ -342,7 +405,6 @@
                       <span>{{ block.settings.social_name }}</span>
                     {%- endif -%}
                   </a>
-                {%- endif -%}
               {%- endif -%}
             {%- endfor -%}
           </div>
@@ -361,13 +423,71 @@
       </div>
     {%- endif -%}
   </div>
-  <div style="max-width: 1400px; margin: 0 auto; margin-top: 50px;">
+  <div class="footer-copyright-wrapper">
     <hr class="as-footer-divider">
-    <div style="text-align: center; font-size: 13px; opacity: 0.7; margin-top: -35px;">
-      © 2026 WeMen. All Rights Reserved. Made With ♥ <a href="https://actoscript.com/" target="_blank">by Actoscript | A Right Click</a>
+    <div class="footer-copyright-text">
+      © 2026 WeMen. All Rights Reserved. Made With ♥ <a href="https://actoscript.com/" target="_blank" style="color: inherit; text-decoration: none;">by Actoscript | A Right Click</a>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-copyright-wrapper {
+    max-width: 1400px; 
+    margin: 0 auto; 
+    margin-top: 50px;
+  }
+  .footer-copyright-text {
+    text-align: center; 
+    font-size: 13px; 
+    opacity: 0.7; 
+    margin-top: -35px;
+  }
+  @media (max-width: 991px) {
+    .footer-bottom-row {
+      display: block !important;
+      width: 100% !important;
+    }
+    .footer-newsletter {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-bottom: 40px !important;
+    }
+    .footer-social-media {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+  }
+  @media (max-width: 575px) {
+    .footer-copyright-wrapper {
+      margin-top: 20px;
+    }
+    .as-footer-divider {
+      margin-bottom: 30px;
+    }
+    .footer-copyright-text {
+      margin-top: -15px;
+    }
+    .footer-newsletter {
+      margin-bottom: 30px !important;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const accordionToggles = document.querySelectorAll('.footer-accordion-toggle');
+    accordionToggles.forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        if (window.innerWidth <= 575) {
+          const parent = this.parentElement;
+          // Toggle active class
+          parent.classList.toggle('active');
+        }
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {
@@ -472,7 +592,16 @@
     {
       "type": "image_picker",
       "id": "right_image",
-      "label": "Footer Right Image (Responsive)"
+      "label": "Footer Right Image (Desktop)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Branding"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_logo",
+      "label": "Mobile Logo (Shows only on mobile)"
     }
   ],
   "blocks": [

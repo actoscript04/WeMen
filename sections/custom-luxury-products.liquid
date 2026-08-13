@@ -275,6 +275,8 @@
       padding: 0;
     }
     .lx-prod-sec-card {
+      flex: 0 0 100%;
+      min-width: 100%;
       height: 70vh;
       min-height: 400px;
     }
@@ -324,6 +326,39 @@
           grid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
         }
       });
+
+      // Auto-slide functionality for mobile
+      let autoSlideInterval;
+      
+      function startAutoSlide() {
+        if (window.innerWidth <= 600) {
+          autoSlideInterval = setInterval(() => {
+            const card = grid.querySelector('.lx-prod-sec-card');
+            if (card) {
+              const maxScrollLeft = grid.scrollWidth - grid.clientWidth;
+              if (grid.scrollLeft >= maxScrollLeft - 10) { 
+                grid.scrollTo({ left: 0, behavior: 'smooth' });
+              } else {
+                grid.scrollBy({ left: card.offsetWidth, behavior: 'smooth' });
+              }
+            }
+          }, 3000); // 3 seconds per slide
+        }
+      }
+
+      function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+      }
+
+      startAutoSlide();
+
+      // Pause auto-slide on touch or interaction
+      grid.addEventListener('touchstart', stopAutoSlide, { passive: true });
+      grid.addEventListener('touchend', () => {
+        setTimeout(startAutoSlide, 3000);
+      });
+      grid.addEventListener('mouseenter', stopAutoSlide);
+      grid.addEventListener('mouseleave', startAutoSlide);
     }
   });
 </script>

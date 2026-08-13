@@ -16,19 +16,21 @@
     overflow: hidden;
     max-width: 1440px;
     margin: 0 auto;
+    padding : 0 20px;
   }
 
   /* ─── Top Label ─── */
   .as-ts-top-label-{{ section.id }} {
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     color: {{ section.settings.label_color }};
     margin: 0 0 0 0;
-    padding: 0 0 30px 0;
+    padding: 0 0 20px 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    text-transform: none;
+    text-transform: uppercase;
     line-height: 1;
+    font-family: var(--font-heading-family);
   }
 
   /* ─── Swiper Container ─── */
@@ -51,31 +53,30 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 320px;
-    padding: 50px 0 0 0;
+    padding: 40px 0 0 0;
   }
 
   /* ─── Quote Text ─── */
   .as-ts-quote-{{ section.id }} {
-    font-size: clamp(22px, 2.6vw, 36px);
+    font-size: clamp(24px, 3vw, 42px);
     font-weight: 500;
-    line-height: 1.45;
+    line-height: 1.35;
     color: {{ section.settings.text_color }};
-    text-align: right;
+    text-align: left;
     margin: 0;
-    max-width: 780px;
-    margin-left: auto;
+    max-width: 900px;
     font-style: normal;
     letter-spacing: -0.01em;
+    font-family: var(--font-heading-family);
   }
 
   /* ─── Star Rating ─── */
   .as-ts-stars-{{ section.id }} {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 4px;
-    margin-top: 16px;
-    max-width: 780px;
-    margin-left: auto;
+    margin-top: 24px;
+    max-width: 900px;
   }
 
   .as-ts-stars-{{ section.id }} svg {
@@ -114,6 +115,7 @@
     font-weight: 600;
     color: {{ section.settings.text_color }};
     line-height: 1.3;
+    font-family: var(--font-heading-family);
   }
 
   .as-ts-author-{{ section.id }} .as-ts-author-role {
@@ -123,6 +125,7 @@
     opacity: 0.55;
     margin: 2px 0 0 0;
     line-height: 1.3;
+    font-family: var(--font-body-family);
   }
 
   /* ─── Navigation Arrows ─── */
@@ -283,7 +286,7 @@
                 <!-- Quote -->
                 {% if block.settings.text != blank %}
                   <p class="as-ts-quote-{{ section.id }}">
-                    &laquo;{{ block.settings.text }}&raquo;
+                    "{{ block.settings.text }}"
                   </p>
                 {% endif %}
 

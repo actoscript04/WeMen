@@ -1,8 +1,13 @@
-import { Component } from '@theme/component';
-import { ThemeEvents, QuantitySelectorUpdateEvent } from '@theme/events';
-import { morph } from '@theme/morph';
-import { onAnimationEnd } from '@theme/utilities';
-import { StandardEvents, ProductSelectEvent, CartLinesUpdateEvent, CartErrorEvent } from '@shopify/events';
+import { Component } from "@theme/component";
+import { ThemeEvents, QuantitySelectorUpdateEvent } from "@theme/events";
+import { morph } from "@theme/morph";
+import { onAnimationEnd } from "@theme/utilities";
+import {
+  StandardEvents,
+  ProductSelectEvent,
+  CartLinesUpdateEvent,
+  CartErrorEvent,
+} from "@shopify/events";
 
 /**
  * @typedef {Object} ProductVariant
@@ -40,7 +45,12 @@ import { StandardEvents, ProductSelectEvent, CartLinesUpdateEvent, CartErrorEven
  * @extends {Component<StickyAddToCartRefs>}
  */
 class StickyAddToCartComponent extends Component {
-  requiredRefs = ['stickyBar', 'addToCartButton', 'quantityDisplay', 'quantityNumber'];
+  requiredRefs = [
+    "stickyBar",
+    "addToCartButton",
+    "quantityDisplay",
+    "quantityNumber",
+  ];
 
   /** @type {IntersectionObserver | null} */
   #buyButtonsIntersectionObserver = null;
@@ -75,12 +85,28 @@ class StickyAddToCartComponent extends Component {
     this.#setupIntersectionObserver();
 
     const { signal } = this.#abortController;
-    const target = this.closest('.shopify-section');
-    target?.addEventListener(StandardEvents.productSelect, this.#handleProductSelect, { signal });
+    const target = this.closest(".shopify-section");
+    target?.addEventListener(
+      StandardEvents.productSelect,
+      this.#handleProductSelect,
+      { signal },
+    );
 
-    document.addEventListener(StandardEvents.cartLinesUpdate, this.#handleCartAddComplete, { signal });
-    document.addEventListener(StandardEvents.cartError, this.#handleCartAddComplete, { signal });
-    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, { signal });
+    document.addEventListener(
+      StandardEvents.cartLinesUpdate,
+      this.#handleCartAddComplete,
+      { signal },
+    );
+    document.addEventListener(
+      StandardEvents.cartError,
+      this.#handleCartAddComplete,
+      { signal },
+    );
+    document.addEventListener(
+      ThemeEvents.quantitySelectorUpdate,
+      this.#handleQuantityUpdate,
+      { signal },
+    );
 
     this.#getInitialQuantity();
 
@@ -88,7 +114,7 @@ class StickyAddToCartComponent extends Component {
     // if the shopper scrolls before the Inbox bundle has upgraded
     // <shopify-chat>, the bar shows and nothing re-runs that check. Hide it
     // once the element is defined so the bar doesn't overlap the chat UI.
-    customElements.whenDefined('shopify-chat').then(() => {
+    customElements.whenDefined("shopify-chat").then(() => {
       if (signal.aborted) return;
       if (this.#isStuck && this.#isChatActive()) this.#hideStickyBar();
     });
@@ -111,32 +137,36 @@ class StickyAddToCartComponent extends Component {
     const productForm = this.#getProductForm();
     if (!productForm) return;
 
-    const buyButtonsBlock = productForm.closest('.buy-buttons-block');
+    const buyButtonsBlock = productForm.closest(".buy-buttons-block");
     if (!buyButtonsBlock) return;
 
     // In themes migrated from 2.0, the footer element doesn't exist
-    const footer = document.querySelector('footer') ?? document.querySelector('[class*="footer-group"]');
+    const footer =
+      document.querySelector("footer") ??
+      document.querySelector('[class*="footer-group"]');
     if (!footer) return;
 
     // Observer for buy buttons visibility
-    this.#buyButtonsIntersectionObserver = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (!entry) return;
+    this.#buyButtonsIntersectionObserver = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (!entry) return;
 
-      // Only show sticky bar if buy buttons have been scrolled past (above viewport)
-      if (!entry.isIntersecting && !this.#isStuck) {
-        // Check if the element is above the viewport (scrolled past) or below (not yet reached)
-        const rect = entry.target.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top < 0) {
-          if (this.#isChatActive()) return;
-          this.#showStickyBar();
+        // Only show sticky bar if buy buttons have been scrolled past (above viewport)
+        if (!entry.isIntersecting && !this.#isStuck) {
+          // Check if the element is above the viewport (scrolled past) or below (not yet reached)
+          const rect = entry.target.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top < 0) {
+            if (this.#isChatActive()) return;
+            this.#showStickyBar();
+          }
+          // If rect.top >= 0, element is below viewport - don't show sticky bar yet
+        } else if (entry.isIntersecting && this.#isStuck) {
+          this.#hiddenByBottom = false;
+          this.#hideStickyBar();
         }
-        // If rect.top >= 0, element is below viewport - don't show sticky bar yet
-      } else if (entry.isIntersecting && this.#isStuck) {
-        this.#hiddenByBottom = false;
-        this.#hideStickyBar();
-      }
-    });
+      },
+    );
 
     // Observer for footer visibility - hides sticky bar at page bottom
     this.#mainBottomObserver = new IntersectionObserver(
@@ -160,13 +190,15 @@ class StickyAddToCartComponent extends Component {
         }
       },
       {
-        rootMargin: '200px 0px 0px 0px',
-      }
+        rootMargin: "200px 0px 0px 0px",
+      },
     );
 
     this.#buyButtonsIntersectionObserver.observe(buyButtonsBlock);
     this.#mainBottomObserver.observe(footer);
-    this.#targetAddToCartButton = productForm.querySelector('[ref="addToCartButton"]');
+    this.#targetAddToCartButton = productForm.querySelector(
+      '[ref="addToCartButton"]',
+    );
   }
 
   // Public action handlers
@@ -175,23 +207,29 @@ class StickyAddToCartComponent extends Component {
    */
   handleAddToCartClick = async () => {
     if (!this.#targetAddToCartButton) return;
-    this.#targetAddToCartButton.dataset.puppet = 'true';
+    this.#targetAddToCartButton.dataset.puppet = "true";
     this.#targetAddToCartButton.click();
-    const cartIcon = document.querySelector('.header-actions__cart-icon');
+    const cartIcon = document.querySelector(".header-actions__cart-icon");
 
-    if (this.refs.addToCartButton.dataset.added !== 'true') {
-      this.refs.addToCartButton.dataset.added = 'true';
+    if (this.refs.addToCartButton.dataset.added !== "true") {
+      this.refs.addToCartButton.dataset.added = "true";
     }
 
-    if (!cartIcon || !this.refs.addToCartButton || !this.refs.productImage) return;
+    if (!cartIcon || !this.refs.addToCartButton || !this.refs.productImage)
+      return;
     if (this.#resetTimeout) clearTimeout(this.#resetTimeout);
 
-    const flyToCartElement = /** @type {FlyToCart} */ (document.createElement('fly-to-cart'));
+    const flyToCartElement = /** @type {FlyToCart} */ (
+      document.createElement("fly-to-cart")
+    );
     const sourceStyles = getComputedStyle(this.refs.productImage);
 
-    flyToCartElement.classList.add('fly-to-cart--sticky');
-    flyToCartElement.style.setProperty('background-image', `url(${this.refs.productImage.src})`);
-    flyToCartElement.useSourceSize = 'true';
+    flyToCartElement.classList.add("fly-to-cart--sticky");
+    flyToCartElement.style.setProperty(
+      "background-image",
+      `url(${this.refs.productImage.src})`,
+    );
+    flyToCartElement.useSourceSize = "true";
     flyToCartElement.source = this.refs.productImage;
     flyToCartElement.destination = cartIcon;
 
@@ -199,7 +237,7 @@ class StickyAddToCartComponent extends Component {
 
     await onAnimationEnd([this.refs.addToCartButton, flyToCartElement]);
     this.#resetTimeout = setTimeout(() => {
-      this.refs.addToCartButton.removeAttribute('data-added');
+      this.refs.addToCartButton.removeAttribute("data-added");
     }, 800);
   };
 
@@ -208,7 +246,11 @@ class StickyAddToCartComponent extends Component {
    * @param {ProductSelectEvent} event - The product select event
    */
   #handleProductSelect = (event) => {
-    if (!(event.target instanceof Element) || event.target.closest('product-card')) return;
+    if (
+      !(event.target instanceof Element) ||
+      event.target.closest("product-card")
+    )
+      return;
 
     // Update variant ID from the event detail (variant:selected part)
     const { optionValueId } = event.detail ?? {};
@@ -226,21 +268,25 @@ class StickyAddToCartComponent extends Component {
         if (productId && productId !== this.dataset.productId) return;
 
         // Get the new sticky add to cart HTML from the server response
-        const newStickyAddToCart = /** @type {HTMLElement | null} */ (html.querySelector('sticky-add-to-cart'));
+        const newStickyAddToCart = /** @type {HTMLElement | null} */ (
+          html.querySelector("sticky-add-to-cart")
+        );
         if (!newStickyAddToCart) return;
 
-        const newStickyBar = newStickyAddToCart.querySelector('[ref="stickyBar"]');
+        const newStickyBar =
+          newStickyAddToCart.querySelector('[ref="stickyBar"]');
         if (!newStickyBar) return;
 
         // Store current visibility state before morphing
-        const currentStuck = this.refs.stickyBar.getAttribute('data-stuck') || 'false';
+        const currentStuck =
+          this.refs.stickyBar.getAttribute("data-stuck") || "false";
         const variantAvailable = newStickyAddToCart.dataset.variantAvailable;
 
         // Morph the entire sticky bar content
         morph(this.refs.stickyBar, newStickyBar, { childrenOnly: true });
 
         // Restore visibility state after morphing
-        this.refs.stickyBar.setAttribute('data-stuck', currentStuck);
+        this.refs.stickyBar.setAttribute("data-stuck", currentStuck);
         this.dataset.variantAvailable = variantAvailable;
 
         // Update the dataset attributes with new variant info
@@ -251,7 +297,9 @@ class StickyAddToCartComponent extends Component {
         // Re-cache the target add to cart button after morphing
         const productForm = this.#getProductForm();
         if (productForm) {
-          this.#targetAddToCartButton = productForm.querySelector('[ref="addToCartButton"]');
+          this.#targetAddToCartButton = productForm.querySelector(
+            '[ref="addToCartButton"]',
+          );
         }
 
         if (variant == null) {
@@ -261,7 +309,8 @@ class StickyAddToCartComponent extends Component {
         this.#updateButtonText();
       })
       .catch((error) => {
-        if (error?.name !== 'AbortError') console.warn('[sticky-add-to-cart] Event promise rejected:', error);
+        if (error?.name !== "AbortError")
+          console.warn("[sticky-add-to-cart] Event promise rejected:", error);
       });
   };
 
@@ -269,16 +318,22 @@ class StickyAddToCartComponent extends Component {
    * Updates the variant title based on selected options when the variant is unavailable
    */
   #handleVariantUnavailable = () => {
-    this.dataset.currentVariantId = '';
-    const variantTitleElement = this.querySelector('.sticky-add-to-cart__variant');
+    this.dataset.currentVariantId = "";
+    const variantTitleElement = this.querySelector(
+      ".sticky-add-to-cart__variant",
+    );
     const productId = this.dataset.productId;
-    const variantPicker = document.querySelector(`variant-picker[data-product-id="${productId}"]`);
+    const variantPicker = document.querySelector(
+      `variant-picker[data-product-id="${productId}"]`,
+    );
     if (!variantTitleElement || !variantPicker) return;
 
-    const selectedOptions = Array.from(variantPicker.querySelectorAll('input:checked'))
+    const selectedOptions = Array.from(
+      variantPicker.querySelectorAll("input:checked"),
+    )
       .map((option) => /** @type {HTMLInputElement} */ (option).value)
-      .filter((value) => value !== '')
-      .join(' / ');
+      .filter((value) => value !== "")
+      .join(" / ");
     if (!selectedOptions) return;
     variantTitleElement.textContent = selectedOptions;
   };
@@ -292,12 +347,12 @@ class StickyAddToCartComponent extends Component {
     // not when the event is first dispatched (before the HTTP request completes).
     const resetPuppet = () => {
       if (this.#targetAddToCartButton) {
-        this.#targetAddToCartButton.dataset.puppet = 'false';
+        this.#targetAddToCartButton.dataset.puppet = "false";
       }
     };
 
     // CartLinesUpdateEvent has a promise; CartErrorEvent does not (error already happened).
-    if ('promise' in event && event.promise instanceof Promise) {
+    if ("promise" in event && event.promise instanceof Promise) {
       event.promise.finally(resetPuppet);
     } else {
       resetPuppet();
@@ -322,7 +377,7 @@ class StickyAddToCartComponent extends Component {
   #showStickyBar() {
     const { stickyBar } = this.refs;
     this.#isStuck = true;
-    stickyBar.dataset.stuck = 'true';
+    stickyBar.dataset.stuck = "true";
   }
 
   /**
@@ -331,7 +386,7 @@ class StickyAddToCartComponent extends Component {
   #hideStickyBar() {
     const { stickyBar } = this.refs;
     this.#isStuck = false;
-    stickyBar.dataset.stuck = 'false';
+    stickyBar.dataset.stuck = "false";
   }
 
   // Helper methods
@@ -349,8 +404,8 @@ class StickyAddToCartComponent extends Component {
    * @returns {boolean}
    */
   #isChatActive() {
-    if (!customElements.get('shopify-chat')) return false;
-    return Boolean(document.querySelector('shopify-chat'));
+    if (!customElements.get("shopify-chat")) return false;
+    return Boolean(document.querySelector("shopify-chat"));
   }
 
   /**
@@ -361,12 +416,8 @@ class StickyAddToCartComponent extends Component {
     const productId = this.dataset.productId;
     if (!productId) return null;
 
-    const sectionElement = this.closest('.shopify-section');
-    if (!sectionElement) return null;
-
-    const sectionId = sectionElement.id.replace('shopify-section-', '');
     return document.querySelector(
-      `#shopify-section-${sectionId} product-form-component[data-product-id="${productId}"]`
+      `product-form-component[data-product-id="${productId}"]`,
     );
   }
 
@@ -374,7 +425,7 @@ class StickyAddToCartComponent extends Component {
    * Gets the initial quantity from the data attribute
    */
   #getInitialQuantity() {
-    this.#currentQuantity = parseInt(this.dataset.initialQuantity || '1') || 1;
+    this.#currentQuantity = parseInt(this.dataset.initialQuantity || "1") || 1;
     this.#updateButtonText();
   }
 
@@ -391,13 +442,13 @@ class StickyAddToCartComponent extends Component {
 
     // Show/hide the quantity display based on availability and quantity
     if (available && this.#currentQuantity > 1) {
-      quantityDisplay.style.display = 'inline';
+      quantityDisplay.style.display = "inline";
     } else {
-      quantityDisplay.style.display = 'none';
+      quantityDisplay.style.display = "none";
     }
   }
 }
 
-if (!customElements.get('sticky-add-to-cart')) {
-  customElements.define('sticky-add-to-cart', StickyAddToCartComponent);
+if (!customElements.get("sticky-add-to-cart")) {
+  customElements.define("sticky-add-to-cart", StickyAddToCartComponent);
 }
