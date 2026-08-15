@@ -20,25 +20,6 @@
 {% endcapture %}
 {% assign product_card_size = product_card_size | strip %}
 
-{%- liquid
-  assign grid_padding_inline_start = section.settings.padding-inline-start | times: 1
-  assign grid_padding_inline_end = section.settings.padding-inline-end | times: 1
-
-  # Match the responsive scaling used by the heading and filter bar so the grid
-  # stays aligned with them at tablet widths (750px–990px).
-  if grid_padding_inline_start > 20
-    assign grid_padding_inline_start = 'max(20px, calc(var(--spacing-scale, 1) * ' | append: grid_padding_inline_start | append: 'px))'
-  else
-    assign grid_padding_inline_start = grid_padding_inline_start | append: 'px'
-  endif
-
-  if grid_padding_inline_end > 20
-    assign grid_padding_inline_end = 'max(20px, calc(var(--spacing-scale, 1) * ' | append: grid_padding_inline_end | append: 'px))'
-  else
-    assign grid_padding_inline_end = grid_padding_inline_end | append: 'px'
-  endif
--%}
-
 {% style %}
   @media screen and (min-width: 750px) {
     {% case section.settings.layout_type %}
@@ -112,8 +93,8 @@
     --grid--margin--mobile: 0{% if section.settings.product_grid_width == 'centered' and section.settings.full_width_on_mobile == false %} var(--margin-lg){% else %} 0{% endif %};
     --grid-column--desktop: var(--{% if section.settings.product_grid_width == 'centered' %}centered{% else %}full-width{% endif %});
     --grid-column--mobile: var(--{% if section.settings.full_width_on_mobile %}full-width{% else %}{% if section.settings.product_grid_width == 'centered' %}centered{% else %}full-width{% endif %}{% endif %});
-    --padding-inline-start: {{ grid_padding_inline_start }};
-    --padding-inline-end: {{ grid_padding_inline_end }};
+    --padding-inline-start: {{ section.settings.padding-inline-start }}px;
+    --padding-inline-end: {{ section.settings.padding-inline-end }}px;
   "
 >
   <div

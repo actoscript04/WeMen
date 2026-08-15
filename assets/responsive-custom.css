@@ -21,6 +21,13 @@
   /* Add your styles here for large phones/small tablets */
 }
 
+/* Fix horizontal scroll on collection page mobile view */
+@media screen and (max-width: 767px) {
+  .collection-wrapper {
+    overflow-x: hidden;
+  }
+}
+
 /* Tablets (Portrait) - 768px to 1023px */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   /* Add your styles here for tablets */
